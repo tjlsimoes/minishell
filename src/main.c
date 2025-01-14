@@ -6,11 +6,24 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/14 15:16:02 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/14 16:30:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Get the current history list and print it
+void display_history()
+{
+	HIST_ENTRY **hist_list;
+	hist_list = history_list(); 
+	int i;
+
+	i = -1;
+	if (hist_list)
+		while (hist_list[++i])
+			printf("%d %s\n", i + 1, hist_list[i]->line);
+}
 
 //This function takes a user input string, tokenizes it into an array of
 //tokens, constructs an abstract syntax tree (AST) from those tokens, 
@@ -49,7 +62,9 @@ int	main(int argc, char **argv)
 			printf("\nExiting minishell...\n");
 			break ;
 		}
-		if (ft_strlen(input) > 0){
+		if (ft_strncmp(input, "history", 7) == 0)
+			display_history();
+		else if (ft_strlen(input) > 0){
 			add_history(input); 
 			process_tokens(input);
 		}
