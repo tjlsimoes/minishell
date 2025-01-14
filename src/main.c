@@ -6,12 +6,15 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/14 14:15:33 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:16:02 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//This function takes a user input string, tokenizes it into an array of
+//tokens, constructs an abstract syntax tree (AST) from those tokens, 
+//prints the AST structure, and then frees the allocated memory for tokens&AST.
 static void	process_tokens(char *input)
 {
 	char		**tokens;
@@ -46,8 +49,10 @@ int	main(int argc, char **argv)
 			printf("\nExiting minishell...\n");
 			break ;
 		}
-		if (ft_strlen(input) > 0)
+		if (ft_strlen(input) > 0){
+			add_history(input); 
 			process_tokens(input);
+		}
 		free(input);
 	}
 	return (0);
