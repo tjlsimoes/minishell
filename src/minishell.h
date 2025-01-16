@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/14 15:03:14 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:00:44 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include "../libft/src/libft.h"
-# include "../libft/src/get_next_line/get_next_line_bonus.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -27,11 +26,13 @@
 typedef enum e_NodeType
 {
 	NODE_COMMAND,
+	NODE_ARGUMENT,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,
 	NODE_REDIRECT_OUT,
 	NODE_REDIRECT_APPEND
-}	t_NodeType;
+} t_NodeType;
+
 
 typedef struct s_ASTNode
 {

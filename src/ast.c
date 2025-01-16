@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/14 15:02:11 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:00:47 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,35 @@ t_ASTNode	*create_node(t_NodeType type, char *value)
 // type and value with indentation corresponding to its depth in the tree.
 void	print_ast(t_ASTNode *node, int depth)
 {
-	int	i;
-
+	int i;
+	
 	if (node == NULL)
-		return ;
-	i = -1;
-	while (++i < depth)
-		printf("  ");
-	if (node->type == NODE_COMMAND)
-		printf("Command: %s\n", node->value);
-	else if (node->type == NODE_PIPE)
+		return;
+	if (node->type == NODE_PIPE)
 	{
-		print_ast(node->left, depth + 1);
-		if (node->right->type == NODE_PIPE)
-			print_ast(node->right, depth);
-		else
-			print_ast(node->right, depth + 1);
-		return ;
+		print_ast(node->left, depth);
+		i = 0;
+		while (i++ < depth)
+			printf("  ");
+		printf("Pipe\n");
+		print_ast(node->right, depth);
+	}
+	else if (node->type == NODE_COMMAND)
+	{
+		i = 0;
+		while (i++ < depth)
+			printf("  ");
+		printf("Command: %s\n", node->value);
+		
+		t_ASTNode *arg = node->left;
+		while (arg != NULL)
+		{
+			i = 0;
+			while (i++ < depth + 1)
+				printf("  ");
+			printf("Arg: %s\n", arg->value);
+			arg = arg->right;
+		}
 	}
 	else if (node->type == NODE_REDIRECT_IN)
 		printf("Redirect In: %s\n", node->value);
@@ -55,8 +67,6 @@ void	print_ast(t_ASTNode *node, int depth)
 		printf("Redirect Out: %s\n", node->value);
 	else if (node->type == NODE_REDIRECT_APPEND)
 		printf("Redirect Append: %s\n", node->value);
-	print_ast(node->left, depth + 1);
-	print_ast(node->right, depth + 1);
 }
 
 // Recursively free left and right subtrees

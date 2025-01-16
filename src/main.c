@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/14 16:30:48 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:03:33 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ static void	process_tokens(char *input)
 	}
 }
 
-int	main(int argc, char **argv)
+int	main()
 {
 	char	*input;
-
-	(void)argc;
-	(void)argv;
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -62,9 +59,10 @@ int	main(int argc, char **argv)
 			printf("\nExiting minishell...\n");
 			break ;
 		}
-		if (ft_strncmp(input, "history", 7) == 0)
+		else if (ft_strncmp(input, "history", 7) == 0)
 			display_history();
-		else if (ft_strlen(input) > 0){
+		else if (ft_strlen(input) > 0)
+		{
 			add_history(input); 
 			process_tokens(input);
 		}
