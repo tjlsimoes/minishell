@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/16 17:00:47 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:43:51 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,59 @@ t_ASTNode	*create_node(t_NodeType type, char *value)
 // type and value with indentation corresponding to its depth in the tree.
 void	print_ast(t_ASTNode *node, int depth)
 {
-	int i;
-	
+	int			i;
+	t_ASTNode	*redir;
+
 	if (node == NULL)
 		return;
 	if (node->type == NODE_PIPE)
 	{
 		print_ast(node->left, depth);
-		i = 0;
-		while (i++ < depth)
+		i = -1;
+		while (++i < depth)
 			printf("  ");
 		printf("Pipe\n");
-		print_ast(node->right, depth);
+		print_ast(node->right, depth + 1);
 	}
 	else if (node->type == NODE_COMMAND)
 	{
-		i = 0;
-		while (i++ < depth)
+		i = -1;
+		while (++i < depth)
 			printf("  ");
 		printf("Command: %s\n", node->value);
-		
+		// Print arguments
 		t_ASTNode *arg = node->left;
 		while (arg != NULL)
 		{
-			i = 0;
-			while (i++ < depth + 1)
+			i = -1;
+			while (++i < depth + 1)
 				printf("  ");
 			printf("Arg: %s\n", arg->value);
 			arg = arg->right;
 		}
+		// Print redirections
+		redir = node->right;
+		while (redir != NULL)
+		{
+			i = -1;
+			while (++i < depth + 1)
+				printf("  ");
+			if (redir->type == NODE_REDIRECT_IN)
+				printf("Redirect In: %s\n", redir->value);
+			else if (redir->type == NODE_REDIRECT_OUT)
+				printf("Redirect Out: %s\n", redir->value);
+			else if (redir->type == NODE_REDIRECT_APPEND)
+				printf("Redirect Append: %s\n", redir->value);
+			redir = redir->right;
+		}
 	}
-	else if (node->type == NODE_REDIRECT_IN)
-		printf("Redirect In: %s\n", node->value);
-	else if (node->type == NODE_REDIRECT_OUT)
-		printf("Redirect Out: %s\n", node->value);
-	else if (node->type == NODE_REDIRECT_APPEND)
-		printf("Redirect Append: %s\n", node->value);
+	else if (node->type == NODE_ENV_VAR) // Print environment variable nodes
+    {
+        i = -1;
+        while (++i < depth + 1)
+            printf("  ");
+        printf("Env Var: %s\n", node->value);
+    }
 }
 
 // Recursively free left and right subtrees

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/16 17:00:44 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/17 13:34:41 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef enum e_NodeType
 	NODE_PIPE,
 	NODE_REDIRECT_IN,
 	NODE_REDIRECT_OUT,
-	NODE_REDIRECT_APPEND
+	NODE_REDIRECT_APPEND,
+	NODE_ENV_VAR
 } t_NodeType;
 
 
@@ -48,6 +49,7 @@ typedef struct s_token_info
 	int		index;
 	char	*current_token;
 	int		token_length;
+	char	quote_char;
 }	t_token_info;
 
 // Function prototypes
