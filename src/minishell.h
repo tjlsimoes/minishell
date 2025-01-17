@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 12:57:16 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:17:52 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <fcntl.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <errno.h>
 
 # define MAX_INPUT_LENGTH 1024
 
@@ -52,6 +57,40 @@ typedef struct s_token_info
 	int		token_length;
 	char	quote_char;
 }	t_token_info;
+
+// Exit Status Exploration
+typedef struct s_minishell
+{
+	int	exit_status;
+}	t_minishell;
+
+t_minishell		*get_minishell(void);
+void			do_something(void);
+void			set_exit_status(int	wstatus);
+
+// Environment Exploration
+char			*get_non_var(char *str);
+char			*strs_join(char **array);
+void			*clear_array(char **array);
+char			*expand_env_vars(char *str, t_list **env_vars);
+char			**env_vars_expansion(char *str, t_list **env_vars);
+
+void			print_env_vars(t_list **lst);
+char			*get_env_pair(t_list **env_vars, char *key);
+char			*get_env_key(char *pair);
+char			*get_env_value(char *pair);
+int				update_env_var(t_list **lst, char *content);
+
+void			add_env_var(t_list **lst, char *content);
+void			del_env_var(t_list **lst, char *content);
+int				is_key(t_list *env_var, char *str);
+
+void			ft_lstdel(t_list **lst);
+int				idx(char *str, char c);
+void			free_node(t_list **node_adrr);
+int				special_chars(char c);
+char			*alt_strjoin(char *s1, char *s2);
+int				ft_strcpy(char *str, char *s, int start);
 
 // Function prototypes
 //ast.c
