@@ -31,7 +31,7 @@ SRCS = main.c ast.c parser.c parser_redirect.c tokenizer.c utils.c
 SRCS = main.c ast.c parser.c tokenizer.c utils.c \
 env_tests.c \
 exit_status.c env_vars_a.c env_vars_b.c env_vars_c.c \
-env_vars_d.c
+env_vars_d.c signals.c
 >>>>>>> 90cd21b (Add env vars and exit status exploration)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

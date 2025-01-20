@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 13:17:52 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:21:55 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,8 @@ int			is_redirect(char *token);
 void		print_indent(int indent);
 void		print_node(const t_ASTNode *node, int indent);
 void		pretty_print_ast(const t_ASTNode *node, int indent);
+
+void		display_history();
+void		process_tokens(char *input);
 
 #endif
