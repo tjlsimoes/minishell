@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
+#    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/01/15 15:35:22 by tjorge-l         ###   ########.fr        #
+#    Updated: 2025/01/27 14:14:15 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ OBJ_DIR = obj
 SRCS = main.c ast.c parser.c tokenizer.c utils.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+
+# Valgrind flags
+VFLAGS = -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=valgrind_readline.supp
 
 all: $(NAME)
 
@@ -49,5 +52,8 @@ fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
+
+run: $(NAME)
+	valgrind $(VFLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re
