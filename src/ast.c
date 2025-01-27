@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/17 13:43:51 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:57:23 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	print_ast(t_ASTNode *node, int depth)
 {
 	int			i;
 	t_ASTNode	*redir;
+	t_ASTNode	*arg;
 
 	if (node == NULL)
-		return;
+		return ;
 	if (node->type == NODE_PIPE)
 	{
 		print_ast(node->left, depth);
@@ -51,8 +52,7 @@ void	print_ast(t_ASTNode *node, int depth)
 		while (++i < depth)
 			printf("  ");
 		printf("Command: %s\n", node->value);
-		// Print arguments
-		t_ASTNode *arg = node->left;
+		arg = node->left;
 		while (arg != NULL)
 		{
 			i = -1;
@@ -61,7 +61,6 @@ void	print_ast(t_ASTNode *node, int depth)
 			printf("Arg: %s\n", arg->value);
 			arg = arg->right;
 		}
-		// Print redirections
 		redir = node->right;
 		while (redir != NULL)
 		{
@@ -77,13 +76,13 @@ void	print_ast(t_ASTNode *node, int depth)
 			redir = redir->right;
 		}
 	}
-	else if (node->type == NODE_ENV_VAR) // Print environment variable nodes
-    {
-        i = -1;
-        while (++i < depth + 1)
-            printf("  ");
-        printf("Env Var: %s\n", node->value);
-    }
+	else if (node->type == NODE_ENV_VAR)
+	{
+		i = -1;
+		while (++i < depth + 1)
+			printf("  ");
+		printf("Env Var: %s\n", node->value);
+	}
 }
 
 // Recursively free left and right subtrees

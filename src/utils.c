@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/16 17:00:46 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:50:35 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,5 @@
 int	is_redirect(char *token)
 {
 	return (ft_strncmp(token, "<", 2) == 0 || ft_strncmp(token, ">", 2) == 0
-		|| ft_strncmp(token, ">>", 2) == 0);
+		|| ft_strncmp(token, ">>", 3) == 0);
 }

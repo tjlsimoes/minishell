@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/17 13:34:41 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:58:58 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ typedef enum e_NodeType
 	NODE_REDIRECT_OUT,
 	NODE_REDIRECT_APPEND,
 	NODE_ENV_VAR
-} t_NodeType;
-
+}	t_NodeType;
 
 typedef struct s_ASTNode
 {

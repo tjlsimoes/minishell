@@ -6,19 +6,19 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/27 14:14:16 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:02:12 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Get the current history list and print it
-void display_history()
+void	display_history(void)
 {
-	HIST_ENTRY **hist_list;
-	hist_list = history_list(); 
-	int i;
+	HIST_ENTRY	**hist_list;
+	int			i;
 
+	hist_list = history_list();
 	i = -1;
 	if (hist_list)
 		while (hist_list[++i])
@@ -47,9 +47,10 @@ static void	process_tokens(char *input)
 	}
 }
 
-int	main()
+int	main(void)
 {
 	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -63,7 +64,7 @@ int	main()
 			display_history();
 		else if (ft_strlen(input) > 0)
 		{
-			add_history(input); 
+			add_history(input);
 			process_tokens(input);
 		}
 		free(input);

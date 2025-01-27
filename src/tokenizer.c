@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/17 13:47:34 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:07:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 // storing tokens in a provided token information structure. 
 
 //for norm
-void	handle_quote(const char *input, int *i, t_token_info *info, bool *in_quote)
+void	handle_quote(const char *input, int *i,
+			t_token_info *info, bool *in_quote)
 {
+	if (!(*in_quote))
+		info->quote_char = '\0';
 	if ((input[*i] == '\'' || input[*i] == '\"') && !(*in_quote))
 	{
 		*in_quote = true;
@@ -28,6 +31,7 @@ void	handle_quote(const char *input, int *i, t_token_info *info, bool *in_quote)
 	{
 		*in_quote = false;
 		info->current_token[(info->token_length)++] = input[*i];
+		info->quote_char = '\0';
 	}
 	else if (!ft_isspace(input[*i]) || *in_quote)
 		info->current_token[(info->token_length)++] = input[*i];
@@ -51,6 +55,7 @@ void	process_input(const char *input, t_token_info *info)
 		}
 	}
 }
+
 // Tokenizes a given input string into an array of strings (tokens)
 // based on whitespace and quotes, returning the array of tokens. 
 char	**tokenize_input(const char *input)
@@ -64,6 +69,7 @@ char	**tokenize_input(const char *input)
 	info.index = 0;
 	info.token_length = 0;
 	info.current_token = current_token;
+	info.quote_char = '\0';
 	process_input(input, &info);
 	if (info.token_length > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/17 15:58:46 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:53:31 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,45 +90,29 @@ t_ASTNode	*parse_command(char **tokens, int *index)
 	return (cmd_node);
 }
 
-// Links two nodes in the AST by creating a new pipe node that
-// connects the existing root to a new command node
-t_ASTNode	*handle_pipe(t_ASTNode *root, t_ASTNode *node)
+t_ASTNode	*parse_pipeline(char **tokens, int *index)
 {
+	t_ASTNode	*left;
+	t_ASTNode	*right;
 	t_ASTNode	*pipe_node;
 
-	pipe_node = create_node(NODE_PIPE, "|");
-	pipe_node->left = root;
-	pipe_node->right = node;
-	return (pipe_node);
+	left = parse_command(tokens, index);
+	if (tokens[*index] && ft_strncmp(tokens[*index], "|", 2) == 0)
+	{
+		(*index)++;
+		right = parse_pipeline(tokens, index);
+		pipe_node = create_node(NODE_PIPE, "|");
+		pipe_node->left = left;
+		pipe_node->right = right;
+		return (pipe_node);
+	}
+	return (left);
 }
 
-// Constructs the entire AST from an array of tokens by iterating through
-// them and calling appropriate parsing functions for commands and pipes.
 t_ASTNode	*parse(char **tokens)
 {
-	int			index;
-	t_ASTNode	*root;
-	t_ASTNode	*current;
-	t_ASTNode	*node;
+	int	index;
 
 	index = 0;
-	root = NULL;
-	current = NULL;
-	while (tokens[index] != NULL)
-	{
-		node = parse_command(tokens, &index);
-		if (root == NULL)
-		{
-			root = node;
-			current = root;
-		}
-		else
-		{
-			root = handle_pipe(current, node);
-			current = node;
-		}
-		if (tokens[index] && ft_strncmp(tokens[index], "|", 2) == 0)
-			index++;
-	}
-	return (root);
+	return (parse_pipeline(tokens, &index));
 }
