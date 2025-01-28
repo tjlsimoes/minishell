@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/27 14:58:58 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:17:32 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ typedef enum e_NodeType
 	NODE_REDIRECT_IN,
 	NODE_REDIRECT_OUT,
 	NODE_REDIRECT_APPEND,
-	NODE_ENV_VAR
+	NODE_ENV_VAR,
+	NODE_HEREDOC
 }	t_NodeType;
 
 typedef struct s_ASTNode
 {
 	t_NodeType			type;
 	char				*value;
+	int					fd; // NEW FIELD
 	struct s_ASTNode	*left;
 	struct s_ASTNode	*right;
 }	t_ASTNode;
@@ -53,12 +55,13 @@ typedef struct s_token_info
 
 // Function prototypes
 //ast.c
-t_ASTNode	*create_node(t_NodeType type, char *value);
+t_ASTNode	*create_node(t_NodeType type, char *value, int fd);
 void		print_ast(t_ASTNode *node, int depth);
 void		free_ast(t_ASTNode *node);
 //parser
 t_ASTNode	*parse_command(char **tokens, int *index);
 t_ASTNode	*parse_redirect(char **tokens, int *index);
+void		parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node);
 t_ASTNode	*parse_pipe(char **tokens, int *index);
 t_ASTNode	*handle_pipe(t_ASTNode *root, t_ASTNode *node);
 t_ASTNode	*parse(char **tokens);

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/27 14:57:23 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/28 12:50:12 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 // Creates a new AST (Abstract Syntax Tree) node with the specified 
 // type and value, initializing its left and right children to NULL. 
-t_ASTNode	*create_node(t_NodeType type, char *value)
+t_ASTNode	*create_node(t_NodeType type, char *value, int fd)
 {
 	t_ASTNode	*node;
 
 	node = malloc(sizeof(t_ASTNode));
+	if (!node)
+		return (NULL);
 	node->type = type;
 	node->value = ft_strdup(value);
+	node->fd = fd; //initialize fd
 	node->left = NULL;
 	node->right = NULL;
 	return (node);

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/27 14:53:31 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:15:40 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,6 @@ void	attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node)
 	}
 }
 
-void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
-{
-	t_NodeType	redirect_type;
-	t_ASTNode	*redirect_node;
-
-	if (ft_strncmp(tokens[*index], "<", 2) == 0)
-		redirect_type = NODE_REDIRECT_IN;
-	else if (ft_strncmp(tokens[*index], ">", 2) == 0)
-		redirect_type = NODE_REDIRECT_OUT;
-	else if (ft_strncmp(tokens[*index], ">>", 3) == 0)
-		redirect_type = NODE_REDIRECT_APPEND;
-	else
-		return ;
-	redirect_node = create_node(redirect_type, tokens[*index + 1]);
-	(*index) += 2;
-	if (cmd_node->right == NULL)
-		cmd_node->right = redirect_node;
-	else
-		attach_node(cmd_node, redirect_node);
-}
-
 void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
 {
 	char		*var_name;
@@ -58,9 +37,9 @@ void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
 	var_name = tokens[*index] + 1;
 	var_value = getenv(var_name);
 	if (var_value != NULL)
-		arg_node = create_node(NODE_ARGUMENT, var_value);
+		arg_node = create_node(NODE_ARGUMENT, var_value, -1);
 	else
-		arg_node = create_node(NODE_ARGUMENT, tokens[*index]);
+		arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);
 	(*index)++;
 	attach_node(cmd_node, arg_node);
 }
@@ -72,7 +51,7 @@ t_ASTNode	*parse_command(char **tokens, int *index)
 	t_ASTNode	*cmd_node;
 	t_ASTNode	*arg_node;
 
-	cmd_node = create_node(NODE_COMMAND, tokens[*index]);
+	cmd_node = create_node(NODE_COMMAND, tokens[*index], -1);
 	(*index)++;
 	while (tokens[*index] != NULL && ft_strncmp(tokens[*index], "|", 2) != 0)
 	{
@@ -82,7 +61,7 @@ t_ASTNode	*parse_command(char **tokens, int *index)
 			parse_env_variable(tokens, index, cmd_node);
 		else
 		{
-			arg_node = create_node(NODE_ARGUMENT, tokens[*index]);
+			arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);
 			(*index)++;
 			attach_node(cmd_node, arg_node);
 		}
@@ -101,7 +80,7 @@ t_ASTNode	*parse_pipeline(char **tokens, int *index)
 	{
 		(*index)++;
 		right = parse_pipeline(tokens, index);
-		pipe_node = create_node(NODE_PIPE, "|");
+		pipe_node = create_node(NODE_PIPE, "|", -1);
 		pipe_node->left = left;
 		pipe_node->right = right;
 		return (pipe_node);
