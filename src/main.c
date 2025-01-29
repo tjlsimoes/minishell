@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 14:26:10 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:02:41 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,38 @@ void	process_tokens(char *input)
 	}
 }
 
-int	main(void)
+t_minishell	*get_minishell(void)
 {
-	char	*input;
+	static t_minishell	minishell;
 
+	return (&minishell);
+}
+
+void	init_minishell(char **envp)
+{
+	t_list		*env_var;
+	t_minishell	*minishell;
+
+	env_var = NULL;
+	if (!envp)
+		return ;
+	while (*envp)
+	{
+		ft_lstadd_back(&env_var, ft_lstnew(ft_strdup(*envp)));
+		envp++;
+	}
+	minishell = get_minishell();
+	minishell->env_var = env_var;
+	minishell->exit_status = 42;
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char		*input;
+
+	if (!argc && !argv && !envp)
+		return (1);
+	init_minishell(envp);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -69,5 +97,6 @@ int	main(void)
 		}
 		free(input);
 	}
+	ft_lstdel(&(get_minishell()->env_var));
 	return (0);
 }

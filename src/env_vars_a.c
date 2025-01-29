@@ -6,12 +6,16 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:05:06 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/17 12:12:53 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 19:06:44 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// From string assumed to contain an environment variable
+// - meaning something like "$NAME" - extract
+// invalid portion for environment variable referencing.
+// e.g. _HELLO in "$PATH_HELLO".
 char	*get_non_var(char *str)
 {
 	int	i;
@@ -19,10 +23,12 @@ char	*get_non_var(char *str)
 	i = 0;
 	if (!str)
 		return (NULL);
+	if (ft_isdigit(str[0]))
+		return (str);
 	while (str[i])
 	{
 		if (special_chars(str[i]) || !ft_isalnum(str[i])
-			|| str[i] != '_')
+			|| str[i] == '_')
 			return (&str[i]);
 		i++;
 	}
@@ -94,9 +100,6 @@ char	*expand_env_vars(char *str, t_list **env_vars)
 // Doesn't currently handle $?.
 // e.g. doesn't handle consecutive $, permits env vars
 //      starting with digits, ...
-
-// Need refactor: allocation error mid split parsing
-// and substitution. //
 // Returns array of strings that can then be joined.
 // To get single string with expanded environment
 // variables simply call strs_join()
