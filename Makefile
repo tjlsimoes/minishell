@@ -3,14 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
+#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2025/01/28 13:17:46 by asafrono         ###   ########.fr        #
-=======
-#    Updated: 2025/01/17 12:13:40 by tjorge-l         ###   ########.fr        #
->>>>>>> 90cd21b (Add env vars and exit status exploration)
+#    Updated: 2025/01/29 14:24:03 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +21,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-<<<<<<< HEAD
-SRCS = main.c ast.c parser.c parser_redirect.c tokenizer.c utils.c
-=======
-SRCS = main.c ast.c parser.c tokenizer.c utils.c \
+SRCS = main.c ast.c parser.c parser_redirect.c tokenizer.c utils.c \
 env_tests.c \
 exit_status.c env_vars_a.c env_vars_b.c env_vars_c.c \
 env_vars_d.c signals.c
->>>>>>> 90cd21b (Add env vars and exit status exploration)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
