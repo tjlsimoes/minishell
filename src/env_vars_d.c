@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:08:16 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/17 11:59:45 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:09:39 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,6 @@ void	free_node(t_list **node_adrr)
 	free(node);
 	node = NULL;
 }
-
-int	special_chars(char c)
-{
-	if (c == '*' || c == '@' || c == '#'
-		|| c == '-' || c == '$' || c == '!')
-		return (1);
-	return (0);
-}
-// || c == '0')
 
 char	*alt_strjoin(char *s1, char *s2)
 {

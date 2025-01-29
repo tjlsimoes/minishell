@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:07:49 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/15 11:09:31 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:09:43 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,3 +63,12 @@ int	is_key(t_list *env_var, char *str)
 		return (1);
 	return (0);
 }
+
+int	special_chars(char c)
+{
+	if (c == '*' || c == '@' || c == '#'
+		|| c == '-' || c == '$' || c == '!')
+		return (1);
+	return (0);
+}
+// || c == '0')
