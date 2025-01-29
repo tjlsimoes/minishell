@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/28 13:17:32 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:57:16 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,8 @@ void		process_input(const char *input, t_token_info *info);
 char		**tokenize_input(const char *input);
 //utils
 int			is_redirect(char *token);
+void		print_indent(int indent);
+void		print_node(const t_ASTNode *node, int indent);
+void		pretty_print_ast(const t_ASTNode *node, int indent);
 
 #endif

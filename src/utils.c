@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/28 13:00:10 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:58:32 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,45 @@ int	is_redirect(char *token)
 		i++;
 	return (ft_strncmp(token + i, "<", 1) == 0 || ft_strncmp(token + i, ">", 1) == 0
 		|| ft_strncmp(token + i, ">>", 2) == 0 || ft_strncmp(token + i, "<<", 2) == 0);
+}
+
+void	print_indent(int indent)
+{
+	if (indent <= 0)
+		return;
+	printf("  ");
+	print_indent(indent - 1);
+}
+
+void	print_node(const t_ASTNode *node, int indent)
+{
+	const char	*node_type_strings[] = {
+	"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
+	"NODE_REDIRECT_IN", "NODE_REDIRECT_OUT",
+	"NODE_REDIRECT_APPEND", "NODE_ENV_VAR", "NODE_HEREDOC"
+	};
+	print_indent(indent);
+	printf("Type: %s, Value: %s, FD: %d\n",
+			  node_type_strings[node->type],
+			  node->value ? node->value : "NULL",
+			  node->fd);
+}
+
+void	pretty_print_ast(const t_ASTNode *node, int indent)
+{
+	if (!node)
+		return;
+	print_node(node, indent);
+
+	if (node->left) {
+		print_indent(indent);
+		printf("Left:\n");
+		pretty_print_ast(node->left, indent + 1);
+	}
+
+	if (node->right) {
+		print_indent(indent);
+		printf("Right:\n");
+		pretty_print_ast(node->right, indent + 1);
+	}
 }

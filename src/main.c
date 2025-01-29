@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/27 15:10:47 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:56:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	process_tokens(char *input)
 	if (tokens)
 	{
 		ast = parse(tokens);
-		print_ast(ast, 0);
+		pretty_print_ast(ast, 0);
 		while (tokens[i] != NULL)
 			free(tokens[i++]);
 		free(tokens);
