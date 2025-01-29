@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 12:56:07 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:26:10 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	display_history(void)
 //This function takes a user input string, tokenizes it into an array of
 //tokens, constructs an abstract syntax tree (AST) from those tokens, 
 //prints the AST structure, and then frees the allocated memory for tokens&AST.
-static void	process_tokens(char *input)
+void	process_tokens(char *input)
 {
 	char		**tokens;
 	t_ASTNode	*ast;
