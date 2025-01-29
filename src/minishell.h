@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 13:21:55 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 15:34:34 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include "../libft/src/libft.h"
+# include "../libft/src/ft_printf/ft_printf.h"
+# include "../libft/src/get_next_line/get_next_line_bonus.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -61,7 +63,8 @@ typedef struct s_token_info
 // Exit Status Exploration
 typedef struct s_minishell
 {
-	int	exit_status;
+	int		exit_status;
+	t_list	*env_var;
 }	t_minishell;
 
 t_minishell		*get_minishell(void);
