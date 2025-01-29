@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 12:58:32 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:11:33 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 
 //  Determines if a given token is a redirection operator (<, >, or >>),
 // returning a boolean value indicating whether it is a redirect. 
-// int	is_redirect(char *token)
-// {
-// 	return (ft_strncmp(token, "<", 2) == 0 || ft_strncmp(token, ">", 2) == 0
-// 		|| ft_strncmp(token, ">>", 3) == 0);
-// }
-
 int	is_redirect(char *token)
 {
 	int i;

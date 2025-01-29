@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:45:21 by asafrono          #+#    #+#             */
-/*   Updated: 2024/11/08 14:25:34 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:32:33 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
+	if (!s || fd < 0)
+        return ;
 	if (s)
 		write(fd, s, ft_strlen(s));
 }
