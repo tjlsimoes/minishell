@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 13:34:54 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:07:29 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	display_history(void)
 //This function takes a user input string, tokenizes it into an array of
 //tokens, constructs an abstract syntax tree (AST) from those tokens, 
 //prints the AST structure, and then frees the allocated memory for tokens&AST.
-static void	process_tokens(char *input)
+void	process_tokens(char *input)
 {
 	char		**tokens;
 	t_ASTNode	*ast;
@@ -47,10 +47,38 @@ static void	process_tokens(char *input)
 	}
 }
 
-int	main(void)
+t_minishell	*get_minishell(void)
 {
-	char	*input;
+	static t_minishell	minishell;
 
+	return (&minishell);
+}
+
+void	init_minishell(char **envp)
+{
+	t_list		*env_var;
+	t_minishell	*minishell;
+
+	env_var = NULL;
+	if (!envp)
+		return ;
+	while (*envp)
+	{
+		ft_lstadd_back(&env_var, ft_lstnew(ft_strdup(*envp)));
+		envp++;
+	}
+	minishell = get_minishell();
+	minishell->env_var = env_var;
+	minishell->exit_status = 42;
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char		*input;
+
+	if (!argc && !argv && !envp)
+		return (1);
+	init_minishell(envp);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -69,5 +97,6 @@ int	main(void)
 		}
 		free(input);
 	}
+	ft_lstdel(&(get_minishell()->env_var));
 	return (0);
 }

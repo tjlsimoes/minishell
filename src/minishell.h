@@ -6,9 +6,10 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 14:10:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:06:40 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -17,9 +18,16 @@
 # include <stdlib.h>
 # include <string.h>
 # include "../libft/src/libft.h"
+# include "../libft/src/ft_printf/ft_printf.h"
+# include "../libft/src/get_next_line/get_next_line_bonus.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <fcntl.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <errno.h>
 
 # define MAX_INPUT_LENGTH 1024
 
@@ -53,6 +61,41 @@ typedef struct s_token_info
 	char	quote_char;
 }	t_token_info;
 
+// Exit Status Exploration
+typedef struct s_minishell
+{
+	int		exit_status;
+	t_list	*env_var;
+}	t_minishell;
+
+t_minishell		*get_minishell(void);
+void			do_something(void);
+void			set_exit_status(int	wstatus);
+
+// Environment Exploration
+char			*get_non_var(char *str);
+char			*strs_join(char **array);
+void			*clear_array(char **array);
+char			*expand_env_vars(char *str, t_list **env_vars);
+char			**env_vars_expansion(char *str, t_list **env_vars);
+
+void			print_env_vars(t_list **lst);
+char			*get_env_pair(t_list **env_vars, char *key);
+char			*get_env_key(char *pair);
+char			*get_env_value(char *pair);
+int				update_env_var(t_list **lst, char *content);
+
+void			add_env_var(t_list **lst, char *content);
+void			del_env_var(t_list **lst, char *content);
+int				is_key(t_list *env_var, char *str);
+
+void			ft_lstdel(t_list **lst);
+int				idx(char *str, char c);
+void			free_node(t_list **node_adrr);
+int				special_chars(char c);
+char			*alt_strjoin(char *s1, char *s2);
+int				ft_strcpy(char *str, char *s, int start);
+
 // Function prototypes
 //ast.c
 t_ASTNode	*create_node(t_NodeType type, char *value, int fd);
@@ -73,5 +116,8 @@ int			is_redirect(char *token);
 void		print_indent(int indent);
 void		print_node(const t_ASTNode *node, int indent);
 void		pretty_print_ast(const t_ASTNode *node, int indent);
+
+void		display_history();
+void		process_tokens(char *input);
 
 #endif
