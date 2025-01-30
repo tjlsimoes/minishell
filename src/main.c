@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 16:36:53 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 18:21:03 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,26 @@ void	init_minishell(char **envp)
 	}
 	minishell = get_minishell();
 	minishell->env_var = env_var;
-	minishell->exit_status = 42;
+	minishell->exit_status = 0;
 }
 
 int	process_command(char *input)
 {
+	t_minishell	*minishell;
+	char		*status_str;
+	
+	minishell = get_minishell();
 	if (ft_strncmp(input, "exit", 5) == 0
 		&& (input[4] == '\0' || input[4] == '\n'))
 		return (printf("\nExiting minishell...\n"), 0);
 	else if (ft_strncmp(input, "history", 7) == 0)
 		display_history();
+	else if (ft_strncmp(input, "setstatus", 9) == 0)
+	{
+		status_str = input + 10;
+		minishell->exit_status = ft_atoi(status_str);
+		printf("Exit status set to: %d\n", minishell->exit_status);
+	}
 	else if (ft_strlen(input) > 0)
 	{
 		add_history(input);

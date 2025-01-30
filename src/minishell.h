@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 17:12:35 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 18:05:16 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_ASTNode
 {
 	t_NodeType			type;
 	char				*value;
-	int					fd; // NEW FIELD
+	int					fd;
 	struct s_ASTNode	*left;
 	struct s_ASTNode	*right;
 }	t_ASTNode;
@@ -114,6 +114,7 @@ t_ASTNode		*parse_pipeline(char **tokens, int *index);
 void			attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node);
 void			parse_env_variable(char **tokens, int *index,
 					t_ASTNode *cmd_node);
+t_ASTNode		*parse_argument_node(char *value, int fd);
 //tokenizer
 int				process_input(const char *input, t_token_info *info);
 char			**tokenize_input(const char *input);

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 17:06:29 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:54:39 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	process_command_tokens(t_ASTNode *cmd_node, char **tokens, int *index)
 			parse_env_variable(tokens, index, cmd_node);
 		else
 		{
-			arg_node = create_node(NODE_ARGUMENT, tokens[(*index)++], -1);
+			arg_node = parse_argument_node(tokens[(*index)++], -1);
 			attach_node(cmd_node, arg_node);
 		}
 	}

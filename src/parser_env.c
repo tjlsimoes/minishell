@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 16:58:13 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 18:07:30 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@ void	expand_env_variable(char **token)
 	char		*var_value;
 	char		*key;
 	char		*not_name;
+	t_minishell	*minishell;
 
+	minishell = get_minishell();
+	if (ft_strncmp(*token, "$?", 3) == 0)
+	{
+		free(*token);
+		*token = ft_itoa(minishell->exit_status);
+		return ;
+	}
 	not_name = get_non_var(*token + 1);
 	if (not_name)
 	{

@@ -6,7 +6,7 @@
 #    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/01/30 12:53:32 by asafrono         ###   ########.fr        #
+#    Updated: 2025/01/30 17:27:39 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS = main.c ast.c parser.c parser_redirect.c tokenizer.c utils.c \
-env_tests.c \
-exit_status.c env_vars_a.c env_vars_b.c env_vars_c.c \
-env_vars_d.c signals.c error_handling.c
+SRCS = main.c ast.c tokenizer.c utils.c signals.c error_handling.c \
+parser.c parser_redirect.c parser_pipe.c parser_env.c parser_argument.c \
+env_tests.c exit_status.c env_vars_a.c env_vars_b.c env_vars_c.c \
+env_vars_d.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
