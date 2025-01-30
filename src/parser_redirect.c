@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 14:22:28 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/29 14:24:05 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	parse_redirect_fd(char *token)
 	{
 		if (ft_strchr(">", token[i]))
 			return (STDOUT_FILENO);
-			return (STDIN_FILENO);
+		return (STDIN_FILENO);
 		}
 	fd_str = ft_substr(token, 0, i);
 	fd = ft_atoi(fd_str);
