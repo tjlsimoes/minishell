@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 13:09:10 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:36:53 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,6 @@ void	display_history(void)
 	if (hist_list)
 		while (hist_list[++i])
 			printf("%d %s\n", i + 1, hist_list[i]->line);
-}
-
-//This function takes a user input string, tokenizes it into an array of
-//tokens, constructs an abstract syntax tree (AST) from those tokens, 
-//prints the AST structure, and then frees the allocated memory for tokens&AST.
-void	process_tokens(char *input)
-{
-	char		**tokens;
-	t_ASTNode	*ast;
-	int			i;
-
-	i = 0;
-	tokens = tokenize_input(input);
-	if (tokens)
-	{
-		ast = parse(tokens);
-		pretty_print_ast(ast, 0);
-		free_tokens(tokens);
-		free_ast(ast);
-	}
 }
 
 t_minishell	*get_minishell(void)
@@ -70,29 +50,40 @@ void	init_minishell(char **envp)
 	minishell->exit_status = 42;
 }
 
+int	process_command(char *input)
+{
+	if (ft_strncmp(input, "exit", 5) == 0
+		&& (input[4] == '\0' || input[4] == '\n'))
+		return (printf("\nExiting minishell...\n"), 0);
+	else if (ft_strncmp(input, "history", 7) == 0)
+		display_history();
+	else if (ft_strlen(input) > 0)
+	{
+		add_history(input);
+		process_tokens(input);
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char		*input;
+	char	*input;
+	int		continue_shell;
 
+	setup_signals();
 	if (!argc && !argv && !envp)
 		return (1);
 	init_minishell(envp);
-	while (1)
+	continue_shell = 1;
+	while (continue_shell)
 	{
 		input = readline("minishell> ");
-		if (input == NULL || (ft_strncmp(input, "exit", 5) == 0
-				&& (input[4] == '\0' || input[4] == '\n')))
+		if (input == NULL)
 		{
 			printf("\nExiting minishell...\n");
 			break ;
 		}
-		else if (ft_strncmp(input, "history", 7) == 0)
-			display_history();
-		else if (ft_strlen(input) > 0)
-		{
-			add_history(input);
-			process_tokens(input);
-		}
+		continue_shell = process_command(input);
 		free(input);
 	}
 	ft_lstdel(&(get_minishell()->env_var));

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 15:05:04 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:56:36 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ int	process_input(const char *input, t_token_info *info)
 	}
 	if (in_quote)
 	{
+		free_tokens(info->tokens);
 		info->tokens = NULL;
 		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
 	}
-	return(1);
+	return (1);
 }
 
 // Tokenizes a given input string into an array of strings (tokens)
@@ -77,7 +78,7 @@ char	**tokenize_input(const char *input)
 	info.current_token = current_token;
 	info.quote_char = '\0';
 	if (!process_input(input, &info))
-		return(free_tokens(info.tokens), NULL);
+		return (free_tokens(info.tokens), NULL);
 	if (info.token_length > 0)
 	{
 		info.current_token[info.token_length] = '\0';
@@ -85,4 +86,24 @@ char	**tokenize_input(const char *input)
 	}
 	info.tokens[info.index] = NULL;
 	return (info.tokens);
+}
+
+//This function takes a user input string, tokenizes it into an array of
+//tokens, constructs an abstract syntax tree (AST) from those tokens, 
+//prints the AST structure, and then frees the allocated memory for tokens&AST.
+void	process_tokens(char *input)
+{
+	char		**tokens;
+	t_ASTNode	*ast;
+	int			i;
+
+	i = 0;
+	tokens = tokenize_input(input);
+	if (tokens)
+	{
+		ast = parse(tokens);
+		pretty_print_ast(ast, 0);
+		free_tokens(tokens);
+		free_ast(ast);
+	}
 }

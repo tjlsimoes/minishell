@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 15:05:02 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:57:37 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,23 @@
 // returning a boolean value indicating whether it is a redirect. 
 int	is_redirect(char *token)
 {
-	int i;
+	int	i;
 
 	if (!token)
 		return (0);
 	i = 0;
 	while (ft_isdigit(token[i]))
 		i++;
-	return (ft_strncmp(token + i, "<", 1) == 0 || ft_strncmp(token + i, ">", 1) == 0
-		|| ft_strncmp(token + i, ">>", 2) == 0 || ft_strncmp(token + i, "<<", 2) == 0);
+	return (ft_strncmp(token + i, "<", 1) == 0
+		|| ft_strncmp(token + i, ">", 1) == 0
+		|| ft_strncmp(token + i, ">>", 2) == 0
+		|| ft_strncmp(token + i, "<<", 2) == 0);
 }
 
 void	free_tokens(char **tokens)
 {
-	int i;
+	int	i;
+
 	if (!tokens)
 		return ;
 	i = 0;

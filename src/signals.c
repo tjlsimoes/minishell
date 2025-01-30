@@ -3,26 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:09:17 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/20 10:07:20 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:39:59 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+volatile sig_atomic_t	g_signal_status = 0;
+
 // Signal handler for SIGINT (Ctrl+C)
-void	handle_sigint(int sig) {
-    (void)sig;
-    write(STDOUT_FILENO, "\nminishell> ", 12); // Print prompt on a new line
+// Instead of directly writing to STDOUT, we should use 
+// readline functions to handle the prompt properly.
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	g_signal_status = 1;
+	write(STDERR_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-// Signal handler for SIGQUIT (Ctrl+\)
-void	handle_sigquit(int sig) {
-    (void)sig;
-    // Do nothing
+void	setup_signals(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
+
+// no need to built it
+// For the shell itself, you want to ignore SIGQUIT 
+// (Ctrl+$$. This is achieved by using signal(SIGQUIT, SIG_IGN);
+// in the setup_signals function. SIG_IGN is a special signal handler that
+// tells the system to ignore the signal entirely.
+// When you ignore a signal using SIG_IGN, you don't need to provide a 
+// handler function. The system will automatically discard the signal 
+// when it's received.
+// Signal handler for SIGQUIT (Ctrl+\)
+// void	handle_sigquit(int sig) {
+// 	(void)sig;
+// 	// Do nothing
+// }
 
 // int main() {
 //     char *input;
@@ -47,8 +75,6 @@ void	handle_sigquit(int sig) {
 //         perror("sigaction(SIGQUIT)");
 //         exit(EXIT_FAILURE);
 //     }
-
-
 //     // Main loop
 //     while (1) {
 //         input = readline("minishell> ");
@@ -56,7 +82,8 @@ void	handle_sigquit(int sig) {
 //             printf("\nExiting minishell...\n");
 //             break;
 //         }
-//         if (strncmp(input, "exit", 5) == 0 && (input[4] == '\0' || input[4] == '\n')) {
+//         if (strncmp(input, "exit", 5) == 0
+//			&& (input[4] == '\0' || input[4] == '\n')) {
 //             printf("\nExiting minishell...\n");
 // 			free(input);
 //             break;

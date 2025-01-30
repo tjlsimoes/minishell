@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/29 13:24:43 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:13:09 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_exit_status(int	wstatus)
+void	set_exit_status(int wstatus)
 {
 	t_minishell	*minishell;
 
 	minishell = get_minishell();
-
 	if (WIFEXITED(wstatus))
 		minishell->exit_status = WEXITSTATUS(wstatus);
 	else if (WIFSIGNALED(wstatus))

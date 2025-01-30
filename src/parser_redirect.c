@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 15:04:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:58:52 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,6 @@ static t_NodeType	get_redirect_type(char *token)
 
 static void	attach_redirect(t_ASTNode *cmd_node, t_ASTNode *redirect_node)
 {
-	// t_ASTNode	*current;
-
-	// if (cmd_node->right == NULL)
-	// 	cmd_node->right = redirect_node;
-	// else
-	// {
-	// 	current = cmd_node->right;
-	// 	while (current->right != NULL)
-	// 		current = current->right;
-	// 	current->right = redirect_node;
-	// }
 	t_ASTNode	**current;
 
 	current = &cmd_node->right;
@@ -82,7 +71,7 @@ void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
 	if (!tokens[(*index) + 1])
 	{
 		(*index)++;
-		return(report_error(ERROR_SYNTAX, "newline"));
+		return (report_error(ERROR_SYNTAX, "newline"));
 	}
 	redirect_type = get_redirect_type(tokens[*index]);
 	fd = parse_redirect_fd(tokens[*index]);
