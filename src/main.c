@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 11:07:29 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:09:10 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void	process_tokens(char *input)
 	{
 		ast = parse(tokens);
 		pretty_print_ast(ast, 0);
-		while (tokens[i] != NULL)
-			free(tokens[i++]);
-		free(tokens);
+		free_tokens(tokens);
 		free_ast(ast);
 	}
 }

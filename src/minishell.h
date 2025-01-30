@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 11:06:40 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:10:27 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@
 # include <errno.h>
 
 # define MAX_INPUT_LENGTH 1024
+
+typedef enum e_ErrorType
+{
+	ERROR_UNCLOSED_QUOTE,
+	ERROR_SYNTAX
+}	t_ErrorType;
 
 typedef enum e_NodeType
 {
@@ -109,7 +115,7 @@ t_ASTNode	*parse_pipe(char **tokens, int *index);
 t_ASTNode	*handle_pipe(t_ASTNode *root, t_ASTNode *node);
 t_ASTNode	*parse(char **tokens);
 //tokenizer
-void		process_input(const char *input, t_token_info *info);
+int			process_input(const char *input, t_token_info *info);
 char		**tokenize_input(const char *input);
 //utils
 int			is_redirect(char *token);
@@ -119,5 +125,7 @@ void		pretty_print_ast(const t_ASTNode *node, int indent);
 
 void		display_history();
 void		process_tokens(char *input);
+void 		report_error(t_ErrorType error_type, char *details);
+void		free_tokens(char **tokens);
 
 #endif

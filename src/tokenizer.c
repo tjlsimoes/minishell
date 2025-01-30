@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 10:54:31 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:09:47 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_quote(const char *input, int *i,
 		info->current_token[(info->token_length)++] = input[*i];
 }
 
-void	process_input(const char *input, t_token_info *info)
+int	process_input(const char *input, t_token_info *info)
 {
 	int		i;
 	bool	in_quote;
@@ -54,6 +54,9 @@ void	process_input(const char *input, t_token_info *info)
 			info->token_length = 0;
 		}
 	}
+	if (in_quote)
+		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
+	return(1);
 }
 
 // Tokenizes a given input string into an array of strings (tokens)
@@ -63,14 +66,15 @@ char	**tokenize_input(const char *input)
 	t_token_info	info;
 	char			current_token[MAX_INPUT_LENGTH];
 
-	info.tokens = malloc(MAX_INPUT_LENGTH * sizeof(char *));
+	info.tokens = ft_calloc(MAX_INPUT_LENGTH, sizeof(char *));
 	if (!info.tokens)
 		return (NULL);
 	info.index = 0;
 	info.token_length = 0;
 	info.current_token = current_token;
 	info.quote_char = '\0';
-	process_input(input, &info);
+	if (!process_input(input, &info))
+		return(free_tokens(info.tokens), NULL);
 	if (info.token_length > 0)
 	{
 		info.current_token[info.token_length] = '\0';

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 12:28:31 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:58:37 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,8 @@ void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
 	t_ASTNode	*redirect_node;
 	int			fd;
 
-	if (!tokens[*index + 1])
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
-		(*index)++;
-		return ;
-	}
+	if (!tokens[++(*index)])
+		return(report_error(ERROR_SYNTAX, "newline"));
 	redirect_type = get_redirect_type(tokens[*index]);
 	fd = parse_redirect_fd(tokens[*index]);
 	redirect_node = create_node(redirect_type, tokens[*index + 1], fd);

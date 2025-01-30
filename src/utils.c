@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 14:11:33 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:09:22 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,18 @@ void	pretty_print_ast(const t_ASTNode *node, int indent)
 		printf("Right:\n");
 		pretty_print_ast(node->right, indent + 1);
 	}
+}
+
+void free_tokens(char **tokens)
+{
+	int i;
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i] != NULL)
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }
