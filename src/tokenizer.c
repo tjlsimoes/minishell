@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 13:09:47 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:05:04 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int	process_input(const char *input, t_token_info *info)
 		}
 	}
 	if (in_quote)
+	{
+		info->tokens = NULL;
 		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
+	}
 	return(1);
 }
 
