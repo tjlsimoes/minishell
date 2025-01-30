@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/29 14:24:05 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:28:31 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ static int	parse_redirect_fd(char *token)
 		i++;
 	if (i == 0)
 	{
-		if (ft_strchr(">", token[i]))
-			return (STDOUT_FILENO);
-		return (STDIN_FILENO);
+		if (ft_strchr("><", token[i]))
+		{
+			if (token[i] == '>')
+				return (STDOUT_FILENO);
+			return (STDIN_FILENO);
 		}
+	}
 	fd_str = ft_substr(token, 0, i);
 	fd = ft_atoi(fd_str);
 	free(fd_str);
@@ -64,19 +67,6 @@ static void	attach_redirect(t_ASTNode *cmd_node, t_ASTNode *redirect_node)
 	}
 }
 
-// void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
-// {
-// 	t_NodeType	redirect_type;
-// 	t_ASTNode	*redirect_node;
-// 	int			fd;
-
-// 	redirect_type = get_redirect_type(tokens[*index]);
-// 	fd = parse_redirect_fd(tokens[*index]);
-// 	redirect_node = create_node(redirect_type, tokens[*index + 1], fd);
-// 	(*index) += 2;
-// 	attach_redirect(cmd_node, redirect_node);
-// }
-
 void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
 {
 	t_NodeType	redirect_type;
@@ -86,7 +76,8 @@ void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
 	if (!tokens[*index + 1])
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
-		return ; /// this is wrong and minishell is continiously printing it. needs to be fixed
+		(*index)++;
+		return ;
 	}
 	redirect_type = get_redirect_type(tokens[*index]);
 	fd = parse_redirect_fd(tokens[*index]);

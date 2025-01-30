@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 11:07:24 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:01:10 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,33 +67,6 @@ void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
 	(*index)++;
 	attach_node(cmd_node, arg_node);
 }
-// Note that var_value is twice allocated: within node creation and
-// within expand_env_variable()'s get_env_value().   
-
-// Parses a sequence of tokens to construct a command node in the AST,
-// updating the index to reflect the position in the token array.
-// t_ASTNode	*parse_command(char **tokens, int *index)
-// {
-// 	t_ASTNode	*cmd_node;
-// 	t_ASTNode	*arg_node;
-
-// 	cmd_node = create_node(NODE_COMMAND, tokens[*index], -1);
-// 	(*index)++;
-// 	while (tokens[*index] != NULL && ft_strncmp(tokens[*index], "|", 2) != 0)
-// 	{
-// 		if (is_redirect(tokens[*index]))
-// 			parse_redirect_node(tokens, index, cmd_node);
-// 		else if (tokens[*index][0] == '$')
-// 			parse_env_variable(tokens, index, cmd_node);
-// 		else
-// 		{
-// 			arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);
-// 			(*index)++;
-// 			attach_node(cmd_node, arg_node);
-// 		}
-// 	}
-// 	return (cmd_node);
-// }
 
 t_ASTNode	*parse_command(char **tokens, int *index)
 {
@@ -101,20 +74,16 @@ t_ASTNode	*parse_command(char **tokens, int *index)
 	t_ASTNode	*arg_node;
 	bool		cmd_initialized;
 
-	cmd_node = NULL;
+	cmd_node = create_node(NODE_COMMAND, "", -1);
 	cmd_initialized = false;
 	while (tokens[*index] && ft_strncmp(tokens[*index], "|", 2) != 0)
 	{
 		if (is_redirect(tokens[*index]))
-		{
-			if (!cmd_initialized)
-				cmd_node = create_node(NODE_COMMAND, "", -1);
 			parse_redirect_node(tokens, index, cmd_node);
-			cmd_initialized = true;
-		}
 		else if (!cmd_initialized)
 		{
-			cmd_node = create_node(NODE_COMMAND, tokens[(*index)++], -1);
+			free(cmd_node->value);
+			cmd_node->value = ft_strdup(tokens[(*index)++]);
 			cmd_initialized = true;
 		}
 		else if (tokens[*index][0] == '$')
@@ -126,7 +95,7 @@ t_ASTNode	*parse_command(char **tokens, int *index)
 		}
 	}
 	if (!cmd_initialized)
-		return (NULL);
+		cmd_node->value = ft_strdup("");
 	return (cmd_node);
 }
 
