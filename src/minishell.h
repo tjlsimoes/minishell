@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 18:05:16 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:12:21 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define _GNU_SOURCE
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -26,6 +27,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <errno.h>
 
 # define MAX_INPUT_LENGTH 1024
@@ -97,6 +99,27 @@ void			free_node(t_list **node_adrr);
 int				special_chars(char c);
 char			*alt_strjoin(char *s1, char *s2);
 int				ft_strcpy(char *str, char *s, int start);
+
+// Builtins
+int				cd_home_prev_tilde(char **path);
+int				cd_special_cases(char **path);
+int				ft_cd(char **path);
+
+int				invalid_key(char *key);
+void			export_error(char **env_pair);
+int				ft_export(char **str);
+int				ft_unset(char *env_name);
+int				ft_env(t_list **lst);
+
+int				ft_pwd(void);
+int				ft_echo(char *str, bool n);
+
+int				cd_path_error(char **path, char *error_msg);
+void			chdir_error(char **path);
+int				cd_home(char **path);
+int				cd_prev(char **path);
+int				cd_tilde(char **path);
+
 // Function prototypes
 //ast.c
 t_ASTNode		*create_node(t_NodeType type, char *value, int fd);

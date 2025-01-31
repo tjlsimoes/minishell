@@ -1,0 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_b_fut.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/31 12:36:26 by tjorge-l          #+#    #+#             */
+/*   Updated: 2025/01/31 12:36:37 by tjorge-l         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	cd_path_error(char **path, char *error_msg)
+{
+	if (!(*path))
+	{
+		ft_putstr_fd(error_msg, 2);
+		return (1);
+	}
+	return (0);
+}
+
+void	chdir_error(char **path)
+{
+	int	error;
+
+	error = errno;
+	ft_putstr_fd("-bash: cd: ", 2);
+	ft_putstr_fd((*path), 2);
+	ft_putstr_fd(" ", 2);
+	ft_putstr_fd(strerror(error), 2);
+	ft_putstr_fd("\n", 2);
+}
+// Possibility of errno having changed between
+// system calls, safeguarded?
+
+int	cd_home(char **path)
+{
+	(*path) = get_env_value(get_env_pair(&(get_sh()->env_var), "HOME"));
+	if (cd_path_error(path, "-bash: cd: HOME not set\n"))
+		return (1);
+	return (0);
+}
+
+int	cd_prev(char **path)
+{
+	free((*path));
+	(*path) = get_env_value(get_env_pair(&(get_sh()->env_var), "OLDPWD"));
+	if (cd_path_error(path, "-bash: cd: OLDPWD not set\n"))
+		return (1);
+	ft_printf("%s\n", (*path));
+	return (0);
+}
+
+int	cd_tilde(char **path)
+{
+	char	*env_value;
+	char	*non_tilde;
+
+	env_value = NULL;
+	non_tilde = NULL;
+	if ((*path) + 1)
+		non_tilde = ft_strdup(((*path) + 1));
+	free(*path);
+	env_value = get_env_value(get_env_pair(&(get_sh()->env_var), "HOME"));
+	(*path) = alt_strjoin(env_value, non_tilde);
+	free(non_tilde);
+	return (0);
+}

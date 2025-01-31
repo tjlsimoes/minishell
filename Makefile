@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
+#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/01/30 17:27:39 by asafrono         ###   ########.fr        #
+#    Updated: 2025/02/05 16:11:40 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,9 @@ OBJ_DIR = obj
 
 SRCS = main.c ast.c tokenizer.c utils.c signals.c error_handling.c \
 parser.c parser_redirect.c parser_pipe.c parser_env.c parser_argument.c \
-env_tests.c exit_status.c env_vars_a.c env_vars_b.c env_vars_c.c \
-env_vars_d.c 
+env_tests.c env_vars_a.c env_vars_b.c env_vars_c.c env_vars_d.c \
+builtins_a.c builtins_b.c builtins_c.c builtins_d.c builtins_tests.c \
+exit_status.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
