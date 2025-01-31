@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:05:06 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/29 19:06:44 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/01/31 12:30:23 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // From string assumed to contain an environment variable
 // - meaning something like "$NAME" - extract
 // invalid portion for environment variable referencing.
-// e.g. _HELLO in "$PATH_HELLO".
+// e.g. -HELLO in "$PATH-HELLO".
 char	*get_non_var(char *str)
 {
 	int	i;
@@ -27,8 +27,8 @@ char	*get_non_var(char *str)
 		return (str);
 	while (str[i])
 	{
-		if (special_chars(str[i]) || !ft_isalnum(str[i])
-			|| str[i] == '_')
+		if ((special_chars(str[i]) || !ft_isalnum(str[i]))
+			&& str[i] != '_')
 			return (&str[i]);
 		i++;
 	}
