@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/30 18:03:51 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:07:48 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	set_exit_status(int wstatus)
 {
 	t_minishell	*minishell;
 
-	minishell = get_minishell();
+	minishell = get_sh();
+
 	if (WIFEXITED(wstatus))
 		minishell->exit_status = WEXITSTATUS(wstatus);
 	else if (WIFSIGNALED(wstatus))
@@ -28,7 +29,7 @@ void	set_exit_status(int wstatus)
 }
 // Not really sure why 131 ought to be handled differently...
 
-// t_minishell	*get_minishell(void)
+// t_minishell	*get_sh(void)
 // {
 // 	static t_minishell	minishell;
 
@@ -41,7 +42,7 @@ void	set_exit_status(int wstatus)
 // 	int			wstatus;
 // 	int			pid;
 
-// 	minishell = get_minishell();
+// 	minishell = get_sh();
 // 	minishell->exit_status = 42;
 
 // 	pid = fork();
@@ -64,7 +65,7 @@ void	set_exit_status(int wstatus)
 // int	main(void)
 // {
 // 	do_something();
-// 	// printf("main: %d\n", get_minishell()->exit_status);
+// 	// printf("main: %d\n", get_sh()->exit_status);
 // 	printf("Hello\n");
 // 	return (0);
 // }

@@ -73,7 +73,7 @@ typedef struct s_minishell
 	t_list	*env_var;
 }	t_minishell;
 
-t_minishell		*get_minishell(void);
+t_minishell		*get_sh(void);
 void			do_something(void);
 void			set_exit_status(int wstatus);
 

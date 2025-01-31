@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 18:21:03 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:07:37 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	display_history(void)
 			printf("%d %s\n", i + 1, hist_list[i]->line);
 }
 
-t_minishell	*get_minishell(void)
+t_minishell	*get_sh(void)
 {
 	static t_minishell	minishell;
 
@@ -45,7 +45,7 @@ void	init_minishell(char **envp)
 		ft_lstadd_back(&env_var, ft_lstnew(ft_strdup(*envp)));
 		envp++;
 	}
-	minishell = get_minishell();
+	minishell = get_sh();
 	minishell->env_var = env_var;
 	minishell->exit_status = 0;
 }
@@ -96,6 +96,6 @@ int	main(int argc, char **argv, char **envp)
 		continue_shell = process_command(input);
 		free(input);
 	}
-	ft_lstdel(&(get_minishell()->env_var));
+	ft_lstdel(&(get_sh()->env_var));
 	return (0);
 }
