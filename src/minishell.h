@@ -76,6 +76,7 @@ typedef struct s_minishell
 }	t_minishell;
 
 t_minishell		*get_sh(void);
+void			init_minishell(char **envp);
 void			do_something(void);
 void			set_exit_status(int wstatus);
 
