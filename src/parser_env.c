@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 18:07:30 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:17:13 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	expand_env_variable(char **token)
 	char		*not_name;
 	t_minishell	*minishell;
 
-	minishell = get_minishell();
+	minishell = get_sh();
 	if (ft_strncmp(*token, "$?", 3) == 0)
 	{
 		free(*token);
@@ -37,7 +37,7 @@ void	expand_env_variable(char **token)
 		key = ft_strdup(*token + 1);
 	free(*token);
 	*token = NULL;
-	var_value = get_env_value(get_env_pair(&(get_minishell()->env_var), key));
+	var_value = get_env_value(get_env_pair(&(get_sh()->env_var), key));
 	if (not_name)
 	{
 		*token = alt_strjoin(var_value, not_name);

@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/05 16:14:10 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:17:13 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	process_command(char *input)
 	t_minishell	*minishell;
 	char		*status_str;
 	
-	minishell = get_minishell();
+	minishell = get_sh();
 	if (ft_strncmp(input, "exit", 5) == 0
 		&& (input[4] == '\0' || input[4] == '\n'))
 		return (printf("\nExiting minishell...\n"), 0);
