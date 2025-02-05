@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
 // int	main(int argc, char **argv, char **envp)
 // {
 // 	if (!argc || !argv)
@@ -68,7 +70,10 @@
 // 		return (1);
 // 	}
 // 	key = get_env_key(env_pair);
-// 	printf("%s\n", get_env_pair(&(get_sh()->env_var), key));
+// 	if (key)
+// 		printf("%s\n", get_env_pair(&(get_sh()->env_var), key));
+// 	else
+// 		printf("No NAME= kind of key!\n");
 // 	ft_lstdel(&(get_sh()->env_var));
 // 	free(env_pair);
 // 	free(key);

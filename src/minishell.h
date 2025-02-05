@@ -88,6 +88,7 @@ char			**env_vars_expansion(char *str, t_list **env_vars);
 void			print_env_vars(t_list **lst);
 char			*get_env_pair(t_list **env_vars, char *key);
 char			*get_env_key(char *pair);
+char			*alt_get_env_key(char *pair);
 char			*get_env_value(char *pair);
 int				update_env_var(t_list **lst, char *content);
 void			add_env_var(t_list **lst, char *content);

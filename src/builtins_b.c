@@ -43,7 +43,7 @@ int	ft_export(char **str)
 	char	*key;
 
 	eq_idx = idx(*str, '=');
-	key = get_env_key(*str);
+	key = alt_get_env_key(*str);
 	if (invalid_key(key))
 	{
 		export_error(str);

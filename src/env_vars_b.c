@@ -50,6 +50,8 @@ char	*get_env_pair(t_list **env_vars, char *key)
 // Get NAME from 'NAME[=value]' pair
 // If successful it returns allocated string 
 // in need of being freed elsewhere.
+// Note that if 'pair' doesn't include a '='
+// it will return NULL.
 // If an error occurs, it returns NULL;
 char	*get_env_key(char *pair)
 {

@@ -72,3 +72,27 @@ int	special_chars(char c)
 	return (0);
 }
 // || c == '0')
+
+// Get NAME from 'NAME[=value]' pair
+// If successful it returns allocated string
+//   in need of being freed elsewhere.
+// Note that if 'pair' doesn't include a '='
+//   it will return 'pair' allocated.
+//   Unlike get_env_key()!
+// If an error occurs, it returns NULL;
+char	*alt_get_env_key(char *pair)
+{
+	int		equal_idx;
+	char	*key;
+
+	if (!pair)
+		return (NULL);
+	equal_idx = idx(pair, '=');
+	if (equal_idx <= 1)
+		return (ft_strdup(pair));
+	key = ft_calloc(1, equal_idx + 1);
+	if (!key)
+		return (NULL);
+	ft_strlcpy(key, pair, equal_idx + 1);
+	return (key);
+}
