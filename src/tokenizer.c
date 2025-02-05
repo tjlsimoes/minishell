@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 16:56:36 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/05 11:40:03 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ void	process_tokens(char *input)
 {
 	char		**tokens;
 	t_ASTNode	*ast;
-	int			i;
 
-	i = 0;
 	tokens = tokenize_input(input);
 	if (tokens)
 	{
