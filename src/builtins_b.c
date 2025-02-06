@@ -41,7 +41,9 @@ int	ft_export(char **str)
 {
 	int		eq_idx;
 	char	*key;
+	char	quote;
 
+	quote = 0;
 	eq_idx = idx(*str, '=');
 	key = alt_get_env_key(*str);
 	if (invalid_key(key))
@@ -52,7 +54,10 @@ int	ft_export(char **str)
 	free(key);
 	if (eq_idx == -1)
 		return (0);
+	get_quote(str, &quote);
 	remove_quotes(str);
+	if (quote == '"' || !quote)
+		expand_env_var(str);
 	add_env_var(&(get_sh()->env_var), *str);
 	return (0);
 }

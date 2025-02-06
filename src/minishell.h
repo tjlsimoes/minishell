@@ -102,6 +102,16 @@ int				special_chars(char c);
 char			*alt_strjoin(char *s1, char *s2);
 int				ft_strcpy(char *str, char *s, int start);
 
+int				get_quote(char **str, char *quote);
+void			remove_quotes(char **str);
+int				valid_env_char(char c);
+int				env_var_idx(char *str);
+char			*get_env_var(char **orig, char **non_var, int env_idx);
+
+char			*get_pre_env(char **orig, int env_idx);
+char			*join_sections(int env_idx, char **str, char **key, char **non_var);
+void			expand_env_var(char	**str);
+
 // Builtins
 int				cd_home_prev_tilde(char **path);
 int				cd_special_cases(char **path);

@@ -284,3 +284,35 @@
 // 	ft_lstdel(&env_var);
 // 	return (0);
 // }
+
+/////////////////////////////////////////////////////////////////
+// Tests on expand_env_var()
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*str;
+
+// 	if (!argc && !argv[1] && !envp)
+// 		return(1);
+// 	init_minishell(envp);
+// 	str = ft_strdup(argv[1]);
+// 	expand_env_var(&str);
+// 	printf("Expanded: |%s|\n", str);
+// 	free(str);
+// 	ft_lstdel(&(get_sh()->env_var));
+// 	return (0);
+// }
+// valgrind ./minishell '$YELLOW!Azkaban'
+// ./minishell Hello$HOME!Azkaban
+// ./minishell Hello$HOME
+
+// valgrind ./minishell 'Hello$HOME!Azkaban'
+// valgrind ./minishell '$HOME!Azkaban'
+// valgrind ./minishell 'Hello$HOME!'
+
+// valgrind ./minishell 'Hello$USER$HOME'
+// valgrind ./minishell '$USER~lknsad$HOME'
+// valgrind ./minishell '$USER$HOME~askdad'
+// valgrind ./minishell 'asduhasdo$USER$HOME~askdad'
+// valgrind ./minishell Hello$HOME\ $USER\ $USER\ $HOME\ $$$$$
+// valgrind ./minishell 'Hello$HOME $USER $USER $$HOME $?'
+// valgrind ./minishell 'Hello$HOME $USER $USER $$$HOME $?'

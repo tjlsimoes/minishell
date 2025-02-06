@@ -12,36 +12,6 @@
 
 #include "minishell.h"
 
-int	env_var_value_treat(char **str)
-{
-	int		eq_idx;
-	char	*value;
-	char	*key;
-	char	quote;
-
-	if (!str || !(*str))
-		return (1);
-	eq_idx = idx(*str, '=');
-	if (eq_idx == -1)
-		return (1);
-	if ((*str)[eq_idx + 1] == '"')
-		quote = '"';
-	else if ((*str)[eq_idx + 1] == '\'')
-		quote = '\'';
-	else
-		return (-1);
-	if (quote == '\'' || quote == '"')	// Mock conditional
-		key = get_env_key(*str);
-	value = ft_calloc(1, ft_strlen(*str) - eq_idx - 2);
-	ft_strlcpy(value, &((*str)[eq_idx + 2]), ft_strlen(*str) - eq_idx - 2);
-	free(*str);
-	*str = alt_strjoin(key, "=");
-	*str = alt_strjoin(*str, value);
-	free(value);
-	return (0);
-}
-
-
 int	get_quote(char **str, char *quote)
 {
 	int		eq_idx;
@@ -73,31 +43,49 @@ void	remove_quotes(char **str)
 	*str = result;
 }
 
+int	valid_env_char(char c)
+{
+	if (!special_chars(c) && !ft_isdigit(c)
+		&& (c == '_' || ft_isalpha(c)))
+		return (1);
+	return (0);
+}
+// Note that ? passes, right now, as a valid
+//  first env_char.
 
-// Refactor export()
-// From NAME="VALUE"
-// Get NAME=VALUE
-// Be VALUE within double quotes or single quotes.
+int	env_var_idx(char *str)
+{
+	int	i;
 
-// Next step:
-// Remove all identical quotes if quotes present
-//   upon VALUE definition.
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && valid_env_char(str[i + 1]))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
-// Next step:
-// If VALUE within double quotes expand environment
-//   variables.
-// Also expand if there are no quotes.
-// If Value within single quotes do not expand.
+// Get NAME from string analogous to
+// $NAME!Azkaban
+char	*get_env_var(char **orig, char **non_var, int env_idx)
+{
+	int		key_len;
+	char	*key;
 
-// NAME=VALUE
-// '=' at idx 4
-// Length 10
-// 10 - 4 = 6
-// Lenght of VALUE = 5
-
-// NAME="VALUE"
-// '=' at idx 4
-// Length 12
-// 12 - 4 = 8
-// initial quote idx 5
-// final quote idx 11
+	if (!orig || !non_var
+		|| !(*orig))
+		return (NULL);
+	if (!(*non_var))
+		key_len = ft_strlen(*orig) - env_idx;
+	else
+		key_len = *non_var - &((*orig)[env_idx]);
+	key = (char *)ft_calloc(1, key_len);
+	if (!key)
+		return (NULL);
+	ft_strlcpy(key, &((*orig)[env_idx + 1]), key_len);
+	return (key);
+}
