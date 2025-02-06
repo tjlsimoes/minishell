@@ -84,8 +84,7 @@ void			set_exit_status(int wstatus);
 char			*get_non_var(char *str);
 char			*strs_join(char **array);
 void			*clear_array(char **array);
-char			*expand_env_vars(char *str, t_list **env_vars);
-char			**env_vars_expansion(char *str, t_list **env_vars);
+
 void			print_env_vars(t_list **lst);
 char			*get_env_pair(t_list **env_vars, char *key);
 char			*get_env_key(char *pair);
