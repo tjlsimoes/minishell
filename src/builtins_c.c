@@ -26,16 +26,23 @@ int	ft_pwd(void)
 	return (0);
 }
 
+// n is taken as indicative of -n 
+// being present, not that a newline
+// ought to be printed.
 int	ft_echo(char *str, bool n)
 {
 	if (!str)
 	{
-		ft_printf("\n");
+		if (!n)
+		{
+			if (ft_printf("\n") != (int)ft_strlen("\n"))
+				return (1);
+		}
 		return (0);
 	}
 	if (ft_printf("%s", str) != (int)ft_strlen(str))
 		return (1);
-	if (n)
+	if (!n)
 	{
 		if (ft_printf("\n") != (int)ft_strlen("\n"))
 			return (1);
@@ -45,3 +52,4 @@ int	ft_echo(char *str, bool n)
 
 // Has to run for more than one argument.
 // e.g. echo "Hello" "World" => "Hello World"
+// Do away with the overcomplication?
