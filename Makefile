@@ -25,6 +25,7 @@ SRCS = main.c ast.c tokenizer.c utils.c signals.c error_handling.c \
 parser.c parser_redirect.c parser_pipe.c parser_env.c parser_argument.c \
 env_tests.c env_vars_a.c env_vars_b.c env_vars_c.c env_vars_d.c env_vars_e.c env_vars_f.c\
 builtins_tests.c builtins_a.c builtins_b.c builtins_c.c builtins_d.c \
+executor_a.c executor_b.c executor_tests.c \
 exit_status.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

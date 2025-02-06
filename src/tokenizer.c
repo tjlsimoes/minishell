@@ -101,6 +101,7 @@ void	process_tokens(char *input)
 	{
 		ast = parse(tokens);
 		pretty_print_ast(ast, 0);
+		simple_command_exec(&ast);
 		free_tokens(tokens);
 		free_ast(ast);
 	}

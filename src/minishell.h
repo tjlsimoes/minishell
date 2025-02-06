@@ -165,5 +165,13 @@ void			free_tokens(char **tokens);
 void			handle_sigint(int sig);
 void			setup_signals(void);
 
-void		remove_quotes(char **str);
+// Executor
+void		simple_command_exec(t_ASTNode **node);
+void		builtins_switch(t_ASTNode **ast);
+
+int			ft_cd_exec(t_ASTNode **ast);
+int			ft_echo_exec(t_ASTNode **ast);
+int			ft_echo_iter(t_ASTNode **ast, bool n);
+int			ft_unset_exec(t_ASTNode **ast);
+
 #endif
