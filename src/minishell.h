@@ -156,4 +156,5 @@ void			free_tokens(char **tokens);
 void			handle_sigint(int sig);
 void			setup_signals(void);
 
+void		remove_quotes(char **str);
 #endif

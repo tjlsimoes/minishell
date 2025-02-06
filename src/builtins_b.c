@@ -52,7 +52,7 @@ int	ft_export(char **str)
 	free(key);
 	if (eq_idx == -1)
 		return (0);
-	env_var_value_treat(str);
+	remove_quotes(str);
 	add_env_var(&(get_sh()->env_var), *str);
 	return (0);
 }

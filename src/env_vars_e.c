@@ -42,10 +42,46 @@ int	env_var_value_treat(char **str)
 }
 
 
+int	get_quote(char **str, char *quote)
+{
+	int		eq_idx;
+
+	eq_idx = idx(*str, '=');
+	if (eq_idx == -1)
+		return (0);
+	if ((*str)[eq_idx + 1] == '"')
+		*quote = '"';
+	else if ((*str)[eq_idx + 1] == '\'')
+		*quote = '\'';
+	else
+		return (0);
+	return (1);
+}
+
+void	remove_quotes(char **str)
+{
+	char	quote;
+	char	*result;
+	char	**split;
+
+	if (!str || !(*str) || !get_quote(str, &quote))
+		return ;
+	split = ft_split(*str, quote);
+	result = strs_join(split);
+	clear_array(split);
+	free(*str);
+	*str = result;
+}
+
+
 // Refactor export()
 // From NAME="VALUE"
 // Get NAME=VALUE
 // Be VALUE within double quotes or single quotes.
+
+// Next step:
+// Remove all identical quotes if quotes present
+//   upon VALUE definition.
 
 // Next step:
 // If VALUE within double quotes expand environment
