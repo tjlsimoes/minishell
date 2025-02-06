@@ -52,12 +52,14 @@ int	ft_export(char **str)
 	free(key);
 	if (eq_idx == -1)
 		return (0);
+	env_var_value_treat(str);
 	add_env_var(&(get_sh()->env_var), *str);
 	return (0);
 }
-// Should be able to export multiple environment
-// variables.
+// Does not expand environment variables within
+//   environment variable to be exported value.
 
+// Returns 0 no matter what, currently.
 int	ft_unset(char *env_name)
 {
 	del_env_var(&(get_sh()->env_var), env_name);
@@ -66,7 +68,6 @@ int	ft_unset(char *env_name)
 
 // Should be able to unset multiple environment
 // variables.
-// Returns 0 no matter what, currently.
 // Only possible fail condition seems to be
 // when trying to unset environment variables
 // that are read-only. Handling this would require
