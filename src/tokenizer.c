@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/06 10:03:31 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:33:20 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // Processes input text to tokenize it while handling quotes and whitespace,
 // storing tokens in a provided token information structure. 
 
-//for norm
 void	handle_quote(const char *input, int *i,
 			t_token_info *info, bool *in_quote)
 {

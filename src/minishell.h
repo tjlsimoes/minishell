@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/06 19:04:21 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:33:28 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,10 @@ void			display_history(void);
 void			process_tokens(char *input);
 void			report_error(t_ErrorType error_type, char *details);
 void			free_tokens(char **tokens);
+char			*replace_substring(char *str, int start, int len, char *replacement);
+char	 		*expand_within_quotes(char *str);
+char 			*extract_var_name(char *str);
+
 // signals
 void			handle_sigint(int sig);
 void			setup_signals(void);
