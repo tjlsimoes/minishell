@@ -1,0 +1,7 @@
+file_list.txt
+libft
+Makefile
+minishell
+obj
+src
+valgrind_readline.supp

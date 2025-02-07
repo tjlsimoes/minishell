@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/07 11:07:52 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:22:49 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,22 @@ void	expand_env_variable(char **token)
 // Note that in case of not_name != NULL, var_value will be freed
 // from within alt_strjoin.
 
-void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
-{
-	t_ASTNode	*arg_node;
+// void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
+// {
+// 	t_ASTNode	*arg_node;
 
-	expand_env_variable(&(tokens[*index]));
-	arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);
-	(*index)++;
-	attach_node(cmd_node, arg_node);
+// 	expand_env_variable(&(tokens[*index]));
+// 	arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);
+// 	(*index)++;
+// 	attach_node(cmd_node, arg_node);
+// }
+
+t_ASTNode *parse_env_variable(char **tokens, int *index)
+{
+    char *expanded_value;
+	
+    expand_env_variable(&(tokens[*index]));
+    expanded_value = tokens[*index];
+    (*index)++;
+    return (create_node(NODE_ARGUMENT, expanded_value, -1));
 }

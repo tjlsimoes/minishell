@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:33:28 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:33:45 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,7 @@ t_ASTNode		*handle_pipe(t_ASTNode *root, t_ASTNode *node);
 t_ASTNode		*parse(char **tokens);
 t_ASTNode		*parse_pipeline(char **tokens, int *index);
 void			attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node);
-void			parse_env_variable(char **tokens, int *index,
-					t_ASTNode *cmd_node);
+t_ASTNode		*parse_env_variable(char **tokens, int *index);
 t_ASTNode		*parse_argument_node(char *value, int fd);
 //tokenizer
 int				process_input(const char *input, t_token_info *info);
@@ -179,3 +178,4 @@ int			ft_echo_iter(t_ASTNode **ast, bool n);
 int			ft_unset_exec(t_ASTNode **ast);
 
 #endif
+
