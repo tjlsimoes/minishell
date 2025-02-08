@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:05:06 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/06 18:44:14 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:42:36 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	*clear_array(char **array)
 {
 	int	j;
 
+	if (!array || !(*array))
+		return (NULL);
 	j = 0;
 	while (array[j])
 	{
