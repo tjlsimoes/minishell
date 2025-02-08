@@ -34,47 +34,6 @@ int	ft_cd_exec(t_ASTNode **ast)
 // No possibility of there being node->left->right where node->left is NULL,
 // right?
 
-int	ft_echo_iter(t_ASTNode **ast, bool n)
-{
-	t_ASTNode	*current;
-	int			exit_status;
-
-	current = *ast;
-	while (current)
-	{
-		if (current->right)
-		{
-			exit_status = ft_echo(current->value, true);
-			ft_printf(" ");
-		}
-		else
-			exit_status = ft_echo(current->value, n);
-		current = current->right;
-	}
-	return (exit_status);
-}
-
-int	ft_echo_exec(t_ASTNode **ast)
-{
-	t_ASTNode	*current;
-	bool		n;
-	
-	current = *ast;
-	n = false;
-	if (!current->left)
-		return (ft_echo(NULL, false));
-	if (ft_strncmp(current->left->value, "-n", 2) == 0)
-	{
-		current = current->left->right;
-		n = true;
-	}
-	else
-		current = current->left;
-	if (!current)
-		return (ft_echo(NULL, n));
-	return (ft_echo_iter(&current, n));
-}
-
 int	ft_unset_exec(t_ASTNode **ast)
 {
 	t_ASTNode	*node;
@@ -133,6 +92,8 @@ void	builtins_switch(t_ASTNode **ast)
 		sh->exit_status = ft_unset_exec(ast);
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
+	else
+		attempt_path_resolution(ast);
 }
 // Custom handling of exit could be implemented here
 	// else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)

@@ -64,7 +64,6 @@
 // 	env_var_value_treat(&str);
 // 	ft_printf("Final |%s|\n", str);
 // 	free(str);
-	
 // 	return (0);
 // }
 // valgrind ./minishell 'NAME="HELLO"'
@@ -74,3 +73,135 @@
 // valgrind ./minishell 'NAME'
 // valgrind ./minishell 'NAME="HELLO "'
 // valgrind ./minishell ''
+
+
+// Tests on path_resolution(char *binary)
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*str;
+// 	char	*output;
+
+// 	if (!argc && !argv[1] && !envp)
+// 		return (1);
+// 	init_minishell(envp);
+// 	str = ft_strdup(argv[1]);
+// 	output = path_resolution(argv[1]);
+// 	printf("Output: |%s|\n", output);
+// 	free(output);
+// 	free(str);
+// 	ft_lstdel(&(get_sh()->env_var));
+// 	return (0);
+// }
+// valgrind --leak-check=full --track-origins=yes -s ./minishell 'mock'
+// valgrind --leak-check=full --track-origins=yes -s ./minishell 'askjdada'
+// valgrind --leak-check=full --track-origins=yes -s ./minishell 'echo'
+// valgrind --leak-check=full --track-origins=yes -s ./minishell 'ls'
+// valgrind --leak-check=full --track-origins=yes -s ./minishell 'grep'
+
+///////////////////////////////////////////////////////////////////////////
+// Tests on generate_argv()
+// void	print_array(char **array)
+// {
+// 	int	i;
+
+// 	if (!array || !(*array))
+// 		return ;
+// 	i = 0;
+// 	while (array[i])
+// 	{
+// 		ft_printf("%s\n", array[i]);
+// 		i++;
+// 	}
+// }
+
+// void	process_tokens(char *input)
+// {
+// 	char		**tokens;
+// 	char		**argv;
+// 	t_ASTNode	*ast;
+
+// 	tokens = tokenize_input(input);
+// 	if (tokens)
+// 	{
+// 		ast = parse(tokens);
+// 		pretty_print_ast(ast, 0);
+// 		// simple_command_exec(&ast);
+// 		argv = generate_argv(&ast);
+// 		print_array(argv);
+// 		clear_array(argv);
+// 		free_tokens(tokens);
+// 		free_ast(ast);
+// 	}
+// }
+
+
+///////////////////////////////////////////////////////////////////////////
+// Tests on generate_envp()
+
+// Test generate_envp(): from within minishell
+// void	print_array(char **array)
+// {
+// 	int	i;
+
+// 	if (!array || !(*array))
+// 		return ;
+// 	i = 0;
+// 	while (array[i])
+// 	{
+// 		ft_printf("%s\n", array[i]);
+// 		i++;
+// 	}
+// }
+
+// void	process_tokens(char *input)
+// {
+// 	char		**tokens;
+// 	char		**envp;
+// 	t_ASTNode	*ast;
+
+// 	tokens = tokenize_input(input);
+// 	if (tokens)
+// 	{
+// 		ast = parse(tokens);
+// 		pretty_print_ast(ast, 0);
+// 		// simple_command_exec(&ast);
+// 		envp = generate_envp(&ast);
+// 		print_array(envp);
+// 		clear_array(envp);
+// 		free_tokens(tokens);
+// 		free_ast(ast);
+// 	}
+// }
+
+///////////////////////////////////////////////////////////////////////////
+// Test generate_envp(): whole valid original envp
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	**new_envp;
+
+// 	if (!argc && !argv && !envp)
+// 		return (1);
+// 	init_minishell(envp);
+// 	new_envp = generate_envp();
+// 	print_array(new_envp);
+// 	clear_array(new_envp);
+// 	ft_lstdel(&(get_sh()->env_var));
+// 	return (0);
+// }
+
+///////////////////////////////////////////////////////////////////////////
+// Test generate_envp(): inexistant original envp
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	**new_envp;
+
+// 	if (!argc && !argv && !envp)
+// 		return (1);
+// 	init_minishell(envp);
+// 	ft_lstdel(&(get_sh()->env_var));
+// 	// get_sh()->env_var = NULL;
+// 	new_envp = generate_envp();
+// 	print_array(new_envp);
+// 	clear_array(new_envp);
+// 	return (0);
+// }
