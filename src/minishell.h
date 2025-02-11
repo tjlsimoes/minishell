@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:34:10 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:34:34 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@
 
 # define MAX_INPUT_LENGTH 1024
 
-typedef enum e_ErrorType
+typedef enum e_error
 {
 	ERROR_UNCLOSED_QUOTE,
 	ERROR_SYNTAX
-}	t_ErrorType;
+}	t_error;
 
-typedef enum e_NodeType
+typedef enum e_node_type
 {
 	NODE_COMMAND,
 	NODE_ARGUMENT,
@@ -48,16 +48,16 @@ typedef enum e_NodeType
 	NODE_REDIRECT_APPEND,
 	NODE_ENV_VAR,
 	NODE_HEREDOC
-}	t_NodeType;
+}	t_node_type;
 
-typedef struct s_ASTNode
+typedef struct s_ast_node
 {
-	t_NodeType			type;
+	t_node_type			type;
 	char				*value;
 	int					fd;
-	struct s_ASTNode	*left;
-	struct s_ASTNode	*right;
-}	t_ASTNode;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+}	t_ast_node;
 
 typedef struct s_token_info
 {
@@ -133,32 +133,32 @@ int				cd_tilde(char **path);
 
 // Function prototypes
 //ast.c
-t_ASTNode		*create_node(t_NodeType type, char *value, int fd);
-void			print_ast(t_ASTNode *node, int depth);
-void			free_ast(t_ASTNode *node);
+t_ast_node		*create_node(t_node_type type, char *value, int fd);
+void			print_ast(t_ast_node *node, int depth);
+void			free_ast(t_ast_node *node);
 //parser
-t_ASTNode		*parse_command(char **tokens, int *index);
-t_ASTNode		*parse_redirect(char **tokens, int *index);
+t_ast_node		*parse_command(char **tokens, int *index);
+t_ast_node		*parse_redirect(char **tokens, int *index);
 void			parse_redirect_node(char **tokens, int *index,
-					t_ASTNode *cmd_node);
-t_ASTNode		*parse_pipe(char **tokens, int *index);
-t_ASTNode		*handle_pipe(t_ASTNode *root, t_ASTNode *node);
-t_ASTNode		*parse(char **tokens);
-t_ASTNode		*parse_pipeline(char **tokens, int *index);
-void			attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node);
-t_ASTNode		*parse_env_variable(char **tokens, int *index);
-t_ASTNode		*parse_argument_node(char *value, int fd);
+					t_ast_node *cmd_node);
+t_ast_node		*parse_pipe(char **tokens, int *index);
+t_ast_node		*handle_pipe(t_ast_node *root, t_ast_node *node);
+t_ast_node		*parse(char **tokens);
+t_ast_node		*parse_pipeline(char **tokens, int *index);
+void			attach_node(t_ast_node *cmd_node, t_ast_node *new_node);
+t_ast_node		*parse_env_variable(char **tokens, int *index);
+t_ast_node		*parse_argument_node(char *value, int fd);
 //tokenizer
 int				process_input(const char *input, t_token_info *info);
 char			**tokenize_input(const char *input);
 //utils
 int				is_redirect(char *token);
 void			print_indent(int indent);
-void			print_node(const t_ASTNode *node, int indent);
-void			pretty_print_ast(const t_ASTNode *node, int indent);
+void			print_node(const t_ast_node *node, int indent);
+void			pretty_print_ast(const t_ast_node *node, int indent);
 void			display_history(void);
 void			process_tokens(char *input);
-void			report_error(t_ErrorType error_type, char *details);
+void			report_error(t_error error_type, char *details);
 void			free_tokens(char **tokens);
 char			*replace_substring(char *str, int start, int len, char *replacement);
 char	 		*expand_within_quotes(char *str);

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 16:58:52 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:34:33 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	parse_redirect_fd(char *token)
 	return (fd);
 }
 
-static t_NodeType	get_redirect_type(char *token)
+static t_node_type	get_redirect_type(char *token)
 {
 	int	i;
 
@@ -52,9 +52,9 @@ static t_NodeType	get_redirect_type(char *token)
 	return (NODE_REDIRECT_OUT);
 }
 
-static void	attach_redirect(t_ASTNode *cmd_node, t_ASTNode *redirect_node)
+static void	attach_redirect(t_ast_node *cmd_node, t_ast_node *redirect_node)
 {
-	t_ASTNode	**current;
+	t_ast_node	**current;
 
 	current = &cmd_node->right;
 	while (*current)
@@ -62,10 +62,10 @@ static void	attach_redirect(t_ASTNode *cmd_node, t_ASTNode *redirect_node)
 	*current = redirect_node;
 }
 
-void	parse_redirect_node(char **tokens, int *index, t_ASTNode *cmd_node)
+void	parse_redirect_node(char **tokens, int *index, t_ast_node *cmd_node)
 {
-	t_NodeType	redirect_type;
-	t_ASTNode	*redirect_node;
+	t_node_type	redirect_type;
+	t_ast_node	*redirect_node;
 	int			fd;
 
 	if (!tokens[(*index) + 1])

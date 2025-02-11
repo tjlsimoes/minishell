@@ -6,13 +6,13 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 17:07:41 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:36:29 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	report_error(t_ErrorType error_type, char *details)
+void	report_error(t_error error_type, char *details)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (error_type == ERROR_UNCLOSED_QUOTE)

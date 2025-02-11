@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/07 12:22:49 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:33:39 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	expand_env_variable(char **token)
 // 	attach_node(cmd_node, arg_node);
 // }
 
-t_ASTNode *parse_env_variable(char **tokens, int *index)
+t_ast_node *parse_env_variable(char **tokens, int *index)
 {
     char *expanded_value;
 	

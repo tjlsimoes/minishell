@@ -6,13 +6,13 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:23:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/07 12:08:40 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:33:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ASTNode	*parse_argument_node(char *value, int fd)
+t_ast_node	*parse_argument_node(char *value, int fd)
 {
 	int	len;
 

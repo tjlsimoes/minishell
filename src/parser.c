@@ -6,16 +6,16 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/07 12:38:52 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:35:00 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Function to attach a node to the command node's left or right
-void	attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node)
+void	attach_node(t_ast_node *cmd_node, t_ast_node *new_node)
 {
-	t_ASTNode	*current;
+	t_ast_node	*current;
 
 	if (cmd_node->left == NULL)
 		cmd_node->left = new_node;
@@ -43,9 +43,9 @@ void	attach_node(t_ASTNode *cmd_node, t_ASTNode *new_node)
 // 	return (cmd_node);
 // }
 
-t_ASTNode	*init_command_node(void)
+t_ast_node	*init_command_node(void)
 {
-	t_ASTNode	*cmd_node;
+	t_ast_node	*cmd_node;
 
 	cmd_node = create_node(NODE_COMMAND, "", -1);
 	return (cmd_node);
@@ -69,7 +69,7 @@ t_ASTNode	*init_command_node(void)
 // 	}
 // }
 
-bool	initialize_command(t_ASTNode *cmd_node, t_ASTNode *arg_node)
+bool	initialize_command(t_ast_node *cmd_node, t_ast_node *arg_node)
 {
 	free(cmd_node->value);
 	cmd_node->value = ft_strdup(arg_node->value);
@@ -77,9 +77,9 @@ bool	initialize_command(t_ASTNode *cmd_node, t_ASTNode *arg_node)
 	return (true);
 }
 
-void	process_command_tokens(t_ASTNode *cmd_node, char **tokens, int *index)
+void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 {
-	t_ASTNode *arg_node;
+	t_ast_node *arg_node;
 	bool cmd_initialized;
 
 	cmd_initialized = false;
@@ -102,16 +102,16 @@ void	process_command_tokens(t_ASTNode *cmd_node, char **tokens, int *index)
 }
 
 
-t_ASTNode	*parse_command(char **tokens, int *index)
+t_ast_node	*parse_command(char **tokens, int *index)
 {
-	t_ASTNode	*cmd_node;
+	t_ast_node	*cmd_node;
 
 	cmd_node = init_command_node();
 	process_command_tokens(cmd_node, tokens, index);
 	return (cmd_node);
 }
 
-t_ASTNode	*parse(char **tokens)
+t_ast_node	*parse(char **tokens)
 {
 	int	index;
 

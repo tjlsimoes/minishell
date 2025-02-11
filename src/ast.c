@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/30 17:21:39 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:35:42 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 // Creates a new AST (Abstract Syntax Tree) node with the specified 
 // type and value, initializing its left and right children to NULL. 
-t_ASTNode	*create_node(t_NodeType type, char *value, int fd)
+t_ast_node	*create_node(t_node_type type, char *value, int fd)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 
-	node = malloc(sizeof(t_ASTNode));
+	node = malloc(sizeof(t_ast_node));
 	if (!node)
 		return (NULL);
 	node->type = type;
@@ -32,7 +32,7 @@ t_ASTNode	*create_node(t_NodeType type, char *value, int fd)
 // Recursively free left and right subtrees
 // Free the node's value if it exists
 // Free the node itself
-void	free_ast(t_ASTNode *node)
+void	free_ast(t_ast_node *node)
 {
 	if (node == NULL)
 		return ;
@@ -51,7 +51,7 @@ void	print_indent(int indent)
 	print_indent(indent - 1);
 }
 
-void	print_node(const t_ASTNode *node, int indent)
+void	print_node(const t_ast_node *node, int indent)
 {
 	const char	*node_type_strings[] = {
 		"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
@@ -71,7 +71,7 @@ void	print_node(const t_ASTNode *node, int indent)
 		node->fd);
 }
 
-void	pretty_print_ast(const t_ASTNode *node, int indent)
+void	pretty_print_ast(const t_ast_node *node, int indent)
 {
 	if (!node)
 		return ;

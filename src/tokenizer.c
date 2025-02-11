@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:33:20 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:34:45 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	**tokenize_input(const char *input)
 void	process_tokens(char *input)
 {
 	char		**tokens;
-	t_ASTNode	*ast;
+	t_ast_node	*ast;
 
 	tokens = tokenize_input(input);
 	if (tokens)
