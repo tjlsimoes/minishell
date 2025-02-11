@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/05 16:13:46 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:41:58 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	set_exit_status(int wstatus)
 	t_minishell	*minishell;
 
 	minishell = get_sh();
-
 	if (WIFEXITED(wstatus))
 		minishell->exit_status = WEXITSTATUS(wstatus);
 	else if (WIFSIGNALED(wstatus))

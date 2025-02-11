@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 10:35:42 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:17:24 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_ast_node	*create_node(t_node_type type, char *value, int fd)
 	node->type = type;
 	node->value = ft_strdup(value);
 	node->fd = fd;
+	node->quote_char = '\0';
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
@@ -65,10 +66,11 @@ void	print_node(const t_ast_node *node, int indent)
 		value = node->value;
 	else
 		value = "NULL";
-	printf("Type: %s, Value: %s, FD: %d\n",
+	printf("Type: %s, Value: %s, FD: %d\n, Quote: %c\n",
 		node_type_strings[node->type],
 		value,
-		node->fd);
+		node->fd,
+		node->quote_char ? node->quote_char : 'N');
 }
 
 void	pretty_print_ast(const t_ast_node *node, int indent)

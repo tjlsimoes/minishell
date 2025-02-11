@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/01/31 12:28:53 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:50:05 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ void	free_tokens(char **tokens)
 	free(tokens);
 }
 
-char	*replace_substring(char *str, int start, int len, char *replacement)
-{
-	char	*result;
-	int		new_len;
+// char	*replace_substring(char *str, int start, int len, char *replacement)
+// {
+// 	char	*result;
+// 	int		new_len;
 
-	new_len = ft_strlen(str) - len + ft_strlen(replacement);
-	result = ft_calloc(new_len + 1, 0);
-	ft_strlcpy(result, str, start + 1);
-	ft_strlcat(result, replacement, new_len + 1);
-	ft_strlcat(result, str + start + len, new_len + 1);
-	free(str);
-	return (result);
-}
+// 	new_len = ft_strlen(str) - len + ft_strlen(replacement);
+// 	result = ft_calloc(new_len + 1, 0);
+// 	ft_strlcpy(result, str, start + 1);
+// 	ft_strlcat(result, replacement, new_len + 1);
+// 	ft_strlcat(result, str + start + len, new_len + 1);
+// 	free(str);
+// 	return (result);
+// }

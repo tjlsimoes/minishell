@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:34:34 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:36:18 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_ast_node
 	t_node_type			type;
 	char				*value;
 	int					fd;
+	char                quote_char;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
@@ -108,7 +109,8 @@ int				env_var_idx(char *str);
 char			*get_env_var(char **orig, char **non_var, int env_idx);
 
 char			*get_pre_env(char **orig, int env_idx);
-char			*join_sections(int env_idx, char **str, char **key, char **non_var);
+char			*join_sections(int env_idx, char **str, char **key,
+					char **non_var);
 void			expand_env_var(char	**str);
 
 // Builtins
@@ -147,6 +149,7 @@ t_ast_node		*parse(char **tokens);
 t_ast_node		*parse_pipeline(char **tokens, int *index);
 void			attach_node(t_ast_node *cmd_node, t_ast_node *new_node);
 t_ast_node		*parse_env_variable(char **tokens, int *index);
+void			expand_env_variable(char **token);
 t_ast_node		*parse_argument_node(char *value, int fd);
 //tokenizer
 int				process_input(const char *input, t_token_info *info);
@@ -160,9 +163,8 @@ void			display_history(void);
 void			process_tokens(char *input);
 void			report_error(t_error error_type, char *details);
 void			free_tokens(char **tokens);
-char			*replace_substring(char *str, int start, int len, char *replacement);
-char	 		*expand_within_quotes(char *str);
-char 			*extract_var_name(char *str);
+char			*expand_within_quotes(char *str);
+char			*extract_var_name(char *str);
 
 // signals
 void			handle_sigint(int sig);
@@ -192,4 +194,3 @@ char			*path_resolution(char *binary);
 void			attempt_path_resolution(t_ASTNode **ast);
 
 #endif
-

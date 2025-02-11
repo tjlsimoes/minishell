@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 10:36:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:46:26 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	process_command(char *input)
 {
 	t_minishell	*minishell;
 	char		*status_str;
-	
+
 	minishell = get_sh();
 	if (ft_strncmp(input, "exit", 5) == 0
 		&& (input[4] == '\0' || input[4] == '\n'))
