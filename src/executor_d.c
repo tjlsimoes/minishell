@@ -6,17 +6,17 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:08:27 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/08 11:18:28 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**generate_argv(t_ASTNode **ast)
+char	**generate_argv(t_ast_node **ast)
 {
 	int			size;
 	char		**argv;
-	t_ASTNode	*node;
+	t_ast_node	*node;
 
 	if (!ast || !(*ast) || !(*ast)->value)
 		return (NULL);
@@ -111,9 +111,9 @@ char	*path_resolution(char *binary)
 	return (NULL);
 }
 
-void	attempt_path_resolution(t_ASTNode **ast)
+void	attempt_path_resolution(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	char		*abs_path;
 	int			pid;
 	int			wstatus;

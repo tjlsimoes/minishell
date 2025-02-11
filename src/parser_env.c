@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 13:50:06 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:36:48 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ void	expand_env_variable(char **token)
 // Note that in case of not_name != NULL, var_value will be freed
 // from within alt_strjoin.
 
-// void	parse_env_variable(char **tokens, int *index, t_ASTNode *cmd_node)
+// void	parse_env_variable(char **tokens, int *index, t_ast_node *cmd_node)
 // {
-// 	t_ASTNode	*arg_node;
+// 	t_ast_node	*arg_node;
 
 // 	expand_env_variable(&(tokens[*index]));
 // 	arg_node = create_node(NODE_ARGUMENT, tokens[*index], -1);

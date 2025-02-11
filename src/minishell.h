@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:36:18 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:36:53 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,26 +171,26 @@ void			handle_sigint(int sig);
 void			setup_signals(void);
 
 // Executor
-int				ft_cd_exec(t_ASTNode **ast);
-int				ft_unset_exec(t_ASTNode **ast);
-int				ft_export_exec(t_ASTNode **ast);
-void			builtins_switch(t_ASTNode **ast);
-void			simple_command_exec(t_ASTNode **ast);
+int				ft_cd_exec(t_ast_node **ast);
+int				ft_unset_exec(t_ast_node **ast);
+int				ft_export_exec(t_ast_node **ast);
+void			builtins_switch(t_ast_node **ast);
+void			simple_command_exec(t_ast_node **ast);
 
-int				ft_echo_iter(t_ASTNode **ast, bool n);
-int				ft_echo_exec(t_ASTNode **ast);
+int				ft_echo_iter(t_ast_node **ast, bool n);
+int				ft_echo_exec(t_ast_node **ast);
 char			**path_split(void);
 
 void			path_error_f(char *binary);
 void			path_error_x(char **abs_path);
 void			path_error_env(char *binary);
-int				get_command_size(t_ASTNode **ast);
+int				get_command_size(t_ast_node **ast);
 void			clear_array_idx(char **array, int idx);
 
-char			**generate_argv(t_ASTNode **ast);
+char			**generate_argv(t_ast_node **ast);
 char			**generate_envp(void);
 int				init_path_vars(char ***split, char *binary, int *i);
 char			*path_resolution(char *binary);
-void			attempt_path_resolution(t_ASTNode **ast);
+void			attempt_path_resolution(t_ast_node **ast);
 
 #endif

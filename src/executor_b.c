@@ -6,15 +6,15 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:36:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/08 11:19:39 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo_iter(t_ASTNode **ast, bool n)
+int	ft_echo_iter(t_ast_node **ast, bool n)
 {
-	t_ASTNode	*current;
+	t_ast_node	*current;
 	int			exit_status;
 
 	current = *ast;
@@ -32,9 +32,9 @@ int	ft_echo_iter(t_ASTNode **ast, bool n)
 	return (exit_status);
 }
 
-int	ft_echo_exec(t_ASTNode **ast)
+int	ft_echo_exec(t_ast_node **ast)
 {
-	t_ASTNode	*current;
+	t_ast_node	*current;
 	bool		n;
 
 	current = *ast;

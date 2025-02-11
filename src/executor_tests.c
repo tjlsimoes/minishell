@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:44:02 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/08 11:21:12 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // void	process_tokens(char *input)
 // {
 // 	char		**tokens;
-// 	t_ASTNode	*ast;
+// 	t_ast_node	*ast;
 
 // 	tokens = tokenize_input(input);
 // 	if (tokens)
@@ -37,7 +37,7 @@
 // void	process_tokens(char *input)
 // {
 // 	char		**tokens;
-// 	t_ASTNode	*ast;
+// 	t_ast_node	*ast;
 
 // 	tokens = tokenize_input(input);
 // 	if (tokens)
@@ -118,7 +118,7 @@
 // {
 // 	char		**tokens;
 // 	char		**argv;
-// 	t_ASTNode	*ast;
+// 	t_ast_node	*ast;
 
 // 	tokens = tokenize_input(input);
 // 	if (tokens)
@@ -157,7 +157,7 @@
 // {
 // 	char		**tokens;
 // 	char		**envp;
-// 	t_ASTNode	*ast;
+// 	t_ast_node	*ast;
 
 // 	tokens = tokenize_input(input);
 // 	if (tokens)

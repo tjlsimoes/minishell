@@ -6,15 +6,15 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:05:48 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/07 15:24:19 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd_exec(t_ASTNode **ast)
+int	ft_cd_exec(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	char		*str;
 	int			exit_status;
 
@@ -34,9 +34,9 @@ int	ft_cd_exec(t_ASTNode **ast)
 // No possibility of there being node->left->right where node->left is NULL,
 // right?
 
-int	ft_unset_exec(t_ASTNode **ast)
+int	ft_unset_exec(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	int			exit_status;
 
 	node = *ast;
@@ -52,9 +52,9 @@ int	ft_unset_exec(t_ASTNode **ast)
 	return (exit_status);
 }
 
-int	ft_export_exec(t_ASTNode **ast)
+int	ft_export_exec(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	int			exit_status;
 	int			temp;
 
@@ -73,9 +73,9 @@ int	ft_export_exec(t_ASTNode **ast)
 	return (exit_status);
 }
 
-void	builtins_switch(t_ASTNode **ast)
+void	builtins_switch(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	t_minishell	*sh;
 
 	node = *ast;
@@ -99,9 +99,9 @@ void	builtins_switch(t_ASTNode **ast)
 	// else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
 	// 	ft_exit_exec();
 
-void	simple_command_exec(t_ASTNode **ast)
+void	simple_command_exec(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 
 	if (!ast || !(*ast))
 		return ;

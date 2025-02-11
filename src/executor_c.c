@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:07:15 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/08 11:09:58 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	path_error_env(char *binary)
 // Returns size of command and its arguments
 // Need to increment by one for final NULL
 //   on generating an array.
-int	get_command_size(t_ASTNode **ast)
+int	get_command_size(t_ast_node **ast)
 {
-	t_ASTNode	*node;
+	t_ast_node	*node;
 	int			size;
 
 	if (!ast || !(*ast))
