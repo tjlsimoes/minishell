@@ -6,11 +6,12 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 14:50:23 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/12 13:20:54 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:15:18 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 // Passing the whole of the original shell's environment
 // to a linked list.

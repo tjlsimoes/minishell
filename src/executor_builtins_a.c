@@ -1,16 +1,77 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_b.c                                       :+:      :+:    :+:   */
+/*   executor_builtins_a.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/05 17:36:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
+/*   Created: 2025/02/12 13:06:04 by tjorge-l          #+#    #+#             */
+/*   Updated: 2025/02/12 13:07:01 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_cd_exec(t_ast_node **ast)
+{
+	t_ast_node	*node;
+	char		*str;
+	int			exit_status;
+
+	node = *ast;
+	str = NULL;
+	exit_status = 42;
+	if (!node->left)
+	{
+		exit_status = ft_cd(&str);
+		free(str);
+		return (exit_status);
+	}
+	if (node->left->right)
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+	return (ft_cd(&(node->left->value)));
+}
+// No possibility of there being node->left->right where node->left is NULL,
+// right?
+
+int	ft_unset_exec(t_ast_node **ast)
+{
+	t_ast_node	*node;
+	int			exit_status;
+
+	node = *ast;
+	if (!node->left)
+		return (0);
+	exit_status = ft_unset(node->left->value);
+	node = node->left->right;
+	while (node)
+	{
+		exit_status = ft_unset(node->value);
+		node = node->right;
+	}
+	return (exit_status);
+}
+
+int	ft_export_exec(t_ast_node **ast)
+{
+	t_ast_node	*node;
+	int			exit_status;
+	int			temp;
+
+	node = *ast;
+	if (!node->left)
+		return (0);
+	exit_status = ft_export(&(node->left->value));
+	node = node->left->right;
+	while (node)
+	{
+		temp = ft_export(&(node->value));
+		if (exit_status == 0)
+			exit_status = temp;
+		node = node->right;
+	}
+	return (exit_status);
+}
 
 int	ft_echo_iter(t_ast_node **ast, bool n)
 {
@@ -52,35 +113,3 @@ int	ft_echo_exec(t_ast_node **ast)
 		return (ft_echo(NULL, n));
 	return (ft_echo_iter(&current, n));
 }
-
-char	**path_split(void)
-{
-	char	*path_value;
-	char	**path_split;
-	char	*temp;
-	int		i;
-
-	path_value = get_env_value(
-			get_env_pair(&(get_sh()->env_var), "PATH"));
-	if (!path_value)
-		return (NULL);
-	path_split = ft_split(path_value, ':');
-	if (!path_split)
-		return (free(path_value), NULL);
-	i = 0;
-	while (path_split[i])
-	{
-		temp = ft_strjoin(path_split[i], "/");
-		if (!temp)
-			break ;
-		free(path_split[i]);
-		path_split[i] = temp;
-		i++;
-	}
-	free(path_value);
-	return (path_split);
-}
-// Does not regard:
-// Empty entries (::) or a trailing colon (:) in $PATH mean
-// that Bash considers the current directory (.) as part of $PATH.
-// Example: If $PATH=":/usr/bin", Bash searches . first.

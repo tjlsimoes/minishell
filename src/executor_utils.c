@@ -1,37 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_c.c                                       :+:      :+:    :+:   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 11:07:15 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
+/*   Created: 2025/02/12 13:05:44 by tjorge-l          #+#    #+#             */
+/*   Updated: 2025/02/12 13:08:28 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	path_error_f(char *binary)
-{
-	ft_putstr_fd(binary, 2);
-	ft_putstr_fd(": command not found\n", 2);
-}
-
-void	path_error_x(char **abs_path)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(*abs_path, 2);
-	ft_putstr_fd(": Permission denied\n", 2);
-	free(*abs_path);
-}
-
-void	path_error_env(char *binary)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(binary, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
-}
 
 // Returns size of command and its arguments
 // Need to increment by one for final NULL
