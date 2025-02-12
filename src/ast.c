@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 13:17:24 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:37:07 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	print_node(const t_ast_node *node, int indent)
 		value = node->value;
 	else
 		value = "NULL";
-	printf("Type: %s, Value: %s, FD: %d\n, Quote: %c\n",
+	printf("Type: %s, Value: %s, FD: %d, Quote: %c\n",
 		node_type_strings[node->type],
 		value,
 		node->fd,
