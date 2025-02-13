@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/13 11:36:46 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:56:55 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ typedef struct s_token_info
 // Exit Status Exploration
 typedef struct s_minishell
 {
-	int		exit_status;
-	t_list	*env_var;
+	char		*input;
+	t_list		*env_var;
+	char		**tokens;
+	t_ast_node	*ast;
+	int			exit_status;
 }	t_minishell;
 
 t_minishell		*get_sh(void);
@@ -202,6 +205,7 @@ int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_in(t_ast_node **ast);
 int				gen_append(t_ast_node **ast);
 void			child_exec(char *abs_path, t_ast_node **ast);
+void			child_free(char *abs_path);
 
 bool			any(char **array, char *value);
 

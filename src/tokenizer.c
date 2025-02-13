@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:34:45 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:58:04 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,16 @@ char	**tokenize_input(const char *input)
 //prints the AST structure, and then frees the allocated memory for tokens&AST.
 void	process_tokens(char *input)
 {
-	char		**tokens;
-	t_ast_node	*ast;
+	t_minishell	*sh;
 
-	tokens = tokenize_input(input);
-	if (tokens)
+	sh = get_sh();
+	sh->tokens = tokenize_input(input);
+	if (sh->tokens)
 	{
-		ast = parse(tokens);
-		pretty_print_ast(ast, 0);
-		simple_command_exec(&ast);
-		free_tokens(tokens);
-		free_ast(ast);
+		sh->ast = parse(sh->tokens);
+		pretty_print_ast(sh->ast, 0);
+		simple_command_exec(&(sh->ast));
+		free_tokens(sh->tokens);
+		free_ast(sh->ast);
 	}
 }

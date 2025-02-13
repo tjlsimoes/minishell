@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/13 11:40:23 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:15:48 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,18 +141,34 @@ int	gen_append(t_ast_node **ast)
 	return (1);
 }
 
+void	child_free(char *abs_path)
+{
+	ft_lstdel(&(get_sh()->env_var));
+	free_tokens(get_sh()->tokens);
+	free_ast(get_sh()->ast);
+	free(get_sh()->input);
+	free(abs_path);
+}
+
 void	child_exec(char *abs_path, t_ast_node **ast)
 {
+	char	**argv;
+	char	**envp;
+
 	if (!gen_redirect_out(ast))
-		return (free(abs_path), exit(1));
+		return (child_free(abs_path), exit(0));
 	if (!gen_redirect_in(ast))
-		return (free(abs_path), exit(1));
+		return (child_free(abs_path), exit(0));
 	if (!gen_append(ast))
-		return (free(abs_path), exit(1));
-	if (execve(abs_path, generate_argv(ast), generate_envp()) == -1)
+		return (child_free(abs_path), exit(0));
+	argv = generate_argv(ast);
+	envp = generate_envp();
+	if (execve(abs_path, argv, envp) == -1)
 	{
-		free(abs_path);
-		exit(1); // More than possibly need to be able to free everyting
+		child_free(abs_path);
+		clear_array(argv);
+		clear_array(envp);
+		exit(0); // More than possibly need to be able to free everyting
 				 //   from here...
 	}
 	exit(0);
@@ -176,7 +192,7 @@ void	attempt_path_resolution(t_ast_node **ast)
 		return ;
 	pid = fork();
 	if (pid == -1)
-		return ;	// Possible error message needed.
+		return (free(abs_path));	// Possible error message needed.
 	if (pid == 0)
 		return (child_exec(abs_path, ast));
 	waitpid(pid, &wstatus, 0);

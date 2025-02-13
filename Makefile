@@ -6,13 +6,14 @@
 #    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/02/12 18:30:05 by tjorge-l         ###   ########.fr        #
+#    Updated: 2025/02/13 18:22:22 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(SRC_DIR)
+DEBUG_FLAGS = -g
 RM = rm -rf
 
 LIBFT_DIR = ./libft
@@ -63,4 +64,10 @@ re: fclean all
 run: $(NAME)
 	valgrind $(VFLAGS) ./$(NAME)
 
+debug: CFLAGS = -g -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(SRC_DIR)
+debug: $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+
+rdebug: debug
+	valgrind $(VFLAGS) ./$(NAME)
 .PHONY: all clean fclean re

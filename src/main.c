@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 12:46:26 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:38:58 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	init_minishell(char **envp)
 		envp++;
 	}
 	minishell = get_sh();
+	minishell->input = NULL;
 	minishell->env_var = env_var;
+	minishell->tokens = NULL;
+	minishell->ast = NULL;
 	minishell->exit_status = 0;
 }
 
@@ -77,25 +80,28 @@ int	process_command(char *input)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
-	int		continue_shell;
+	int			continue_shell;
+	t_minishell	*sh;
 
 	setup_signals();
 	if (!argc && !argv && !envp)
 		return (1);
 	init_minishell(envp);
+	sh = get_sh();
 	continue_shell = 1;
 	while (continue_shell)
 	{
-		input = readline("minishell> ");
-		if (input == NULL)
+		sh->input = readline("minishell> ");
+		if (sh->input == NULL)
 		{
 			printf("\nExiting minishell...\n");
 			break ;
 		}
-		continue_shell = process_command(input);
-		free(input);
+		continue_shell = process_command(sh->input);
+		free(sh->input);
 	}
-	ft_lstdel(&(get_sh()->env_var));
+	ft_lstdel(&(sh->env_var));
 	return (0);
 }
+// Is there a need to safeguard against:
+// - Error initializing get_sh()->env_var?
