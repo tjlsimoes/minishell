@@ -93,7 +93,7 @@ int	gen_redirect_out(t_ast_node **ast)
 	fd_out = -2;
 	if (!redirect_out)
 		return (1);
-	fd_out = open(redirect_out , O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	fd_out = open(redirect_out, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
 		return (ft_putstr_fd("Open error\n", 2), 0); // Possible error message needed: errno.
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
@@ -183,4 +183,3 @@ void	attempt_path_resolution(t_ast_node **ast)
 	free(abs_path);
 	set_exit_status(wstatus);
 }
-

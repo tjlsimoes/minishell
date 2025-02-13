@@ -16,21 +16,9 @@ void	builtins_switch(t_ast_node **ast)
 {
 	t_ast_node	*node;
 	t_minishell	*sh;
-	int			orig_stdin;
-	int			orig_stdout;
 
 	node = *ast;
 	sh = get_sh();
-	orig_stdin = dup(STDIN_FILENO);
-	orig_stdout = dup(STDOUT_FILENO);
-
-	if (!gen_redirect_out(ast))
-		return ;
-	if (!gen_redirect_in(ast))
-		return ;
-	if (!gen_append(ast))
-		return ;
-
 	if (ft_strncmp(node->value, "cd", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_cd_exec(ast);
 	else if (ft_strncmp(node->value, "pwd", ft_strlen(node->value)) == 0)
@@ -43,7 +31,22 @@ void	builtins_switch(t_ast_node **ast)
 		sh->exit_status = ft_unset_exec(ast);
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
-	
+}
+
+void	builtins_exec(t_ast_node **ast)
+{
+	int			orig_stdin;
+	int			orig_stdout;
+
+	orig_stdin = dup(STDIN_FILENO);
+	orig_stdout = dup(STDOUT_FILENO);
+	if (!gen_redirect_out(ast))
+		return ;
+	if (!gen_redirect_in(ast))
+		return ;
+	if (!gen_append(ast))
+		return ;
+	builtins_switch(ast);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
@@ -66,7 +69,7 @@ void	exec_switch(t_ast_node **ast)
 	builtins[5] = "export";
 	builtins[6] = NULL;
 	if (any(builtins, (*ast)->value))
-		builtins_switch(ast);
+		builtins_exec(ast);
 	else
 		attempt_path_resolution(ast);
 }

@@ -175,6 +175,7 @@ int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
 void			builtins_switch(t_ast_node **ast);
+void			builtins_exec(t_ast_node **ast);
 void			exec_switch(t_ast_node **ast);
 void			simple_command_exec(t_ast_node **ast);
 
