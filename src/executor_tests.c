@@ -205,3 +205,15 @@
 // 	clear_array(new_envp);
 // 	return (0);
 // }
+
+///////////////////////////////////////////////////////////////////////////
+// Test any()
+// int	main(int argc, char **argv)
+// {
+// 	char *builtins[7] = {"cd", "pwd", "echo", "env", "unset", "export", NULL};
+
+// 	if (!argc || !argv)
+// 		return (1);
+// 	printf("any() output: %d\n", any(builtins, argv[1]));
+// 	return (0);
+// }

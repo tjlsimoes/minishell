@@ -43,3 +43,25 @@ void	clear_array_idx(char **array, int idx)
 		free(array[--idx]);
 	free(array);
 }
+
+// Check if 'array' contains an exact match
+//   to 'value'.
+// Returns true if match is found.
+// Returns false if it isn't found or if it
+//   receives invalid arguments.
+bool	any(char **array, char *value)
+{
+	int		i;
+
+	if (!value || !array || !(*array))
+		return (false);
+	i = 0;
+	while (array[i])
+	{
+		if (ft_strncmp(value, array[i], ft_strlen(value)) == 0
+			&& array[i][ft_strlen(value)] == '\0')
+			return (true);
+		i++;
+	}
+	return (false);
+}

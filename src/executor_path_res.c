@@ -152,7 +152,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	if (execve(abs_path, generate_argv(ast), generate_envp()) == -1)
 	{
 		free(abs_path);
-		exit(1); // More than possible need to be able to free everyting
+		exit(1); // More than possibly need to be able to free everyting
 				 //   from here...
 	}
 	exit(0);

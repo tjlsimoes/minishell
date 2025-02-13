@@ -175,6 +175,7 @@ int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
 void			builtins_switch(t_ast_node **ast);
+void			exec_switch(t_ast_node **ast);
 void			simple_command_exec(t_ast_node **ast);
 
 int				ft_echo_iter(t_ast_node **ast, bool n);
@@ -200,5 +201,7 @@ int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_in(t_ast_node **ast);
 int				gen_append(t_ast_node **ast);
 void			child_exec(char *abs_path, t_ast_node **ast);
+
+bool			any(char **array, char *value);
 
 #endif
