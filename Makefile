@@ -6,7 +6,7 @@
 #    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/02/12 13:15:02 by tjorge-l         ###   ########.fr        #
+#    Updated: 2025/02/12 18:30:05 by tjorge-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ env_tests.c env_vars_change.c env_vars_expand.c env_vars_get_a.c env_vars_get_b.
 env_vars_print.c env_vars_utils_a.c env_vars_utils_b.c env_vars_utils_c.c\
 builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_pwd_echo.c builtins_tests.c \
 executor_main.c executor_builtins_a.c executor_builtins_errors.c  \
-executor_gen.c executor_path_res.c executor_utils.c executor_tests.c \
+executor_gen.c executor_path_res.c executor_utils.c  executor_redirect.c executor_tests.c \
 exit_status.c 
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

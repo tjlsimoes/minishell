@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/12 16:36:53 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:36:46 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,5 +192,13 @@ char			**generate_envp(void);
 int				init_path_vars(char ***split, char *binary, int *i);
 char			*path_resolution(char *binary);
 void			attempt_path_resolution(t_ast_node **ast);
+
+char			*get_redirect_out(t_ast_node **ast);
+char			*get_redirect_in(t_ast_node **ast);
+char			*get_append(t_ast_node **ast);
+int				gen_redirect_out(t_ast_node **ast);
+int				gen_redirect_in(t_ast_node **ast);
+int				gen_append(t_ast_node **ast);
+void			child_exec(char *abs_path, t_ast_node **ast);
 
 #endif
