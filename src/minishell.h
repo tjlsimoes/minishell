@@ -201,9 +201,11 @@ void			attempt_path_resolution(t_ast_node **ast);
 char			*get_redirect_out(t_ast_node **ast);
 char			*get_redirect_in(t_ast_node **ast);
 char			*get_append(t_ast_node **ast);
+char			*get_heredoc(t_ast_node **ast);
 int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_in(t_ast_node **ast);
 int				gen_append(t_ast_node **ast);
+int				gen_heredoc(t_ast_node **ast);
 void			child_exec(char *abs_path, t_ast_node **ast);
 void			child_free(char *abs_path);
 

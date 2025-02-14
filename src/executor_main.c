@@ -47,7 +47,7 @@ void	builtins_exec(t_ast_node **ast)
 	if (!gen_append(ast))
 		return ;
 	builtins_switch(ast);
-	dup2(orig_stdin, STDIN_FILENO);
+	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
 	close(orig_stdout);

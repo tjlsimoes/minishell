@@ -141,6 +141,41 @@ int	gen_append(t_ast_node **ast)
 	return (1);
 }
 
+int	gen_heredoc(t_ast_node **ast)
+{
+	char	*heredoc;
+	int		fd[2];
+	char	*line;
+	// int		orig_stdin;
+
+	heredoc = get_heredoc(ast);
+	// orig_stdin = dup(STDIN_FILENO);
+	if (!heredoc)
+		return (1);
+	if (pipe(fd) == -1)
+		return (ft_putstr_fd("Pipe error\n", 2), 0); // Possible error message needed: errno.
+	line = NULL;
+	while ((line = get_next_line(0)))
+	{
+		printf("Line: |%s|\n", line);
+		if (ft_strncmp(line, heredoc, ft_strlen(heredoc)) == 0
+			&& line[ft_strlen(heredoc)] == '\n')
+			break;
+		write(fd[1], line, ft_strlen(line));
+		free(line);
+		line = NULL;
+	}
+	free(line);
+	if (close(fd[1]) == -1)
+		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+	if (close(fd[0]) == -1)
+		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+	return (1);
+}
+// Assuming value of heredoc is the delimiter.
+
 void	child_free(char *abs_path)
 {
 	ft_lstdel(&(get_sh()->env_var));
@@ -155,9 +190,11 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	char	**argv;
 	char	**envp;
 
-	if (!gen_redirect_out(ast))
+	if (!gen_heredoc(ast))
 		return (child_free(abs_path), exit(0));
 	if (!gen_redirect_in(ast))
+		return (child_free(abs_path), exit(0));
+	if (!gen_redirect_out(ast))
 		return (child_free(abs_path), exit(0));
 	if (!gen_append(ast))
 		return (child_free(abs_path), exit(0));
@@ -168,8 +205,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 		child_free(abs_path);
 		clear_array(argv);
 		clear_array(envp);
-		exit(0); // More than possibly need to be able to free everyting
-				 //   from here...
+		exit(0);
 	}
 	exit(0);
 }

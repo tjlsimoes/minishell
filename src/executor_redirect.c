@@ -59,3 +59,19 @@ char	*get_append(t_ast_node **ast)
 	}
 	return (NULL);
 }
+
+char	*get_heredoc(t_ast_node **ast)
+{
+	t_ast_node	*node;
+
+	if (!ast || !(*ast))
+		return (NULL);
+	node = (*ast)->right;
+	while (node)
+	{
+		if (node->type == NODE_HEREDOC)
+			return (node->value);
+		node = node->right;
+	}
+	return (NULL);
+}
