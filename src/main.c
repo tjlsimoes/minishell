@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/13 18:38:58 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:07:12 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int	process_command(char *input)
 	minishell = get_sh();
 	if (ft_strncmp(input, "exit", 5) == 0
 		&& (input[4] == '\0' || input[4] == '\n'))
-		return (printf("\nExiting minishell...\n"), 0);
+		return (0);
+		// return (printf("\nExiting minishell...\n"), 0);
 	else if (ft_strncmp(input, "history", 7) == 0)
 		display_history();
 	else if (ft_strncmp(input, "setstatus", 9) == 0)
@@ -94,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 		sh->input = readline("minishell> ");
 		if (sh->input == NULL)
 		{
-			printf("\nExiting minishell...\n");
+			// printf("\nExiting minishell...\n");
 			break ;
 		}
 		continue_shell = process_command(sh->input);

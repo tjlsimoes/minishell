@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_b_fut.c                                   :+:      :+:    :+:   */
+/*   builtins_cd_b.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:36:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/01/31 12:36:37 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:14:38 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	cd_path_error(char **path, char *error_msg)
 {
 	if (!(*path))
 	{
-		ft_putstr_fd(error_msg, 2);
+		report_error(ERROR_SYNTAX, error_msg);
 		return (1);
 	}
 	return (0);

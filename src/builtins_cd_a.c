@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_a.c                                       :+:      :+:    :+:   */
+/*   builtins_cd_a.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 09:55:02 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/05 18:01:58 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:06:16 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_cd(char **path)
 	char	*env_pair;
 
 	if (ft_strlen((*path)) > PATH_MAX)
-		return (ft_putstr_fd("-bash: cd: %s: File name too long\n", 2), 1);
+		return (report_error(ERROR_SYNTAX, "cd: File name too long"), 1);
 	if (!(*path) || ft_strncmp((*path), "-", ft_strlen((*path))) == 0
 		|| ft_strncmp((*path), "~", 1) == 0)
 		return (cd_special_cases(path));
