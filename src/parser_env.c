@@ -63,10 +63,10 @@ void	expand_env_variable(char **token)
 
 t_ast_node	*parse_env_variable(char **tokens, int *index)
 {
-	char *expanded_value;
+	char	*expanded;
 
-	expand_env_variable(&(tokens[*index]));
-	expanded_value = tokens[*index];
+	expand_env_var(&(tokens[*index]));
+	expanded = tokens[*index];
 	(*index)++;
-	return (create_node(NODE_ARGUMENT, expanded_value, -1));
+	return (create_node(NODE_ARGUMENT, expanded, -1));
 }
