@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:23:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/18 13:53:12 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:08:50 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,22 @@
 
 int	find_redirect_index(char *value)
 {
-	int	i;
+	int		i;
+	char	quote_char;
 
 	i = -1;
+	quote_char = 0;
 	while (value[++i] != '\0')
 	{
-		if ((value[i] == '<' || value[i] == '>')
-			&& (i == 0 || value[i - 1] != '\\'))
+		if (value[i] == '\'' || value[i] == '"')
+		{
+			if (quote_char == 0)
+				quote_char = value[i];
+			else if (quote_char == value[i])
+				quote_char = 0;
+		}
+		else if ((value[i] == '<' || value[i] == '>')
+			&& (i == 0 || value[i - 1] != '\\') && quote_char == 0)
 			return (i);
 	}
 	return (-1);
