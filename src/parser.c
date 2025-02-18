@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 12:45:35 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:51:27 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,12 @@ void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 	{
 		if (is_redirect(tokens[*index]))
 			parse_redirect_node(tokens, index, cmd_node);
+		else if (tokens[*index][0] == '$')
+			attach_node(cmd_node, parse_env_variable(tokens, index));
 		else
 		{
-			if (tokens[*index][0] == '$')
-				arg_node = parse_env_variable(tokens, index);
-			else
-				arg_node = parse_argument_node(tokens[(*index)++], -1);
-			if (!cmd_initialized)
+			arg_node = parse_argument_node(tokens[(*index)++], -1);
+			if (!cmd_initialized && cmd_node->value[0] == '\0')
 				cmd_initialized = initialize_command(cmd_node, arg_node);
 			else
 				attach_node(cmd_node, arg_node);

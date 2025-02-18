@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/11 10:34:33 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:50:38 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,24 @@ static int	parse_redirect_fd(char *token)
 	return (fd);
 }
 
-static t_node_type	get_redirect_type(char *token)
+static t_node_type	get_redirect_type_and_symbol(char *token, char **symbol_ptr)
 {
 	int	i;
 
 	i = 0;
 	while (ft_isdigit(token[i]))
 		i++;
-	if (ft_strncmp(token + i, ">>", 2) == 0)
+	*symbol_ptr = &token[i];
+	if (ft_strncmp(*symbol_ptr, ">>", 2) == 0)
 		return (NODE_REDIRECT_APPEND);
-	if (ft_strncmp(token + i, "<<", 2) == 0)
+	if (ft_strncmp(*symbol_ptr, "<<", 2) == 0)
 		return (NODE_HEREDOC);
-	if (ft_strncmp(token + i, "<", 1) == 0)
+	if (ft_strncmp(*symbol_ptr, "<", 1) == 0)
 		return (NODE_REDIRECT_IN);
-	return (NODE_REDIRECT_OUT);
+	if (ft_strncmp(*symbol_ptr, ">", 1) == 0)
+		return (NODE_REDIRECT_OUT);
+	*symbol_ptr = NULL;
+	return (NODE_COMMAND);
 }
 
 static void	attach_redirect(t_ast_node *cmd_node, t_ast_node *redirect_node)
@@ -62,20 +66,39 @@ static void	attach_redirect(t_ast_node *cmd_node, t_ast_node *redirect_node)
 	*current = redirect_node;
 }
 
-void	parse_redirect_node(char **tokens, int *index, t_ast_node *cmd_node)
+static char	*get_filename(char **tokens, int *index, char *redirect_s)
+{
+	if (redirect_s && *(redirect_s + 1) != '\0' && *(redirect_s + 1) != '>')
+	{
+		(*index)++;
+		return (ft_strdup(redirect_s + 1));
+	}
+	else if (tokens[(*index) + 1])
+	{
+		(*index) += 2;
+		return (ft_strdup(tokens[(*index) - 1]));
+	}
+	(*index)++;
+	report_error(ERROR_SYNTAX, "newline");
+	return (NULL);
+}
+
+t_ast_node	*parse_redirect_node(char **tokens, int *index,
+	t_ast_node *cmd_node)
 {
 	t_node_type	redirect_type;
 	t_ast_node	*redirect_node;
 	int			fd;
+	char		*filename;
+	char		*redirect_s;
 
-	if (!tokens[(*index) + 1])
-	{
-		(*index)++;
-		return (report_error(ERROR_SYNTAX, "newline"));
-	}
-	redirect_type = get_redirect_type(tokens[*index]);
+	redirect_type = get_redirect_type_and_symbol(tokens[*index], &redirect_s);
 	fd = parse_redirect_fd(tokens[*index]);
-	redirect_node = create_node(redirect_type, tokens[*index + 1], fd);
-	(*index) += 2;
+	filename = get_filename(tokens, index, redirect_s);
+	if (!filename)
+		return (NULL);
+	redirect_node = create_node(redirect_type, filename, fd);
+	free(filename);
 	attach_redirect(cmd_node, redirect_node);
+	return (redirect_node);
 }

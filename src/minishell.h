@@ -6,7 +6,7 @@
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/13 17:56:55 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:06:27 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void			free_ast(t_ast_node *node);
 //parser
 t_ast_node		*parse_command(char **tokens, int *index);
 t_ast_node		*parse_redirect(char **tokens, int *index);
-void			parse_redirect_node(char **tokens, int *index,
+t_ast_node 		*parse_redirect_node(char **tokens, int *index,
 					t_ast_node *cmd_node);
 t_ast_node		*parse_pipe(char **tokens, int *index);
 t_ast_node		*handle_pipe(t_ast_node *root, t_ast_node *node);
@@ -168,6 +168,7 @@ void			report_error(t_error error_type, char *details);
 void			free_tokens(char **tokens);
 char			*expand_within_quotes(char *str);
 char			*extract_var_name(char *str);
+char			*find_r_symbol(char *token);
 
 // signals
 void			handle_sigint(int sig);
