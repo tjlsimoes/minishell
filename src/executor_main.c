@@ -40,6 +40,8 @@ void	builtins_exec(t_ast_node **ast)
 
 	orig_stdin = dup(STDIN_FILENO);
 	orig_stdout = dup(STDOUT_FILENO);
+	if (!gen_heredoc(ast))
+		return ;
 	if (!gen_redirect_out(ast))
 		return ;
 	if (!gen_redirect_in(ast))
