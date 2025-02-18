@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+// Update previously declared quote var
+// with string's quote type.
 int	get_quote(char **str, char *quote)
 {
 	int		eq_idx;
@@ -28,6 +30,8 @@ int	get_quote(char **str, char *quote)
 	return (1);
 }
 
+// Remove quotes quotes matching the initial
+// quote. Free str and update it to the result.
 void	remove_quotes(char **str)
 {
 	char	quote;
