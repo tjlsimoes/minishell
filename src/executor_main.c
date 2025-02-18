@@ -78,6 +78,116 @@ void	exec_switch(t_ast_node **ast)
 // If exit is implemented as a builtin it will have to be
 //   added to the above array.
 
+void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close)
+{
+	char	**argv;
+	char	**envp;
+
+	if (!gen_heredoc(ast))
+		return (child_free(abs_path), exit(0));
+	if (!gen_redirect_in(ast))
+		return (child_free(abs_path), exit(0));
+	if (!gen_redirect_out(ast))
+		return (child_free(abs_path), exit(0));
+	if (!gen_append(ast))
+		return (child_free(abs_path), exit(0));
+	argv = generate_argv(ast);
+	envp = generate_envp();
+	// Shouldn't all memory aside from argv and envp not be freed?
+	if (execve(abs_path, argv, envp) == -1)
+	{
+		child_free(abs_path);
+		clear_array(argv);
+		clear_array(envp);
+		close(fd_to_close);
+		exit(0);
+	}
+	exit(0);
+}
+
+void	alt_attempt_path_res(t_ast_node **ast, int fd_to_close)
+{
+	t_ast_node	*node;
+	char		*abs_path;
+
+	node = *ast;
+	abs_path = path_resolution(node->value);
+	if (!abs_path)
+		return ;
+	alt_child_exec(abs_path, ast, fd_to_close);
+	free(abs_path);
+}
+
+void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
+{
+	char	*builtins[7];
+
+	builtins[0] = "cd";
+	builtins[1] = "pwd";
+	builtins[2] = "echo";
+	builtins[3] = "env";
+	builtins[4] = "unset";
+	builtins[5] = "export";
+	builtins[6] = NULL;
+	if (any(builtins, (*ast)->value))
+		builtins_exec(ast);
+	else
+		alt_attempt_path_res(ast, fd_to_close);
+}
+
+void	exec_pipe_left(t_ast_node **ast, int fd[2])
+{
+	close(fd[0]); // Possible error message needed: errno.
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
+		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+	alt_exec_switch(&((*ast)->left), fd[1]);
+	close(fd[1]); // Possible error message needed: errno.
+	child_free(NULL);
+	exit(0);
+}
+
+void	exec_pipe_right(t_ast_node **ast, int fd[2])
+{
+	close(fd[1]); // Possible error message needed: errno.
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+	alt_exec_switch(&((*ast)->right), fd[0]);
+	close(fd[0]); // Possible error message needed: errno.
+	child_free(NULL);
+	exit(0);
+}
+
+void	exec_pipe(t_ast_node **ast)
+{
+	int			fd[2];
+	int			pid_left;
+	int			pid_right;
+	int			wstatus;
+	
+	if (!ast || !(*ast))
+		return ;
+	if (pipe(fd) == -1)
+		return (ft_putstr_fd("Pipe error\n", 2)); // Possible error message needed: errno.
+	pid_left = fork();
+	if (pid_left == -1)
+		return (ft_putstr_fd("Fork error\n", 2)); // Possible error message needed: errno.
+	if (pid_left == 0)
+		return (exec_pipe_left(ast, fd)); // Create child process for execution of command on the left.
+	else
+	{
+		pid_right = fork();
+		if (pid_right == -1)
+			return (ft_putstr_fd("Fork error\n", 2)); // Possible error message needed: errno.
+		if (pid_right == 0)
+			return (exec_pipe_right(ast, fd)); // Create child process for execution of command on the right.
+	}
+	close(fd[0]);
+	close(fd[1]);
+	// Wait for both child processes, ensuring exit status is updated to the command on the right.
+	waitpid(pid_left, &wstatus, 0);
+	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
+}
+
 void	simple_command_exec(t_ast_node **ast)
 {
 	t_ast_node	*node;
@@ -86,5 +196,10 @@ void	simple_command_exec(t_ast_node **ast)
 		return ;
 	node = *ast;
 	if (node->type == NODE_COMMAND)
-		exec_switch(&node);
+		return (exec_switch(&node));
+	if (node->type == NODE_PIPE && node->right->value
+		&& node->right->value[0] == '\0')
+		return (exec_switch(&(node->left)));
+	if (node->type == NODE_PIPE)
+		return (exec_pipe(&node));
 }
