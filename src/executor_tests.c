@@ -217,3 +217,44 @@
 // 	printf("any() output: %d\n", any(builtins, argv[1]));
 // 	return (0);
 // }
+
+///////////////////////////////////////////////////////////////////////////
+// Test rm_tab_trail(char **str)
+
+// int	main(int argc, char **argv)
+// {
+// 	char	*str;
+// 	if (!argc || !argv[1])
+// 		return (1);
+// 	str = ft_strdup(argv[1]);
+// 	printf("Original string: |%s|\n", str);
+// 	rm_tab_trail(&str);
+// 	printf("Modified string: |%s|\n", str);
+// 	free(str);
+// 	return (0);
+// }
+
+///////////////////////////////////////////////////////////////////////////
+// Test rm_tab_trail(char **str)
+
+// int	main(int argc, char **argv)
+// {
+// 	char	*str;
+// 	// char	temp[] = {'"', 'E', '"', 'O', 'F', '\0'};
+// 	// char	temp[] = {'"', 'E', '"', '\'', 'O', '\'', 'F', '\0'};
+// 	// char	temp[] = {'"', 'E', '"', '\'', 'O', '\'', '"', 'F', '"', '\0'};
+// 	// char	temp[] = {'"', '"', '\0'};
+// 	// char	temp[] = {'\'', '\'', '\0'};
+// 	char	temp[] = {'\0'};
+
+// 	if (!argc || !argv[1])
+// 		return (1);
+	
+// 	str = ft_strdup(temp);
+// 	// str = ft_strdup(argv[1]);
+// 	printf("Original string: |%s|\n", str);
+// 	alt_rm_quotes(&str);
+// 	printf("Modified string: |%s|\n", str);
+// 	free(str);
+// 	return (0);
+// }

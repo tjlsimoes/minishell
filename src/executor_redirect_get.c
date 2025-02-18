@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_redirect.c                                :+:      :+:    :+:   */
+/*   executor_redirect_get.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 18:29:39 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/13 11:32:37 by tjorge-l         ###   ########.fr       */
+/*   Created: 2025/02/18 10:57:41 by tjorge-l          #+#    #+#             */
+/*   Updated: 2025/02/18 11:10:59 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ char	*get_append(t_ast_node **ast)
 	return (NULL);
 }
 
-char	*get_heredoc(t_ast_node **ast)
+// Get quote removal length.
+// Allocate with quote removal length.
+// Use same logic to build resultant string.
+// Replace original string with new.
+t_ast_node	*get_heredoc(t_ast_node **ast)
 {
 	t_ast_node	*node;
 
@@ -70,7 +74,16 @@ char	*get_heredoc(t_ast_node **ast)
 	while (node)
 	{
 		if (node->type == NODE_HEREDOC)
-			return (node->value);
+		{
+			if (node->value[0] == '\'')
+				node->quote_char = '\'';
+			else if (node->value[0] == '"')
+				node->quote_char = '"';
+			else
+				node->quote_char = 'N';
+			alt_rm_quotes(&(node->value));
+			return (node);
+		}
 		node = node->right;
 	}
 	return (NULL);

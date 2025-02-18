@@ -65,3 +65,12 @@ bool	any(char **array, char *value)
 	}
 	return (false);
 }
+
+void	child_free(char *abs_path)
+{
+	ft_lstdel(&(get_sh()->env_var));
+	free_tokens(get_sh()->tokens);
+	free_ast(get_sh()->ast);
+	free(get_sh()->input);
+	free(abs_path);
+}

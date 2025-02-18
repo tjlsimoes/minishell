@@ -201,7 +201,7 @@ void			attempt_path_resolution(t_ast_node **ast);
 char			*get_redirect_out(t_ast_node **ast);
 char			*get_redirect_in(t_ast_node **ast);
 char			*get_append(t_ast_node **ast);
-char			*get_heredoc(t_ast_node **ast);
+t_ast_node		*get_heredoc(t_ast_node **ast);
 int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_in(t_ast_node **ast);
 int				gen_append(t_ast_node **ast);
@@ -210,5 +210,10 @@ void			child_exec(char *abs_path, t_ast_node **ast);
 void			child_free(char *abs_path);
 
 bool			any(char **array, char *value);
+char			*alt_gnl(int fd, char *delimiter);
+int				rm_tab_trail(char **str);
+int				alt_rm_quotes(char **str);
+void			heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2]);
+void			rm_quotes_gen_res(char **str, char **result);
 
 #endif
