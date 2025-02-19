@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/13 10:27:20 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:04:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	builtins_switch(t_ast_node **ast)
 		sh->exit_status = ft_unset_exec(ast);
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
+	else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
+		sh->exit_status = ft_exit_exec(sh, node->left, false);
 }
 
 void	builtins_exec(t_ast_node **ast)
@@ -61,7 +63,7 @@ void	builtins_exec(t_ast_node **ast)
 
 void	exec_switch(t_ast_node **ast)
 {
-	char	*builtins[7];
+	char	*builtins[8];
 
 	builtins[0] = "cd";
 	builtins[1] = "pwd";
@@ -69,7 +71,8 @@ void	exec_switch(t_ast_node **ast)
 	builtins[3] = "env";
 	builtins[4] = "unset";
 	builtins[5] = "export";
-	builtins[6] = NULL;
+	builtins[6] = "exit";
+	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
 		builtins_exec(ast);
 	else
@@ -120,7 +123,7 @@ void	alt_attempt_path_res(t_ast_node **ast, int fd_to_close)
 
 void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
 {
-	char	*builtins[7];
+	char	*builtins[8];
 
 	builtins[0] = "cd";
 	builtins[1] = "pwd";
@@ -128,7 +131,8 @@ void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
 	builtins[3] = "env";
 	builtins[4] = "unset";
 	builtins[5] = "export";
-	builtins[6] = NULL;
+	builtins[6] = "exit";
+	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
 		builtins_exec(ast);
 	else

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+         #
+#    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/02/13 18:22:22 by tjorge-l         ###   ########.fr        #
+#    Updated: 2025/02/19 15:35:53 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_pwd_echo.c builtins_test
 executor_builtins_a.c executor_builtins_errors.c executor_gen.c executor_main.c \
 executor_path_res.c executor_redirect_gen.c executor_redirect_gen_utils.c \
 executor_redirect_get.c executor_redirect_get_utils.c executor_tests.c executor_utils.c \
-exit_status.c 
+exit_status.c builtins_exit.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

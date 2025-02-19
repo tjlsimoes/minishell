@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/19 14:06:27 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:59:35 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@
 typedef enum e_error
 {
 	ERROR_UNCLOSED_QUOTE,
-	ERROR_SYNTAX
+	ERROR_SYNTAX,
+	ERROR_EXIT_TOO_MANY_ARGS,
+	ERROR_EXIT_NUMERIC_REQUIRED
 }	t_error;
 
 typedef enum e_node_type
@@ -218,11 +220,14 @@ void			heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2]);
 void			rm_quotes_gen_res(char **str, char **result);
 
 
-void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close);
-void	alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
-void	alt_exec_switch(t_ast_node **ast, int fd_to_close);
-void	exec_pipe_left(t_ast_node **ast, int fd[2]);
-void	exec_pipe_right(t_ast_node **ast, int fd[2]);
-void	exec_pipe(t_ast_node **ast);
+void			alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close);
+void			alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
+void			alt_exec_switch(t_ast_node **ast, int fd_to_close);
+void			exec_pipe_left(t_ast_node **ast, int fd[2]);
+void			exec_pipe_right(t_ast_node **ast, int fd[2]);
+void			exec_pipe(t_ast_node **ast);
+
+int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child);
+
 
 #endif
