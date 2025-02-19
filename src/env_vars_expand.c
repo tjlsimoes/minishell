@@ -23,6 +23,12 @@ void	expand_env_var(char	**str)
 	char	*key;
 	char	*result;
 
+	if (ft_strncmp(*str, "$?", 3) == 0)
+	{
+		free(*str);
+		*str = ft_itoa(get_sh()->exit_status);
+		return ;
+	}
 	env_idx = env_var_idx(*str);
 	if (env_idx == -1)
 		return ;
