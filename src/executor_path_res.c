@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_path_res.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/13 19:15:48 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:42:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	init_path_vars(char ***split, char *binary, int *i)
 		return (1);
 	*split = path_split();
 	if (!split)
-		return (path_error_env(binary), 1);
+		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, binary), 1);
 	*i = 0;
 	return (0);
 }
@@ -73,14 +73,14 @@ char	*path_resolution(char *binary)
 			if (access(abs_path, X_OK) == 0)
 				return (clear_array(split), abs_path);
 			else
-				return (path_error_x(&abs_path),
-					clear_array(split), NULL);
+				return (report_error(ERROR_PERMISSION_DENIED, abs_path),
+					free(abs_path),clear_array(split), NULL);
 		}
 		free(abs_path);
 		i++;
 	}
 	clear_array(split);
-	path_error_f(binary);
+	report_error(ERROR_COMMAND_NOT_FOUND, binary);
 	return (NULL);
 }
 

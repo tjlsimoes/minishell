@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_redirect_gen.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:59:11 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/18 11:18:41 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:33:44 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	gen_redirect_out(t_ast_node **ast)
 		return (1);
 	fd_out = open(redirect_out, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (ft_putstr_fd("Open error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_OPEN, redirect_out), 0); 
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
 	if (close(fd_out) == -1)
-		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_CLOSE, redirect_out), 0);
 	return (1);
 }
 
@@ -42,11 +42,11 @@ int	gen_redirect_in(t_ast_node **ast)
 		return (1);
 	fd_in = open(redirect_in, O_RDONLY);
 	if (fd_in == -1)
-		return (0); // Possible error message needed: errno.
+		return (report_error(ERROR_OPEN, redirect_in), 0);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (0); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
 	if (close(fd_in) == -1)
-		return (0); // Possible error message needed: errno.
+		return (report_error(ERROR_CLOSE, redirect_in),0); 
 	return (1);
 }
 
@@ -61,11 +61,11 @@ int	gen_append(t_ast_node **ast)
 		return (1);
 	fd_out = open(append, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	if (fd_out == -1)
-		return (ft_putstr_fd("Open error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_OPEN, append), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
 	if (close(fd_out) == -1)
-		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_CLOSE, append), 0);
 	return (1);
 }
 
@@ -102,14 +102,14 @@ int	gen_heredoc(t_ast_node **ast)
 	if (!heredoc)
 		return (1);
 	if (pipe(fd) == -1)
-		return (ft_putstr_fd("Pipe error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
 	heredoc_read(&heredoc, &line, fd);
 	if (close(fd[1]) == -1)
-		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_CLOSE, "pipe write end"), 0);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
 	if (close(fd[0]) == -1)
-		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
+		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
 	return (1);
 }
 // Assuming value of heredoc is the delimiter.

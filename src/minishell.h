@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/19 17:59:35 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:27:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,18 @@ typedef enum e_error
 	ERROR_UNCLOSED_QUOTE,
 	ERROR_SYNTAX,
 	ERROR_EXIT_TOO_MANY_ARGS,
-	ERROR_EXIT_NUMERIC_REQUIRED
+	ERROR_EXIT_NUMERIC_REQUIRED,
+	ERROR_INVALID_IDENTIFIER,
+	ERROR_ENV_WRITE_FAILED,
+	ERROR_CD_TOO_MANY_ARGS,
+	ERROR_COMMAND_NOT_FOUND,
+	ERROR_PERMISSION_DENIED,
+	ERROR_NO_SUCH_FILE_OR_DIR,
+	ERROR_DUP2,
+	ERROR_PIPE,
+	ERROR_FORK,
+	ERROR_OPEN,
+	ERROR_CLOSE
 }	t_error;
 
 typedef enum e_node_type

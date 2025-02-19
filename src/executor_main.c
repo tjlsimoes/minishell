@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/19 18:04:25 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:25:54 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,6 @@ void	builtins_exec(t_ast_node **ast)
 	close(orig_stdin);
 	close(orig_stdout);
 }
-// Custom handling of exit could be implemented here
-	// else if (ft_strncmp(node->value, "exit",
-	//		 ft_strlen(node->value)) == 0)
-	// 	ft_exit_exec();
 
 void	exec_switch(t_ast_node **ast)
 {
@@ -143,7 +139,7 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]); // Possible error message needed: errno.
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor")); // Possible error message needed: errno.
 	alt_exec_switch(&((*ast)->left), fd[1]);
 	close(fd[1]); // Possible error message needed: errno.
 	child_free(NULL);
@@ -154,7 +150,7 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 {
 	close(fd[1]); // Possible error message needed: errno.
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor")); // Possible error message needed: errno.
 	if ((*ast)->right->type == NODE_PIPE)
 		exec_pipe(&((*ast)->right));
 	else
@@ -174,17 +170,17 @@ void	exec_pipe(t_ast_node **ast)
 	if (!ast || !(*ast))
 		return ;
 	if (pipe(fd) == -1)
-		return (ft_putstr_fd("Pipe error\n", 2)); // Possible error message needed: errno.
+		return (report_error(ERROR_PIPE, "Failed to create pipe")); // Possible error message needed: errno.
 	pid_left = fork();
 	if (pid_left == -1)
-		return (ft_putstr_fd("Fork error\n", 2)); // Possible error message needed: errno.
+		return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
 	if (pid_left == 0)
 		return (exec_pipe_left(ast, fd)); // Create child process for execution of command on the left.
 	else
 	{
 		pid_right = fork();
 		if (pid_right == -1)
-			return (ft_putstr_fd("Fork error\n", 2)); // Possible error message needed: errno.
+			return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
 		if (pid_right == 0)
 			return (exec_pipe_right(ast, fd)); // Create child process for execution of command on the right.
 	}

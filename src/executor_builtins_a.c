@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_builtins_a.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:06:04 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/12 13:07:01 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:17:18 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_cd_exec(t_ast_node **ast)
 		return (exit_status);
 	}
 	if (node->left->right)
-		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+		return (report_error(ERROR_CD_TOO_MANY_ARGS, NULL), 1);
 	return (ft_cd(&(node->left->value)));
 }
 // No possibility of there being node->left->right where node->left is NULL,

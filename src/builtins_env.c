@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins_b.c                                       :+:      :+:    :+:   */
+/*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 09:55:02 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/06 18:19:50 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:13:59 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int	invalid_key(char *key)
 	return (0);
 }
 
-void	export_error(char **env_pair)
-{
-	ft_putstr_fd("-bash: export: `", 2);
-	ft_putstr_fd((*env_pair), 2);
-	ft_putstr_fd("` ", 2);
-	ft_putstr_fd("not a valid identifier\n", 2);
-}
+// void	export_error(char **env_pair)
+// {
+// 	ft_putstr_fd("-bash: export: `", 2);
+// 	ft_putstr_fd((*env_pair), 2);
+// 	ft_putstr_fd("` ", 2);
+// 	ft_putstr_fd("not a valid identifier\n", 2);
+// }
 
 int	ft_export(char **str)
 {
@@ -48,7 +48,8 @@ int	ft_export(char **str)
 	key = alt_get_env_key(*str);
 	if (invalid_key(key))
 	{
-		export_error(str);
+		// export_error(str);
+		report_error(ERROR_INVALID_IDENTIFIER, *str);
 		return (free(key), 1);
 	}
 	free(key);
@@ -86,7 +87,8 @@ int	ft_env(t_list **lst)
 	t_list	*node;
 
 	if (!lst)
-		return (125);
+		return (report_error(ERROR_ENV_WRITE_FAILED, "No environment list"), 125);
+		// return (125);
 	if (!(*lst))
 		return (0);
 	node = *lst;
@@ -94,7 +96,8 @@ int	ft_env(t_list **lst)
 	{
 		if (write(1, node->content,
 				ft_strlen(node->content)) == -1)
-			return (125);
+			// return (125);
+			return (report_error(ERROR_ENV_WRITE_FAILED, "Write failed"), 125);
 		if (write(1, "\n", 1) == -1)
 			return (125);
 		node = node->next;
