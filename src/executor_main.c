@@ -189,6 +189,7 @@ void	exec_pipe(t_ast_node **ast)
 	// Wait for both child processes, ensuring exit status is updated to the command on the right.
 	waitpid(pid_left, &wstatus, 0);
 	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
+	set_exit_status(wstatus);
 }
 
 void	simple_command_exec(t_ast_node **ast)
