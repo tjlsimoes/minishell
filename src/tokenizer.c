@@ -99,7 +99,7 @@ void	process_tokens(char *input)
 	if (sh->tokens)
 	{
 		sh->ast = parse(sh->tokens);
-		pretty_print_ast(sh->ast, 0);
+		// pretty_print_ast(sh->ast, 0);
 		simple_command_exec(&(sh->ast));
 		free_tokens(sh->tokens);
 		free_ast(sh->ast);
