@@ -151,7 +151,10 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	close(fd[1]); // Possible error message needed: errno.
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
-	alt_exec_switch(&((*ast)->right), fd[0]);
+	if ((*ast)->right->type == NODE_PIPE)
+		exec_pipe(&((*ast)->right));
+	else
+		alt_exec_switch(&((*ast)->right), fd[0]);
 	close(fd[0]); // Possible error message needed: errno.
 	child_free(NULL);
 	exit(0);
