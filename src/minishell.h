@@ -223,6 +223,6 @@ void	alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
 void	alt_exec_switch(t_ast_node **ast, int fd_to_close);
 void	exec_pipe_left(t_ast_node **ast, int fd[2]);
 void	exec_pipe_right(t_ast_node **ast, int fd[2]);
-void	exec_pipe(t_ast_node **ast);
+void	exec_pipe(t_ast_node **ast, int fd_to_close);
 
 #endif

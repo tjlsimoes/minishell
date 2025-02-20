@@ -152,7 +152,7 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
 	if ((*ast)->right->type == NODE_PIPE)
-		exec_pipe(&((*ast)->right));
+		exec_pipe(&((*ast)->right), fd[0]);
 	else
 		alt_exec_switch(&((*ast)->right), fd[0]);
 	close(fd[0]); // Possible error message needed: errno.
@@ -160,13 +160,15 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	exit(0);
 }
 
-void	exec_pipe(t_ast_node **ast)
+void	exec_pipe(t_ast_node **ast, int	fd_to_close)
 {
 	int			fd[2];
 	int			pid_left;
 	int			pid_right;
 	int			wstatus;
-	
+
+	if (fd_to_close != -1)
+		close(fd_to_close); // Possible error message needed: errno.
 	if (!ast || !(*ast))
 		return ;
 	if (pipe(fd) == -1)
@@ -205,5 +207,5 @@ void	simple_command_exec(t_ast_node **ast)
 		&& node->right->value[0] == '\0')
 		return (exec_switch(&(node->left)));
 	if (node->type == NODE_PIPE)
-		return (exec_pipe(&node));
+		return (exec_pipe(&node, -1));
 }
