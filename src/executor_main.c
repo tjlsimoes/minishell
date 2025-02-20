@@ -33,6 +33,14 @@ void	builtins_switch(t_ast_node **ast)
 		sh->exit_status = ft_export_exec(ast);
 }
 
+void	builtins_close_fds(int orig_stdin, int orig_stdout)
+{
+	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
+	dup2(orig_stdout, STDOUT_FILENO);
+	close(orig_stdin);
+	close(orig_stdout);
+}
+
 void	builtins_exec(t_ast_node **ast)
 {
 	int			orig_stdin;
@@ -41,18 +49,15 @@ void	builtins_exec(t_ast_node **ast)
 	orig_stdin = dup(STDIN_FILENO);
 	orig_stdout = dup(STDOUT_FILENO);
 	if (!gen_heredoc(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_redirect_out(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_redirect_in(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_append(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	builtins_switch(ast);
-	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
-	dup2(orig_stdout, STDOUT_FILENO);
-	close(orig_stdin);
-	close(orig_stdout);
+	builtins_close_fds(orig_stdin, orig_stdout);
 }
 // Custom handling of exit could be implemented here
 	// else if (ft_strncmp(node->value, "exit",
