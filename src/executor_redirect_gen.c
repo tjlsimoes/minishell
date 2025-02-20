@@ -25,7 +25,7 @@ int	gen_redirect_out(t_ast_node **ast)
 	if (fd_out == -1)
 		return (ft_putstr_fd("Open error\n", 2), 0); // Possible error message needed: errno.
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (close(fd_out), ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
 	if (close(fd_out) == -1)
 		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
 	return (1);
@@ -44,7 +44,7 @@ int	gen_redirect_in(t_ast_node **ast)
 	if (fd_in == -1)
 		return (0); // Possible error message needed: errno.
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (0); // Possible error message needed: errno.
+		return (close(fd_in), 0); // Possible error message needed: errno.
 	if (close(fd_in) == -1)
 		return (0); // Possible error message needed: errno.
 	return (1);
@@ -63,7 +63,7 @@ int	gen_append(t_ast_node **ast)
 	if (fd_out == -1)
 		return (ft_putstr_fd("Open error\n", 2), 0); // Possible error message needed: errno.
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (close(fd_out), ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
 	if (close(fd_out) == -1)
 		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
 	return (1);
@@ -107,7 +107,7 @@ int	gen_heredoc(t_ast_node **ast)
 	if (close(fd[1]) == -1)
 		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
+		return (close(fd[0]), ft_putstr_fd("Dup2 error\n", 2), 0); // Possible error message needed: errno.
 	if (close(fd[0]) == -1)
 		return (ft_putstr_fd("Close error\n", 2), 0); // Possible error message needed: errno.
 	return (1);
