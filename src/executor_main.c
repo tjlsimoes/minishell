@@ -140,29 +140,34 @@ void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
 		alt_attempt_path_res(ast, fd_to_close);
 }
 
+void	exec_pipe_child_exit(int fd_to_close, char *error_msg)
+{
+	close(fd_to_close); // Possible error message needed: errno.
+	child_free(NULL);
+	if (error_msg)
+		ft_putstr_fd(error_msg, 2);
+	exit(0);
+}
+
 void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]); // Possible error message needed: errno.
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+		return (exec_pipe_child_exit(fd[1], "Dup2 error\n")); // Possible error message needed: errno.
 	alt_exec_switch(&((*ast)->left), fd[1]);
-	close(fd[1]); // Possible error message needed: errno.
-	child_free(NULL);
-	exit(0);
+	exec_pipe_child_exit(fd[1], NULL);
 }
 
 void	exec_pipe_right(t_ast_node **ast, int fd[2])
 {
 	close(fd[1]); // Possible error message needed: errno.
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (ft_putstr_fd("Dup2 error\n", 2)); // Possible error message needed: errno.
+		return (exec_pipe_child_exit(fd[0], "Dup2 error\n")); // Possible error message needed: errno.
 	if ((*ast)->right->type == NODE_PIPE)
 		exec_pipe(&((*ast)->right), fd[0]);
 	else
 		alt_exec_switch(&((*ast)->right), fd[0]);
-	close(fd[0]); // Possible error message needed: errno.
-	child_free(NULL);
-	exit(0);
+	exec_pipe_child_exit(fd[0], NULL);
 }
 
 void	exec_pipe(t_ast_node **ast, int	fd_to_close)
