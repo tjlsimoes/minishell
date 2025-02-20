@@ -71,7 +71,7 @@ char	*get_env_key(char *pair)
 	if (!pair)
 		return (NULL);
 	equal_idx = idx(pair, '=');
-	if (equal_idx <= 1)
+	if (equal_idx <= 0)
 		return (NULL);
 	key = ft_calloc(1, equal_idx + 1);
 	if (!key)
