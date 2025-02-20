@@ -12,20 +12,27 @@
 
 #include "minishell.h"
 
-void	set_exit_status(int wstatus)
+// If child_wait evaluates to true it will follow a set
+//   of conditions towards updating the stored exit status.
+// It will also update the "exit status environment variable".
+
+void	set_exit_status(int wstatus, bool child_wait)
 {
 	t_minishell	*minishell;
 	char		*env_exit_status;
 	char		*temp;
 
 	minishell = get_sh();
-	if (WIFEXITED(wstatus))
-		minishell->exit_status = WEXITSTATUS(wstatus);
-	else if (WIFSIGNALED(wstatus))
+	if (child_wait)
 	{
-		minishell->exit_status = WTERMSIG(wstatus);
-		if (minishell->exit_status != 131)
-			minishell->exit_status += 128;
+		if (WIFEXITED(wstatus))
+			minishell->exit_status = WEXITSTATUS(wstatus);
+		else if (WIFSIGNALED(wstatus))
+		{
+			minishell->exit_status = WTERMSIG(wstatus);
+			if (minishell->exit_status != 131)
+				minishell->exit_status += 128;
+		}
 	}
 	env_exit_status = ft_itoa(minishell->exit_status);
 	temp = ft_strjoin("?=", env_exit_status);

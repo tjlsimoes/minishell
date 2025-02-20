@@ -31,6 +31,7 @@ void	builtins_switch(t_ast_node **ast)
 		sh->exit_status = ft_unset_exec(ast);
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
+	set_exit_status(sh->exit_status, false);
 }
 
 void	builtins_close_fds(int orig_stdin, int orig_stdout)
@@ -201,7 +202,7 @@ void	exec_pipe(t_ast_node **ast, int	fd_to_close)
 	// Wait for both child processes, ensuring exit status is updated to the command on the right.
 	waitpid(pid_left, &wstatus, 0);
 	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
-	set_exit_status(wstatus);
+	set_exit_status(wstatus, true);
 }
 
 void	simple_command_exec(t_ast_node **ast)

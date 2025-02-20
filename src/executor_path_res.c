@@ -133,5 +133,5 @@ void	attempt_path_resolution(t_ast_node **ast)
 		return (child_exec(abs_path, ast));
 	waitpid(pid, &wstatus, 0);
 	free(abs_path);
-	set_exit_status(wstatus);
+	set_exit_status(wstatus, true);
 }
