@@ -21,8 +21,8 @@ int	invalid_key(char *key)
 	i = 0;
 	while (key[i])
 	{
-		if ((special_chars(key[i]) || !ft_isalnum(key[i]))
-			&& key[i] != '_')
+		if ((special_chars(key[i]) || key[i] != '_')
+			&& !ft_isalnum(key[i]))
 			return (1);
 		i++;
 	}
