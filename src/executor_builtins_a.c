@@ -81,6 +81,7 @@ int	ft_echo_iter(t_ast_node **ast, bool n)
 	current = *ast;
 	while (current)
 	{
+		treat_echo_str(&current);
 		if (current->right)
 		{
 			exit_status = ft_echo(current->value, true);

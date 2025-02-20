@@ -184,6 +184,7 @@ void			builtins_exec(t_ast_node **ast);
 void			exec_switch(t_ast_node **ast);
 void			simple_command_exec(t_ast_node **ast);
 
+void			treat_echo_str(t_ast_node **ast);
 int				ft_echo_iter(t_ast_node **ast, bool n);
 int				ft_echo_exec(t_ast_node **ast);
 char			**path_split(void);
