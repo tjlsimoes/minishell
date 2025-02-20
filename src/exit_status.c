@@ -15,6 +15,8 @@
 void	set_exit_status(int wstatus)
 {
 	t_minishell	*minishell;
+	char		*env_exit_status;
+	char		*temp;
 
 	minishell = get_sh();
 	if (WIFEXITED(wstatus))
@@ -25,6 +27,11 @@ void	set_exit_status(int wstatus)
 		if (minishell->exit_status != 131)
 			minishell->exit_status += 128;
 	}
+	env_exit_status = ft_itoa(minishell->exit_status);
+	temp = ft_strjoin("?=", env_exit_status);
+	add_env_var(&(get_sh()->env_var), temp);
+	free(env_exit_status);
+	free(temp);
 }
 // Not really sure why 131 ought to be handled differently...
 

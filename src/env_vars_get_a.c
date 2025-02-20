@@ -25,6 +25,8 @@ char	*get_non_var(char *str)
 		return (NULL);
 	if (ft_isdigit(str[0]))
 		return (str);
+	else if (str[0] == '?')
+		return (&(str[1]));
 	while (str[i])
 	{
 		if ((special_chars(str[i]) || !ft_isalnum(str[i]))

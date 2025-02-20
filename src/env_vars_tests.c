@@ -316,3 +316,6 @@
 // valgrind ./minishell Hello$HOME\ $USER\ $USER\ $HOME\ $$$$$
 // valgrind ./minishell 'Hello$HOME $USER $USER $$HOME $?'
 // valgrind ./minishell 'Hello$HOME $USER $USER $$$HOME $?'
+// valgrind ./minishell 'Hello$HOME  $?Hello $USER $USER $$$HOME $?'
+// valgrind ./minishell 'Hello$HOME  $??Hello $USER $USER $$$HOME $?'
+// valgrind ./minishell '$?Hello$HOME  $??Hello $USER $USER $$$HOME $?'
