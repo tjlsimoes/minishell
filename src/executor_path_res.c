@@ -23,13 +23,13 @@ char	**path_split(void)
 			get_env_pair(&(get_sh()->env_var), "PATH"));
 	if (!path_value)
 		return (NULL);
-	path_split = ft_split(path_value, ':');
+	path_split = get_path_split(path_value, ':');
 	if (!path_split)
 		return (free(path_value), NULL);
 	i = 0;
 	while (path_split[i])
 	{
-		temp = ft_strjoin(path_split[i], "/");
+		temp = get_abs_path(path_split[i]);
 		if (!temp)
 			break ;
 		free(path_split[i]);

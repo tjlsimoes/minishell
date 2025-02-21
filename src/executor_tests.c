@@ -258,3 +258,91 @@
 // 	free(str);
 // 	return (0);
 // }
+
+///////////////////////////////////////////////////////////////////////////
+// Test get_path_split(char *s, char c)
+
+// int	main(int argc, char **argv)
+// {
+// 	char **output;
+// 	int		i;
+
+// 	if (!argc && !argv[1] && !argv[2])
+// 		return (1);
+// 	printf("Word count: %d\n", alt_count_words(argv[1], argv[2][0]));
+
+// 	i = 0;
+// 	output = get_path_split(argv[1], argv[2][0]);
+// 	if (!output)
+// 	{
+// 		printf("NULL returned\n");
+// 		return (1);
+// 	}
+
+// 	while (output[i])
+// 	{
+// 		printf("Output[%d]: %s\n", i, output[i]);
+// 		i++;
+// 	}
+// 	clear_array(output);
+// 	return (0);
+// }
+// valgrind --leak-check=full ./minishell 'bbbbbbbbbbbbbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'bbbbbbbbbabbbbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'bbbbbbbbbabbabbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'babbbbbbbbabbabbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'ababbbbbbbbabbabbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'abbabbbbbbbbabbabbbbbb' 'b'
+// make
+// valgrind --leak-check=full ./minishell 'abbabbbbbbbbabbabbbbbb' 'b'
+// history
+// valgrind --leak-check=full ./minishell 'babbbbbbbbabbabbbbbb' 'b'
+// valgrind --leak-check=full ./minishell 'bbaab' 'b'
+// valgrind --leak-check=full ./minishell 'bbab' 'b'
+// valgrind --leak-check=full ./minishell 'bbbab' 'b'
+// valgrind --leak-check=full ./minishell 'bbabbabba' 'b'
+// valgrind --leak-check=full ./minishell 'babababa' 'b'
+// valgrind --leak-check=full ./minishell 'babbab' 'b'
+// valgrind --leak-check=full ./minishell '' 'b'
+// valgrind --leak-check=full ./minishell '' ''
+// valgrind --leak-check=full ./minishell 'b' 'b'
+// valgrind --leak-check=full ./minishell 'a' 'b'
+// valgrind --leak-check=full ./minishell 'ab' 'b'
+// valgrind --leak-check=full ./minishell 'bab' 'b'
+
+
+///////////////////////////////////////////////////////////////////////////
+// Test path_split(void)
+
+// void	print_array(char **array)
+// {
+// 	int	i;
+
+// 	if (!array || !(*array))
+// 		return ;
+// 	i = 0;
+// 	while (array[i])
+// 	{
+// 		ft_printf("%s\n", array[i]);
+// 		i++;
+// 	}
+// }
+
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*new_path;
+// 	char	**path_array;
+
+// 	if (!argc && !argv[1] && !envp)
+// 		return (1);
+// 	init_minishell(envp);
+
+// 	new_path = ft_strjoin("PATH=", argv[1]);
+// 	add_env_var(&(get_sh()->env_var), argv[1]);
+// 	path_array = path_split();
+// 	print_array(path_array);
+// 	clear_array(path_array);
+// 	ft_lstdel(&(get_sh()->env_var));
+// 	free(new_path);
+// 	return (0);
+// }

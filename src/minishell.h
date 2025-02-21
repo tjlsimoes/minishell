@@ -211,6 +211,14 @@ void			clear_array_idx(char **array, int idx);
 
 char			**generate_argv(t_ast_node **ast);
 char			**generate_envp(void);
+
+void			alt_split_print_test(char *s, int b, int e);
+int				split_find_end(char *s, int start, char c);
+int				alt_count_words(char *s, char c);
+char			*alt_get_next_word(char **s, char c);
+int				init_get_path_split(int *words, char ***result, char *s, char c);
+char			**get_path_split(char *s, char c);
+char			*get_abs_path(char *path);
 int				init_path_vars(char ***split, char *binary, int *i);
 char			*path_resolution(char *binary);
 void			attempt_path_resolution(t_ast_node **ast);
