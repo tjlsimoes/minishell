@@ -25,6 +25,8 @@ char	*get_non_var(char *str)
 		return (NULL);
 	if (ft_isdigit(str[0]))
 		return (str);
+	else if (str[0] == '?')
+		return (&(str[1]));
 	while (str[i])
 	{
 		if ((special_chars(str[i]) || !ft_isalnum(str[i]))
@@ -69,7 +71,7 @@ char	*get_env_key(char *pair)
 	if (!pair)
 		return (NULL);
 	equal_idx = idx(pair, '=');
-	if (equal_idx <= 1)
+	if (equal_idx <= 0)
 		return (NULL);
 	key = ft_calloc(1, equal_idx + 1);
 	if (!key)
@@ -93,7 +95,7 @@ char	*alt_get_env_key(char *pair)
 	if (!pair)
 		return (NULL);
 	equal_idx = idx(pair, '=');
-	if (equal_idx <= 1)
+	if (equal_idx <= 0)
 		return (ft_strdup(pair));
 	key = ft_calloc(1, equal_idx + 1);
 	if (!key)
@@ -116,7 +118,7 @@ char	*get_env_value(char *pair)
 	if (!pair)
 		return (NULL);
 	equal_idx = idx(pair, '=');
-	if (equal_idx <= 1)
+	if (equal_idx <= 0)
 		return (NULL);
 	size = ft_strlen(pair) - equal_idx;
 	value = ft_calloc(1, size);

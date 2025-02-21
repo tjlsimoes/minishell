@@ -74,3 +74,10 @@ void	child_free(char *abs_path)
 	free(get_sh()->input);
 	free(abs_path);
 }
+
+void	treat_echo_str(t_ast_node **ast)
+{
+	if ((*ast)->quote_char == '"'
+		|| (*ast)->quote_char == 'N')
+		expand_env_var(&((*ast)->value));
+}

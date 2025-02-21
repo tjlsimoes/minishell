@@ -50,7 +50,7 @@ void	remove_quotes(char **str)
 int	valid_env_char(char c)
 {
 	if (!special_chars(c) && !ft_isdigit(c)
-		&& (c == '_' || ft_isalpha(c)))
+		&& (c == '_' || ft_isalpha(c) || c == '?'))
 		return (1);
 	return (0);
 }

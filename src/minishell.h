@@ -95,7 +95,7 @@ typedef struct s_minishell
 t_minishell		*get_sh(void);
 void			init_minishell(char **envp);
 void			do_something(void);
-void			set_exit_status(int wstatus);
+void			set_exit_status(int wstatus, bool child_wait);
 
 // Environment Exploration
 char			*get_non_var(char *str);
@@ -192,10 +192,12 @@ int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
 void			builtins_switch(t_ast_node **ast);
+void			builtins_close_fds(int orig_stdin, int orig_stdout);
 void			builtins_exec(t_ast_node **ast);
 void			exec_switch(t_ast_node **ast);
 void			simple_command_exec(t_ast_node **ast);
 
+void			treat_echo_str(t_ast_node **ast);
 int				ft_echo_iter(t_ast_node **ast, bool n);
 int				ft_echo_exec(t_ast_node **ast);
 char			**path_split(void);
@@ -231,6 +233,7 @@ void			heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2]);
 void			rm_quotes_gen_res(char **str, char **result);
 
 
+<<<<<<< HEAD
 void			alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close);
 void			alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
 void			alt_exec_switch(t_ast_node **ast, int fd_to_close);
@@ -240,5 +243,14 @@ void			exec_pipe(t_ast_node **ast);
 
 int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child);
 
+=======
+void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close);
+void	alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
+void	alt_exec_switch(t_ast_node **ast, int fd_to_close);
+void	exec_pipe_child_exit(int fd_to_close, char *error_msg);
+void	exec_pipe_left(t_ast_node **ast, int fd[2]);
+void	exec_pipe_right(t_ast_node **ast, int fd[2]);
+void	exec_pipe(t_ast_node **ast, int fd_to_close);
+>>>>>>> origin/fds
 
 #endif

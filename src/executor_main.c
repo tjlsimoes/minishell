@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/19 18:25:54 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:29:23 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ void	builtins_switch(t_ast_node **ast)
 		sh->exit_status = ft_export_exec(ast);
 	else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_exit_exec(sh, node->left, false);
+	set_exit_status(sh->exit_status, false);
+}
+
+void	builtins_close_fds(int orig_stdin, int orig_stdout)
+{
+	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
+	dup2(orig_stdout, STDOUT_FILENO);
+	close(orig_stdin);
+	close(orig_stdout);
 }
 
 void	builtins_exec(t_ast_node **ast)
@@ -43,18 +52,15 @@ void	builtins_exec(t_ast_node **ast)
 	orig_stdin = dup(STDIN_FILENO);
 	orig_stdout = dup(STDOUT_FILENO);
 	if (!gen_heredoc(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_redirect_out(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_redirect_in(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_append(ast))
-		return ;
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	builtins_switch(ast);
-	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
-	dup2(orig_stdout, STDOUT_FILENO);
-	close(orig_stdin);
-	close(orig_stdout);
+	builtins_close_fds(orig_stdin, orig_stdout);
 }
 
 void	exec_switch(t_ast_node **ast)
@@ -83,13 +89,13 @@ void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close)
 	char	**envp;
 
 	if (!gen_heredoc(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), close(fd_to_close), exit(0));
 	if (!gen_redirect_in(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), close(fd_to_close), exit(0));
 	if (!gen_redirect_out(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), close(fd_to_close), exit(0));
 	if (!gen_append(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), close(fd_to_close), exit(0));
 	argv = generate_argv(ast);
 	envp = generate_envp();
 	// Shouldn't all memory aside from argv and envp not be freed?
@@ -135,38 +141,46 @@ void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
 		alt_attempt_path_res(ast, fd_to_close);
 }
 
+void	exec_pipe_child_exit(int fd_to_close, char *error_msg)
+{
+	close(fd_to_close); // Possible error message needed: errno.
+	child_free(NULL);
+	if (error_msg)
+		ft_putstr_fd(error_msg, 2);
+	exit(0);
+}
+
 void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]); // Possible error message needed: errno.
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor")); // Possible error message needed: errno.
+		return (exec_pipe_child_exit(fd[1], "Dup2 error\n")); // Possible error message needed: errno.
 	alt_exec_switch(&((*ast)->left), fd[1]);
-	close(fd[1]); // Possible error message needed: errno.
-	child_free(NULL);
-	exit(0);
+	exec_pipe_child_exit(fd[1], NULL);
 }
 
 void	exec_pipe_right(t_ast_node **ast, int fd[2])
 {
 	close(fd[1]); // Possible error message needed: errno.
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor")); // Possible error message needed: errno.
+		return (exec_pipe_child_exit(fd[0], "Dup2 error\n")); // Possible error message needed: errno.
 	if ((*ast)->right->type == NODE_PIPE)
-		exec_pipe(&((*ast)->right));
+		exec_pipe(&((*ast)->right), fd[0]);
 	else
 		alt_exec_switch(&((*ast)->right), fd[0]);
-	close(fd[0]); // Possible error message needed: errno.
-	child_free(NULL);
-	exit(0);
+	exec_pipe_child_exit(fd[0], NULL);
 }
 
-void	exec_pipe(t_ast_node **ast)
+void	exec_pipe(t_ast_node **ast, int	fd_to_close)
 {
 	int			fd[2];
 	int			pid_left;
 	int			pid_right;
 	int			wstatus;
-	
+
+	if (fd_to_close != -1)
+		close(fd_to_close); // Possible error message needed: errno.
 	if (!ast || !(*ast))
 		return ;
 	if (pipe(fd) == -1)
@@ -189,7 +203,7 @@ void	exec_pipe(t_ast_node **ast)
 	// Wait for both child processes, ensuring exit status is updated to the command on the right.
 	waitpid(pid_left, &wstatus, 0);
 	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
-	set_exit_status(wstatus);
+	set_exit_status(wstatus, true);
 }
 
 void	simple_command_exec(t_ast_node **ast)
@@ -205,5 +219,5 @@ void	simple_command_exec(t_ast_node **ast)
 		&& node->right->value[0] == '\0')
 		return (exec_switch(&(node->left)));
 	if (node->type == NODE_PIPE)
-		return (exec_pipe(&node));
+		return (exec_pipe(&node, -1));
 }

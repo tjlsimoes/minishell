@@ -21,8 +21,8 @@ int	invalid_key(char *key)
 	i = 0;
 	while (key[i])
 	{
-		if ((special_chars(key[i]) || !ft_isalnum(key[i]))
-			&& key[i] != '_')
+		if ((special_chars(key[i]) || key[i] != '_')
+			&& !ft_isalnum(key[i]))
 			return (1);
 		i++;
 	}
@@ -68,6 +68,8 @@ int	ft_export(char **str)
 // Returns 0 no matter what, currently.
 int	ft_unset(char *env_name)
 {
+	if (ft_strncmp(env_name, "?", 1) == 0)
+		return (0);
 	del_env_var(&(get_sh()->env_var), env_name);
 	return (0);
 }
@@ -94,6 +96,11 @@ int	ft_env(t_list **lst)
 	node = *lst;
 	while (node)
 	{
+		if (ft_strncmp(node->content, "?=", 2) == 0)
+		{
+			node = node->next;
+			continue ;
+		}
 		if (write(1, node->content,
 				ft_strlen(node->content)) == -1)
 			// return (125);
