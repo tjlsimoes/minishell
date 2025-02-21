@@ -39,10 +39,7 @@ char	**path_split(void)
 	free(path_value);
 	return (path_split);
 }
-// Does not regard:
-// Empty entries (::) or a trailing colon (:) in $PATH mean
-// that Bash considers the current directory (.) as part of $PATH.
-// Example: If $PATH=":/usr/bin", Bash searches . first.
+
 
 int	init_path_vars(char ***split, char *binary, int *i)
 {

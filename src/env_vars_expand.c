@@ -15,7 +15,6 @@
 // Receives an already allocated string.
 // Returns same string with all environment
 // variables expanded.
-// Currently does not expand $?
 void	expand_env_var(char	**str)
 {
 	int		env_idx;
