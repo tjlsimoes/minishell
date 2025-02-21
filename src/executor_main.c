@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/21 11:29:23 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:34:58 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	exec_pipe_child_exit(int fd_to_close, char *error_msg)
 	close(fd_to_close); // Possible error message needed: errno.
 	child_free(NULL);
 	if (error_msg)
-		ft_putstr_fd(error_msg, 2);
+		report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
 	exit(0);
 }
 
@@ -154,7 +154,6 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]); // Possible error message needed: errno.
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		return (report_error(ERROR_DUP2, "Failed to duplicate file descriptor")); // Possible error message needed: errno.
 		return (exec_pipe_child_exit(fd[1], "Dup2 error\n")); // Possible error message needed: errno.
 	alt_exec_switch(&((*ast)->left), fd[1]);
 	exec_pipe_child_exit(fd[1], NULL);
