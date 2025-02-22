@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:23:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/19 18:34:54 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:23:32 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,29 +55,60 @@ static t_ast_node	*handle_redirect(char *value, int fd, int redirect_index)
 	return (node);
 }
 
+static char	*remove_matching_quotes(char *value)
+{
+	int		len;
+	int		i;
+	int		j;
+	char	quote_char;
+
+	len = ft_strlen(value);
+	i = 0;
+	j = 0;
+	quote_char = '\0';
+	while (i < len)
+	{
+		if ((value[i] == '\'' || value[i] == '"') && quote_char == '\0')
+			quote_char = value[i];
+		else if (value[i] == quote_char)
+			quote_char = '\0';
+		else
+			value[j++] = value[i];
+		i++;
+	}
+	value[j] = '\0';
+	return (value);
+}
+
 static t_ast_node	*handle_quotes(char *value, int fd)
 {
 	t_ast_node	*node;
 	int			len;
+	char		quote_char;
 
 	len = ft_strlen(value);
-	value[len - 1] = '\0';
-	node = create_node(NODE_ARGUMENT, value + 1, fd);
-	node->quote_char = value[0];
+	quote_char = value[0];
+	if (len >= 2 && ((value[0] == '"' && value[len - 1] == '"')
+			|| (value[0] == '\'' && value[len - 1] == '\'')))
+	{
+		value[len - 1] = '\0';
+		node = create_node(NODE_ARGUMENT, value + 1, fd);
+		node->quote_char = quote_char;
+	}
+	else
+	{
+		value = remove_matching_quotes(value);
+		node = create_node(NODE_ARGUMENT, value, fd);
+	}
 	return (node);
 }
 
 t_ast_node	*parse_argument_node(char *value, int fd)
 {
-	int	len;
 	int	redirect_index;
 
 	redirect_index = find_redirect_index(value);
 	if (redirect_index != -1)
 		return (handle_redirect(value, fd, redirect_index));
-	len = ft_strlen(value);
-	if (len >= 2 && ((value[0] == '"' && value[len - 1] == '"')
-			|| (value[0] == '\'' && value[len - 1] == '\'')))
-		return (handle_quotes(value, fd));
-	return (create_node(NODE_ARGUMENT, value, fd));
+	return (handle_quotes(value, fd));
 }
