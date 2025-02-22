@@ -6,28 +6,11 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:24:38 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 13:04:27 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:49:56 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*clean_arg(char *arg)
-{
-	char	*clean;
-	char	*write;
-
-	clean = ft_strdup(arg);
-	write = clean;
-	while (*arg)
-	{
-		if (*arg != '"' && *arg != '\'')
-			*write++ = *arg;
-		arg++;
-	}
-	*write = '\0';
-	return (clean);
-}
 
 static void	exit_shell(int exit_code, int orig_stdin, int orig_stdout)
 {

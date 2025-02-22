@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/18 14:50:38 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:51:17 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,29 @@ static void	attach_redirect(t_ast_node *cmd_node, t_ast_node *redirect_node)
 
 static char	*get_filename(char **tokens, int *index, char *redirect_s)
 {
+	char	*filename;
+	char	*cleaned_filename;
+
 	if (redirect_s && *(redirect_s + 1) != '\0' && *(redirect_s + 1) != '>')
 	{
 		(*index)++;
-		return (ft_strdup(redirect_s + 1));
+		filename = ft_strdup(redirect_s + 1);
 	}
 	else if (tokens[(*index) + 1])
 	{
 		(*index) += 2;
-		return (ft_strdup(tokens[(*index) - 1]));
+		filename = ft_strdup(tokens[(*index) - 1]);
 	}
-	(*index)++;
-	report_error(ERROR_SYNTAX, "newline");
+	else
+	{
+		(*index)++;
+		return (report_error(ERROR_SYNTAX, "newline"), NULL);
+	}
+	if (filename)
+	{
+		cleaned_filename = clean_arg(filename);
+		return (free(filename), cleaned_filename);
+	}
 	return (NULL);
 }
 

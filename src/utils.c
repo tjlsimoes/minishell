@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 12:58:10 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:46:53 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,21 @@ void	free_tokens(char **tokens)
 		i++;
 	}
 	free(tokens);
+}
+
+char	*clean_arg(char *arg)
+{
+	char	*clean;
+	char	*write;
+
+	clean = ft_strdup(arg);
+	write = clean;
+	while (*arg)
+	{
+		if (*arg != '"' && *arg != '\'')
+			*write++ = *arg;
+		arg++;
+	}
+	*write = '\0';
+	return (clean);
 }
