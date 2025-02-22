@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/19 18:34:43 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:03:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		sh->input = readline("minishell> ");
 		if (sh->input == NULL)
-		{
-			// printf("\nExiting minishell...\n");
 			break ;
-		}
 		continue_shell = process_command(sh->input);
 		free(sh->input);
 	}

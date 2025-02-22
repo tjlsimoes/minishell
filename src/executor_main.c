@@ -6,13 +6,13 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/21 11:34:58 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 11:29:37 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	builtins_switch(t_ast_node **ast)
+void	builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout)
 {
 	t_ast_node	*node;
 	t_minishell	*sh;
@@ -32,7 +32,7 @@ void	builtins_switch(t_ast_node **ast)
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
 	else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
-		sh->exit_status = ft_exit_exec(sh, node->left, false);
+		sh->exit_status = ft_exit_exec(sh, node->left, false, orig_stdin, orig_stdout);
 	set_exit_status(sh->exit_status, false);
 }
 
@@ -59,7 +59,7 @@ void	builtins_exec(t_ast_node **ast)
 		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (!gen_append(ast))
 		return (builtins_close_fds(orig_stdin, orig_stdout));
-	builtins_switch(ast);
+	builtins_switch(ast, orig_stdin, orig_stdout);
 	builtins_close_fds(orig_stdin, orig_stdout);
 }
 

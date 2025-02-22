@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/21 11:32:46 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 11:32:01 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_minishell
 	char		**tokens;
 	t_ast_node	*ast;
 	int			exit_status;
+	bool		should_exit;
 }	t_minishell;
 
 t_minishell		*get_sh(void);
@@ -191,7 +192,8 @@ void			setup_signals(void);
 int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
-void			builtins_switch(t_ast_node **ast);
+// void			builtins_switch(t_ast_node **ast);
+void			builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout);
 void			builtins_close_fds(int orig_stdin, int orig_stdout);
 void			builtins_exec(t_ast_node **ast);
 void			exec_switch(t_ast_node **ast);
@@ -239,7 +241,8 @@ void			exec_pipe_child_exit(int fd_to_close, char *error_msg);
 void			exec_pipe(t_ast_node **ast, int fd_to_close);
 void			exec_pipe_left(t_ast_node **ast, int fd[2]);
 void			exec_pipe_right(t_ast_node **ast, int fd[2]);
-int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child);
+// int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child);
+int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child, int orig_stdin, int orig_stdout);
 
 
 #endif
