@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 12:05:39 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:31:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ void			setup_signals(void);
 int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
-// void			builtins_switch(t_ast_node **ast);
 void			builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout);
 void			builtins_close_fds(int orig_stdin, int orig_stdout);
 void			builtins_exec(t_ast_node **ast);
@@ -242,6 +241,8 @@ void			exec_pipe(t_ast_node **ast, int fd_to_close);
 void			exec_pipe_left(t_ast_node **ast, int fd[2]);
 void			exec_pipe_right(t_ast_node **ast, int fd[2]);
 int				ft_exit_exec(t_minishell *shell, t_ast_node *args, int orig_stdin, int orig_stdout);
+
+
 
 
 #endif

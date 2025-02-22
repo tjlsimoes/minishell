@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/18 12:37:04 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:53:09 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,15 @@ void	expand_env_variable(char **token)
 
 t_ast_node	*parse_env_variable(char **tokens, int *index)
 {
-	char	*expanded;
+	char		*expanded;
+	t_node_type	node_type;
 
 	expand_env_var(&(tokens[*index]));
 	expanded = tokens[*index];
+	if (*index == 0)
+		node_type = NODE_COMMAND;
+	else
+		node_type = NODE_ARGUMENT;
 	(*index)++;
-	return (create_node(NODE_ARGUMENT, expanded, -1));
+	return (create_node(node_type, expanded, -1));
 }
