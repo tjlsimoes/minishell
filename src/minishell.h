@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 11:32:01 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:05:39 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,8 +241,7 @@ void			exec_pipe_child_exit(int fd_to_close, char *error_msg);
 void			exec_pipe(t_ast_node **ast, int fd_to_close);
 void			exec_pipe_left(t_ast_node **ast, int fd[2]);
 void			exec_pipe_right(t_ast_node **ast, int fd[2]);
-// int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child);
-int				ft_exit_exec(t_minishell *shell, t_ast_node *args, bool in_child, int orig_stdin, int orig_stdout);
+int				ft_exit_exec(t_minishell *shell, t_ast_node *args, int orig_stdin, int orig_stdout);
 
 
 #endif

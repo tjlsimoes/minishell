@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/22 11:29:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/22 12:09:03 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout)
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
 	else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
-		sh->exit_status = ft_exit_exec(sh, node->left, false, orig_stdin, orig_stdout);
+		sh->exit_status = ft_exit_exec(sh, node->left, orig_stdin, orig_stdout);
 	set_exit_status(sh->exit_status, false);
 }
 
