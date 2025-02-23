@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:59:11 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/21 11:37:30 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:34:41 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,42 @@ int	gen_redirect_out(t_ast_node **ast)
 	return (1);
 }
 
-int	gen_redirect_in(t_ast_node **ast)
-{
-	char	*redirect_in;
-	int		fd_in;
+// int	gen_redirect_in(t_ast_node **ast)
+// {
+// 	char	*redirect_in;
+// 	int		fd_in;
 
-	redirect_in = get_redirect_in(ast);
-	fd_in = -2;
-	if (!redirect_in)
-		return (1);
-	fd_in = open(redirect_in, O_RDONLY);
-	if (fd_in == -1)
-		return (report_error(ERROR_OPEN, redirect_in), 0);
-	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (close(fd_in),report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
-	if (close(fd_in) == -1)
-		return (report_error(ERROR_CLOSE, redirect_in),0); 
+// 	redirect_in = get_redirect_in(ast);
+// 	fd_in = -2;
+// 	if (!redirect_in)
+// 		return (1);
+// 	fd_in = open(redirect_in, O_RDONLY);
+// 	if (fd_in == -1)
+// 		return (report_error(ERROR_OPEN, redirect_in), 0);
+// 	if (dup2(fd_in, STDIN_FILENO) == -1)
+// 		return (close(fd_in),report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
+// 	if (close(fd_in) == -1)
+// 		return (report_error(ERROR_CLOSE, redirect_in),0); 
+// 	return (1);
+// }
+
+//all redirections should fail immediately on the first error. That will pass TEST 60 now.
+int gen_redirect_in(t_ast_node **ast)
+{
+	t_ast_node	*node;
+	int			fd_in;
+
+	node = (*ast)->right;
+	while (node)
+	{
+		if (node->type == NODE_REDIRECT_IN)
+		{
+			fd_in = open(node->value, O_RDONLY);
+			if (dup2(fd_in, STDIN_FILENO) == -1)
+				return(close(fd_in), report_error(ERROR_OPEN, node->value), 0);
+		}
+		node = node->right;
+	}
 	return (1);
 }
 

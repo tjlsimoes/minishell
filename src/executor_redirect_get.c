@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:57:41 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/22 11:14:49 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:34:49 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ char	*get_redirect_out(t_ast_node **ast)
 	return (NULL);
 }
 
-char	*get_redirect_in(t_ast_node **ast)
-{
-	t_ast_node	*node;
+// char	*get_redirect_in(t_ast_node **ast)
+// {
+// 	t_ast_node	*node;
 
-	if (!ast || !(*ast))
-		return (NULL);
-	node = (*ast)->right;
-	while (node)
-	{
-		if (node->type == NODE_REDIRECT_IN)
-			return (node->value);
-		node = node->right;
-	}
-	return (NULL);
-}
+// 	if (!ast || !(*ast))
+// 		return (NULL);
+// 	node = (*ast)->right;
+// 	while (node)
+// 	{
+// 		if (node->type == NODE_REDIRECT_IN)
+// 			return (node->value);
+// 		node = node->right;
+// 	}
+// 	return (NULL);
+// }
 
 char	*get_append(t_ast_node **ast)
 {

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 13:52:53 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/23 13:15:50 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,17 @@ void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 			parse_redirect_node(tokens, index, cmd_node);
 		else if (tokens[*index][0] == '$')
 		{
-            if (!cmd_initialized && cmd_node->value[0] == '\0')
-                cmd_initialized = initialize_command(cmd_node, parse_env_variable(tokens, index));
-            else
-                attach_node(cmd_node, parse_env_variable(tokens, index));
+			if (!cmd_initialized && cmd_node->value[0] == '\0')
+				cmd_initialized = initialize_command(cmd_node,
+					parse_env_variable(tokens, index));
+			else
+				attach_node(cmd_node, parse_env_variable(tokens, index));
 		}
 		else
 		{
 			if (!cmd_initialized && cmd_node->value[0] == '\0')
-				cmd_initialized = initialize_command(cmd_node, parse_argument_node(tokens[(*index)++], -1));
+				cmd_initialized = initialize_command(cmd_node,
+					parse_argument_node(tokens[(*index)++], -1));
 			else
 				attach_node(cmd_node, parse_argument_node(tokens[(*index)++], -1));
 		}
