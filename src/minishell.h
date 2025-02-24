@@ -68,7 +68,7 @@ typedef struct s_ast_node
 	t_node_type			type;
 	char				*value;
 	int					fd;
-	char                quote_char;
+	char				quote_char;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
@@ -158,7 +158,7 @@ void			free_ast(t_ast_node *node);
 //parser
 t_ast_node		*parse_command(char **tokens, int *index);
 t_ast_node		*parse_redirect(char **tokens, int *index);
-t_ast_node 		*parse_redirect_node(char **tokens, int *index,
+t_ast_node		*parse_redirect_node(char **tokens, int *index,
 					t_ast_node *cmd_node);
 t_ast_node		*parse_pipe(char **tokens, int *index);
 t_ast_node		*handle_pipe(t_ast_node *root, t_ast_node *node);
@@ -192,9 +192,11 @@ void			setup_signals(void);
 int				ft_cd_exec(t_ast_node **ast);
 int				ft_unset_exec(t_ast_node **ast);
 int				ft_export_exec(t_ast_node **ast);
-void			builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout);
-void			builtins_close_fds(int orig_stdin, int orig_stdout);
-void			builtins_exec(t_ast_node **ast);
+void			builtins_switch(t_ast_node **ast, int orig_stdin,
+					int orig_stdout, int fd_to_close);
+void			builtins_close_fds(int orig_stdin, int orig_stdout,
+					int fd_to_close);
+void			builtins_exec(t_ast_node **ast, int fd_to_close);
 void			exec_switch(t_ast_node **ast);
 void			simple_command_exec(t_ast_node **ast);
 
@@ -216,7 +218,8 @@ void			alt_split_print_test(char *s, int b, int e);
 int				split_find_end(char *s, int start, char c);
 int				alt_count_words(char *s, char c);
 char			*alt_get_next_word(char **s, char c);
-int				init_get_path_split(int *words, char ***result, char *s, char c);
+int				init_get_path_split(int *words, char ***result,
+					char *s, char c);
 char			**get_path_split(char *s, char c);
 char			*get_abs_path(char *path);
 
@@ -249,16 +252,16 @@ int				alt_rm_quotes(char **str);
 void			heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2]);
 void			rm_quotes_gen_res(char **str, char **result);
 
-void			alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close);
+void			alt_child_exec(char *abs_path, t_ast_node **ast,
+					int fd_to_close);
 void			alt_attempt_path_res(t_ast_node **ast, int fd_to_close);
 void			alt_exec_switch(t_ast_node **ast, int fd_to_close);
 void			exec_pipe_child_exit(int fd_to_close, char *error_msg);
 void			exec_pipe(t_ast_node **ast, int fd_to_close);
 void			exec_pipe_left(t_ast_node **ast, int fd[2]);
 void			exec_pipe_right(t_ast_node **ast, int fd[2]);
-int				ft_exit_exec(t_minishell *shell, t_ast_node *args, int orig_stdin, int orig_stdout);
+int				ft_exit_exec(t_ast_node *args, int orig_stdin,
+					int orig_stdout, int fd_to_close);
 char			*clean_arg(char *arg);
-
-
 
 #endif

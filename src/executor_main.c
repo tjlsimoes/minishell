@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-void	builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout)
+void	builtins_switch(t_ast_node **ast, int orig_stdin,
+		int orig_stdout, int fd_to_close)
 {
 	t_ast_node	*node;
 	t_minishell	*sh;
@@ -32,19 +33,22 @@ void	builtins_switch(t_ast_node **ast, int orig_stdin, int orig_stdout)
 	else if (ft_strncmp(node->value, "export", ft_strlen(node->value)) == 0)
 		sh->exit_status = ft_export_exec(ast);
 	else if (ft_strncmp(node->value, "exit", ft_strlen(node->value)) == 0)
-		sh->exit_status = ft_exit_exec(sh, node->left, orig_stdin, orig_stdout);
+		sh->exit_status = ft_exit_exec(node->left, orig_stdin,
+				orig_stdout, fd_to_close);
 	set_exit_status(sh->exit_status, false);
 }
 
-void	builtins_close_fds(int orig_stdin, int orig_stdout)
+void	builtins_close_fds(int orig_stdin, int orig_stdout, int fd_to_close)
 {
 	dup2(orig_stdin, STDIN_FILENO);	// Possible need to check for errors here.
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
 	close(orig_stdout);
+	if (fd_to_close >= 0)
+		close(fd_to_close);
 }
 
-void	builtins_exec(t_ast_node **ast)
+void	builtins_exec(t_ast_node **ast, int fd_to_close)
 {
 	int			orig_stdin;
 	int			orig_stdout;
@@ -52,15 +56,15 @@ void	builtins_exec(t_ast_node **ast)
 	orig_stdin = dup(STDIN_FILENO);
 	orig_stdout = dup(STDOUT_FILENO);
 	if (!gen_heredoc(ast))
-		return (builtins_close_fds(orig_stdin, orig_stdout));
+		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
 	if (!gen_redirect_out(ast))
-		return (builtins_close_fds(orig_stdin, orig_stdout));
+		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
 	if (!gen_redirect_in(ast))
-		return (builtins_close_fds(orig_stdin, orig_stdout));
+		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
 	if (!gen_append(ast))
-		return (builtins_close_fds(orig_stdin, orig_stdout));
-	builtins_switch(ast, orig_stdin, orig_stdout);
-	builtins_close_fds(orig_stdin, orig_stdout);
+		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
+	builtins_switch(ast, orig_stdin, orig_stdout, fd_to_close);
+	builtins_close_fds(orig_stdin, orig_stdout, fd_to_close);
 }
 
 void	exec_switch(t_ast_node **ast)
@@ -76,7 +80,7 @@ void	exec_switch(t_ast_node **ast)
 	builtins[6] = "exit";
 	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
-		builtins_exec(ast);
+		builtins_exec(ast, -2);
 	else
 		attempt_path_resolution(ast);
 }
@@ -136,7 +140,7 @@ void	alt_exec_switch(t_ast_node **ast, int fd_to_close)
 	builtins[6] = "exit";
 	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
-		builtins_exec(ast);
+		builtins_exec(ast, fd_to_close);
 	else
 		alt_attempt_path_res(ast, fd_to_close);
 }

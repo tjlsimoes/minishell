@@ -12,9 +12,10 @@
 
 #include "minishell.h"
 
-static void	exit_shell(int exit_code, int orig_stdin, int orig_stdout)
+static void	exit_shell(int exit_code, int orig_stdin,
+		int orig_stdout, int fd_to_close)
 {
-	builtins_close_fds(orig_stdin, orig_stdout);
+	builtins_close_fds(orig_stdin, orig_stdout, fd_to_close);
 	child_free(NULL);
 	exit(exit_code);
 }
@@ -31,19 +32,19 @@ static int	process_exit_arg(char *arg)
 	return (exit_code);
 }
 
-int	ft_exit_exec(t_minishell *shell, t_ast_node *args,
-		int orig_stdin, int orig_stdout)
+int	ft_exit_exec(t_ast_node *args,
+		int orig_stdin, int orig_stdout, int fd_to_close)
 {
 	int		exit_code;
 	char	*cleaned_arg;
 
 	if (!args)
-		exit_shell(shell->exit_status, orig_stdin, orig_stdout);
+		exit_shell(get_sh()->exit_status, orig_stdin, orig_stdout, fd_to_close);
 	if (args->right)
 		return (report_error(ERROR_EXIT_TOO_MANY_ARGS, NULL), 1);
 	cleaned_arg = clean_arg(args->value);
 	exit_code = process_exit_arg(cleaned_arg);
 	free(cleaned_arg);
-	exit_shell(exit_code, orig_stdin, orig_stdout);
+	exit_shell(exit_code, orig_stdin, orig_stdout, fd_to_close);
 	return (exit_code);
 }
