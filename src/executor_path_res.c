@@ -40,45 +40,21 @@ char	**path_split(void)
 	return (path_split);
 }
 
-
-int	init_path_vars(char ***split, char *binary, int *i)
-{
-	if (!binary)
-		return (1);
-	*split = path_split();
-	if (!split)
-		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, binary), 1);
-	*i = 0;
-	return (0);
-}
-
 char	*path_resolution(char *binary)
 {
-	int		i;
 	char	**split;
-	char	*abs_path;
+	int		path_split_need;
 
-	if (init_path_vars(&split, binary, &i))
+	path_split_need = init_path_vars(&split, binary);
+	if (!path_split_need)
 		return (NULL);
-	while (split[i])
-	{
-		abs_path = ft_strjoin(split[i], binary);
-		if (!abs_path)
-			break ;
-		if (access(abs_path, F_OK) == 0)
-		{
-			if (access(abs_path, X_OK) == 0)
-				return (clear_array(split), abs_path);
-			else
-				return (report_error(ERROR_PERMISSION_DENIED, abs_path),
-					free(abs_path),clear_array(split), NULL);
-		}
-		free(abs_path);
-		i++;
-	}
-	clear_array(split);
-	report_error(ERROR_COMMAND_NOT_FOUND, binary);
-	return (NULL);
+	else if (path_split_need == 2)
+		return (ft_strdup(binary));
+	else if (path_split_need == 3)
+		return (gen_path_pwd(binary));
+	else if (path_split_need == 4)
+		return (gen_path_rel(binary));
+	return (path_res_iter(&split, binary));
 }
 
 void	child_exec(char *abs_path, t_ast_node **ast)

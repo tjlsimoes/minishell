@@ -219,7 +219,15 @@ char			*alt_get_next_word(char **s, char c);
 int				init_get_path_split(int *words, char ***result, char *s, char c);
 char			**get_path_split(char *s, char c);
 char			*get_abs_path(char *path);
-int				init_path_vars(char ***split, char *binary, int *i);
+
+bool			path_check_abs(char *binary);
+bool			path_check_pwd(char *binary);
+bool			path_check_rel(char *binary);
+int				init_path_vars(char ***split, char *binary);
+char			*path_res_iter(char ***split, char *binary);
+char			*gen_path_pwd(char *binary);
+char			*gen_path_rel(char *binary);
+
 char			*path_resolution(char *binary);
 void			attempt_path_resolution(t_ast_node **ast);
 
