@@ -103,6 +103,7 @@ void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close)
 	argv = generate_argv(ast);
 	envp = generate_envp();
 	// Shouldn't all memory aside from argv and envp not be freed?
+	child_free(NULL);
 	if (execve(abs_path, argv, envp) == -1)
 	{
 		child_free(abs_path);
