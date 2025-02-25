@@ -63,14 +63,14 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	char	**envp;
 
 	if (!gen_heredoc(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), exit(1));
 	if (!gen_redirect_in(ast))
 		// return (child_free(abs_path), exit(0));
 		return (child_free(abs_path), exit(1));
 	if (!gen_redirect_out(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), exit(1));
 	if (!gen_append(ast))
-		return (child_free(abs_path), exit(0));
+		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
 	// Shouldn't all memory aside from argv and envp not be freed?
@@ -80,7 +80,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 		child_free(abs_path);
 		clear_array(argv);
 		clear_array(envp);
-		exit(0);
+		exit(1);
 	}
 	exit(0);
 }
