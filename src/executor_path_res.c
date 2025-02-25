@@ -77,7 +77,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	child_free(NULL);
 	if (execve(abs_path, argv, envp) == -1)
 	{
-		child_free(abs_path);
+		free(abs_path);
 		clear_array(argv);
 		clear_array(envp);
 		exit(1);
