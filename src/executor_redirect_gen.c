@@ -12,43 +12,55 @@
 
 #include "minishell.h"
 
-int	gen_redirect_out(t_ast_node **ast)
+int	gen_redirect_out(t_ast_node **current)
 {
-	char	*redirect_out;
-	int		fd_out;
+	int fd_out;
 
-	redirect_out = get_redirect_out(ast);
-	fd_out = -2;
-	if (!redirect_out)
-		return (1);
-	fd_out = open(redirect_out, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	fd_out = open((*current)->value, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, redirect_out), 0); 
+		return (report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
+		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, redirect_out), 0);
+		return (report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
-// int	gen_redirect_in(t_ast_node **ast)
-// {
-// 	char	*redirect_in;
-// 	int		fd_in;
+int	gen_redirect_append(t_ast_node **current)
+{
+	int	fd_out;
 
-// 	redirect_in = get_redirect_in(ast);
-// 	fd_in = -2;
-// 	if (!redirect_in)
-// 		return (1);
-// 	fd_in = open(redirect_in, O_RDONLY);
-// 	if (fd_in == -1)
-// 		return (report_error(ERROR_OPEN, redirect_in), 0);
-// 	if (dup2(fd_in, STDIN_FILENO) == -1)
-// 		return (close(fd_in),report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
-// 	if (close(fd_in) == -1)
-// 		return (report_error(ERROR_CLOSE, redirect_in),0); 
-// 	return (1);
-// }
+	fd_out = open((*current)->value, O_CREAT | O_APPEND | O_WRONLY, 0666);
+	if (fd_out == -1)
+		return (report_error(ERROR_OPEN, (*current)->value), 0);
+	if (dup2(fd_out, STDOUT_FILENO) == -1)
+		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
+	if (close(fd_out) == -1)
+		return (report_error(ERROR_CLOSE, (*current)->value), 0);
+	return (1);
+}
+
+int gen_redirect_stdout(t_ast_node **ast)
+{
+	t_ast_node	*node;
+
+	node = (*ast)->right;
+	while (node)
+	{
+		if (node->type == NODE_REDIRECT_OUT)
+		{
+			if (!gen_redirect_out(&node))
+				return (0);
+		}
+		else if (node->type == NODE_REDIRECT_APPEND)
+		{
+			if (!gen_redirect_append(&node))
+				return (0);
+		}
+		node = node->right;
+	}
+	return (1);
+}
 
 //all redirections should fail immediately on the first error. That will pass TEST 60 now.
 int gen_redirect_in(t_ast_node **ast)
@@ -62,30 +74,15 @@ int gen_redirect_in(t_ast_node **ast)
 		if (node->type == NODE_REDIRECT_IN)
 		{
 			fd_in = open(node->value, O_RDONLY);
+			if (fd_in == -1)
+				return (report_error(ERROR_OPEN, node->value), 0);
 			if (dup2(fd_in, STDIN_FILENO) == -1)
-				return(close(fd_in), report_error(ERROR_OPEN, node->value), 0);
+				return (close(fd_in), report_error(ERROR_DUP2, node->value), 0);
+			if (close(fd_in) == -1)
+				return (report_error(ERROR_CLOSE, node->value), 0);
 		}
 		node = node->right;
 	}
-	return (1);
-}
-
-int	gen_append(t_ast_node **ast)
-{
-	char	*append;
-	int		fd_out;
-
-	append = get_append(ast);
-	fd_out = -2;
-	if (!append)
-		return (1);
-	fd_out = open(append, O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, append), 0);
-	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
-	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, append), 0);
 	return (1);
 }
 

@@ -67,9 +67,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	if (!gen_redirect_in(ast))
 		// return (child_free(abs_path), exit(0));
 		return (child_free(abs_path), exit(1));
-	if (!gen_redirect_out(ast))
-		return (child_free(abs_path), exit(1));
-	if (!gen_append(ast))
+	if (!gen_redirect_stdout(ast))
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
