@@ -272,9 +272,9 @@ void	simple_command_exec(t_ast_node **ast)
 	node = *ast;
 	if (node->type == NODE_COMMAND)
 		return (exec_switch(&node));
-	if (node->type == NODE_PIPE && node->right->value
+	else if (node->type == NODE_PIPE && node->right->value
 		&& node->right->value[0] == '\0')
 		return (exec_switch(&(node->left)));
-	if (node->type == NODE_PIPE)
+	else if (node->type == NODE_PIPE)
 		return (exec_pipe(&node, -1));
 }
