@@ -57,11 +57,9 @@ void	builtins_exec(t_ast_node **ast, int fd_to_close)
 	orig_stdout = dup(STDOUT_FILENO);
 	if (!gen_heredoc(ast))
 		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
-	if (!gen_redirect_out(ast))
+	if (!gen_redirect_stdout(ast))
 		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
 	if (!gen_redirect_in(ast))
-		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
-	if (!gen_append(ast))
 		return (builtins_close_fds(orig_stdin, orig_stdout, fd_to_close));
 	builtins_switch(ast, orig_stdin, orig_stdout, fd_to_close);
 	builtins_close_fds(orig_stdin, orig_stdout, fd_to_close);
@@ -96,9 +94,7 @@ void	alt_child_exec(char *abs_path, t_ast_node **ast, int fd_to_close)
 		return (child_free(abs_path), close(fd_to_close), exit(1));
 	if (!gen_redirect_in(ast))
 		return (child_free(abs_path), close(fd_to_close), exit(1));
-	if (!gen_redirect_out(ast))
-		return (child_free(abs_path), close(fd_to_close), exit(1));
-	if (!gen_append(ast))
+	if (!gen_redirect_stdout(ast))
 		return (child_free(abs_path), close(fd_to_close), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
