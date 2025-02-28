@@ -6,14 +6,14 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 13:55:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:08:36 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Processes input text to tokenize it while handling quotes and whitespace,
-// storing tokens in a provided token information structure. 
+// storing tokens in a provided token information structure.
 
 void	handle_quote(const char *input, int *i,
 			t_token_info *info, bool *in_quote)
@@ -63,7 +63,7 @@ int	process_input(const char *input, t_token_info *info)
 }
 
 // Tokenizes a given input string into an array of strings (tokens)
-// based on whitespace and quotes, returning the array of tokens. 
+// based on whitespace and quotes, returning the array of tokens.
 char	**tokenize_input(const char *input)
 {
 	t_token_info	info;
@@ -88,7 +88,7 @@ char	**tokenize_input(const char *input)
 }
 
 //This function takes a user input string, tokenizes it into an array of
-//tokens, constructs an abstract syntax tree (AST) from those tokens, 
+//tokens, constructs an abstract syntax tree (AST) from those tokens,
 //prints the AST structure, and then frees the allocated memory for tokens&AST.
 void	process_tokens(char *input)
 {
@@ -99,7 +99,7 @@ void	process_tokens(char *input)
 	if (sh->tokens)
 	{
 		sh->ast = parse(sh->tokens);
-		// pretty_print_ast(sh->ast, 0);
+		pretty_print_ast(sh->ast, 0);
 		simple_command_exec(&(sh->ast));
 		free_tokens(sh->tokens);
 		free_ast(sh->ast);

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:36:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/18 15:14:38 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:32:37 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cd_tilde(char **path)
 
 	env_value = NULL;
 	non_tilde = NULL;
-	if ((*path) + 1)
+	// if ((*path) + 1)
 		non_tilde = ft_strdup(((*path) + 1));
 	free(*path);
 	env_value = get_env_value(get_env_pair(&(get_sh()->env_var), "HOME"));
