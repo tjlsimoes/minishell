@@ -6,13 +6,13 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:24:38 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 17:49:56 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:18:32 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exit_shell(int exit_code, int orig_stdin,
+void	exit_shell(int exit_code, int orig_stdin,
 		int orig_stdout, int fd_to_close)
 {
 	builtins_close_fds(orig_stdin, orig_stdout, fd_to_close);

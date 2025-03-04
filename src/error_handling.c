@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/21 15:04:32 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:55:08 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,11 @@ void	report_error(t_error error_type, char *details)
 	ft_putstr_fd("\n", 2);
 }
 
-
+void	chdir_error(char **path)
+{
+	ft_putstr_fd("-bash: cd: ", 2);
+	ft_putstr_fd((*path), 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
+}

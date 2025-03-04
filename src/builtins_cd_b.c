@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:36:26 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/28 13:32:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:54:03 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ int	cd_path_error(char **path, char *error_msg)
 	return (0);
 }
 
-void	chdir_error(char **path)
-{
-	int	error;
+// void	chdir_error(char **path)
+// {
+// 	int	error;
 
-	error = errno;
-	ft_putstr_fd("-bash: cd: ", 2);
-	ft_putstr_fd((*path), 2);
-	ft_putstr_fd(" ", 2);
-	ft_putstr_fd(strerror(error), 2);
-	ft_putstr_fd("\n", 2);
-}
+// 	error = errno;
+// 	ft_putstr_fd("-bash: cd: ", 2);
+// 	ft_putstr_fd((*path), 2);
+// 	ft_putstr_fd(": ", 2);
+// 	ft_putstr_fd(strerror(error), 2);
+// 	ft_putstr_fd("\n", 2);
+// }
 // Possibility of errno having changed between
 // system calls, safeguarded?
 

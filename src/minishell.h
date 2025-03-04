@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/23 13:15:34 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:19:26 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,5 +263,7 @@ void			exec_pipe_right(t_ast_node **ast, int fd[2]);
 int				ft_exit_exec(t_ast_node *args, int orig_stdin,
 					int orig_stdout, int fd_to_close);
 char			*clean_arg(char *arg);
+void			exit_shell(int exit_code, int orig_stdin,
+					int orig_stdout, int fd_to_close);
 
 #endif

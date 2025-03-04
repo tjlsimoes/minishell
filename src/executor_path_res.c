@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/23 14:33:30 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:02:51 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	if (!gen_heredoc(ast))
 		return (child_free(abs_path), exit(1));
 	if (!gen_redirect_in(ast))
-		// return (child_free(abs_path), exit(0));
 		return (child_free(abs_path), exit(1));
 	if (!gen_redirect_out(ast))
 		return (child_free(abs_path), exit(1));

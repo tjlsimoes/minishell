@@ -3,4 +3,5 @@ libft/.bonus
 libft/libft.a
 .vscode/
 obj/
+minishell_tester
 minishell

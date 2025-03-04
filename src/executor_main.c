@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:34 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/23 14:15:07 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:24:07 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,38 +176,95 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	exec_pipe_child_exit(fd[0], NULL);
 }
 
-void	exec_pipe(t_ast_node **ast, int	fd_to_close)
+// void	exec_pipe(t_ast_node **ast, int	fd_to_close)
+// {
+// 	int			fd[2];
+// 	int			pid_left;
+// 	int			pid_right;
+// 	int			wstatus;
+
+// 	if (fd_to_close != -1)
+// 		close(fd_to_close); // Possible error message needed: errno.
+// 	if (!ast || !(*ast))
+// 		return ;
+// 	if (pipe(fd) == -1)
+// 		return (report_error(ERROR_PIPE, "Failed to create pipe")); // Possible error message needed: errno.
+// 	pid_left = fork();
+// 	if (pid_left == -1)
+// 		return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
+// 	if (pid_left == 0)
+// 		return (exec_pipe_left(ast, fd)); // Create child process for execution of command on the left.
+// 	else
+// 	{
+// 		pid_right = fork();
+// 		if (pid_right == -1)
+// 			return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
+// 		if (pid_right == 0)
+// 			return (exec_pipe_right(ast, fd)); // Create child process for execution of command on the right.
+// 	}
+// 	close(fd[0]);
+// 	close(fd[1]);
+// 	// Wait for both child processes, ensuring exit status is updated to the command on the right.
+// 	waitpid(pid_left,  &wstatus, 0);
+// 	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
+// 	set_exit_status(wstatus, true);
+// }
+
+void exec_pipe(t_ast_node **ast, int fd_to_close)
 {
-	int			fd[2];
-	int			pid_left;
-	int			pid_right;
-	int			wstatus;
+	int fd[2];
+	pid_t pid_left;
+	pid_t pid_right;
+	int wstatus;
 
 	if (fd_to_close != -1)
-		close(fd_to_close); // Possible error message needed: errno.
-	if (!ast || !(*ast))
-		return ;
+		close(fd_to_close);
+	if (!ast || !*ast)
+		return;
 	if (pipe(fd) == -1)
-		return (report_error(ERROR_PIPE, "Failed to create pipe")); // Possible error message needed: errno.
+		return(report_error(ERROR_PIPE, "Failed to create pipe"));
 	pid_left = fork();
 	if (pid_left == -1)
-		return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
+		return(report_error(ERROR_FORK, "Failed to fork process"));
 	if (pid_left == 0)
-		return (exec_pipe_left(ast, fd)); // Create child process for execution of command on the left.
-	else
 	{
-		pid_right = fork();
-		if (pid_right == -1)
-			return (report_error(ERROR_FORK, "Failed to fork process")); // Possible error message needed: errno.
-		if (pid_right == 0)
-			return (exec_pipe_right(ast, fd)); // Create child process for execution of command on the right.
+		close(fd[0]);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+		{
+			report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
+			exit_shell(1, fd[1], -1, -1);
+		}
+		close(fd[1]);
+		alt_exec_switch(&((*ast)->left), -1);
+		exit_shell(get_sh()->exit_status, -1, -1, -1);
+	}
+	pid_right = fork();
+	if (pid_right == -1)
+	{
+		kill(pid_left, SIGTERM);
+		waitpid(pid_left, NULL, 0);
+		return(report_error(ERROR_FORK, "Failed to fork process"));
+	}
+	if (pid_right == 0)
+	{
+		close(fd[1]);
+		if (dup2(fd[0], STDIN_FILENO) == -1) {
+			report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
+			exit_shell(1, -1, fd[0], -1);
+		}
+		close(fd[0]);
+		if ((*ast)->right->type == NODE_PIPE)
+			exec_pipe(&((*ast)->right), -1);
+		else
+			alt_exec_switch(&((*ast)->right), -1);
+		exit_shell(get_sh()->exit_status, -1, -1, -1);
 	}
 	close(fd[0]);
 	close(fd[1]);
-	// Wait for both child processes, ensuring exit status is updated to the command on the right.
-	waitpid(pid_left, &wstatus, 0);
-	waitpid(pid_right, &wstatus, 0);	// Not really sure if using an already updated wstatus causes problems.
-	set_exit_status(wstatus, true);
+	waitpid(pid_left, NULL, 0);
+	waitpid(pid_right, &wstatus, 0);
+	get_sh()->exit_status = WEXITSTATUS(wstatus);
+	set_exit_status(get_sh()->exit_status, false);
 }
 
 void	simple_command_exec(t_ast_node **ast)
