@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/03 17:55:08 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:08:56 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	print_error_message_extended(t_error error_type)
 		ft_putstr_fd("open error", 2);
 	else if (error_type == ERROR_CLOSE)
 		ft_putstr_fd("close error", 2);
+	else if (error_type == ERROR_IS_DIR)
+		ft_putstr_fd("is a directory", 2);
 	else
 		ft_putstr_fd("unknown error", 2);
 }

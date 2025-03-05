@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/04 20:19:26 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:59:41 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ typedef enum e_error
 	ERROR_PIPE,
 	ERROR_FORK,
 	ERROR_OPEN,
-	ERROR_CLOSE
+	ERROR_CLOSE,
+	ERROR_IS_DIR
 }	t_error;
 
 typedef enum e_node_type

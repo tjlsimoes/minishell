@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/03 16:02:51 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:29:46 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,50 @@ char	**path_split(void)
 	return (path_split);
 }
 
+// char	*path_resolution(char *binary)
+// {
+// 	char	**split;
+// 	int		path_split_need;
+
+// 	path_split_need = init_path_vars(&split, binary);
+// 	if (!path_split_need)
+// 		return (NULL);
+// 	else if (path_split_need == 2)
+// 		return (ft_strdup(binary));
+// 	else if (path_split_need == 3)
+// 		return (gen_path_pwd(binary));
+// 	else if (path_split_need == 4)
+// 		return (gen_path_rel(binary));
+// 	return (path_res_iter(&split, binary));
+// }
+
 char	*path_resolution(char *binary)
 {
-	char	**split;
-	int		path_split_need;
+	char			**split;
+	int				path_split_need;
+	char			*abs_path;
+	struct	stat	st;
 
+	if (!binary || !*binary)
+		return (report_error(ERROR_COMMAND_NOT_FOUND, binary), NULL);
 	path_split_need = init_path_vars(&split, binary);
 	if (!path_split_need)
 		return (NULL);
 	else if (path_split_need == 2)
-		return (ft_strdup(binary));
+		abs_path = ft_strdup(binary);
 	else if (path_split_need == 3)
-		return (gen_path_pwd(binary));
+		abs_path = gen_path_pwd(binary);
 	else if (path_split_need == 4)
-		return (gen_path_rel(binary));
-	return (path_res_iter(&split, binary));
+		abs_path = gen_path_rel(binary);
+	else
+		abs_path = path_res_iter(&split, binary);
+	if ((stat(abs_path, &st) == 0)&&((st.st_mode & S_IFMT) == S_IFDIR))
+	{
+		free(abs_path);
+		get_sh()->exit_status = 126;
+		return (report_error(ERROR_IS_DIR, abs_path), NULL);
+	}
+	return (abs_path);
 }
 
 void	child_exec(char *abs_path, t_ast_node **ast)
@@ -89,6 +118,27 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 
 // Is there a need to restore stdout and stdin if an error occurs?
 
+// void	attempt_path_resolution(t_ast_node **ast)
+// {
+// 	t_ast_node	*node;
+// 	char		*abs_path;
+// 	int			pid;
+// 	int			wstatus;
+
+// 	node = *ast;
+// 	abs_path = path_resolution(node->value);
+// 	if (!abs_path)
+// 		return ;
+// 	pid = fork();
+// 	if (pid == -1)
+// 		return (free(abs_path));	// Possible error message needed.
+// 	if (pid == 0)
+// 		return (child_exec(abs_path, ast));
+// 	waitpid(pid, &wstatus, 0);
+// 	free(abs_path);
+// 	set_exit_status(wstatus, true);
+// }
+
 void	attempt_path_resolution(t_ast_node **ast)
 {
 	t_ast_node	*node;
@@ -99,12 +149,25 @@ void	attempt_path_resolution(t_ast_node **ast)
 	node = *ast;
 	abs_path = path_resolution(node->value);
 	if (!abs_path)
+	{
+		if (get_sh()->exit_status != 126)  // If not already set to 126 (Is a directory)
+			get_sh()->exit_status = 127;
+		set_exit_status(get_sh()->exit_status, false);
 		return ;
+	}
 	pid = fork();
 	if (pid == -1)
-		return (free(abs_path));	// Possible error message needed.
+	{
+		report_error(ERROR_FORK, "Failed to fork process");
+		get_sh()->exit_status = 1;
+		set_exit_status(get_sh()->exit_status, false);
+		return (free(abs_path));
+	}
 	if (pid == 0)
-		return (child_exec(abs_path, ast));
+	{
+		child_exec(abs_path, ast);
+		exit_shell(1, -1, -1, -1);
+	}
 	waitpid(pid, &wstatus, 0);
 	free(abs_path);
 	set_exit_status(wstatus, true);
