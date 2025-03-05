@@ -62,6 +62,15 @@ int gen_redirect_stdout(t_ast_node **ast)
 	return (1);
 }
 
+void	error_gen_red_in(int last_fd, t_ast_node **ast)
+{
+	if (last_fd != -1)
+		close(last_fd);
+	get_sh()->exit_status = 1;
+	set_exit_status(-1, false);
+	report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*ast)->value);
+}
+
 //all redirections should fail immediately on the first error. That will pass TEST 60 now.
 int		gen_redirect_in(t_ast_node **ast)
 {
@@ -77,7 +86,7 @@ int		gen_redirect_in(t_ast_node **ast)
 		{
 			fd_in = open(node->value, O_RDONLY);
 			if (fd_in == -1)
-				return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, node->value), 0);
+				return (error_gen_red_in(last_valid_fd, &node), 0);
 			if (last_valid_fd != -1)
 				close(last_valid_fd);
 			last_valid_fd = fd_in;
