@@ -242,6 +242,7 @@ t_ast_node		*get_heredoc(t_ast_node **ast);
 int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_append(t_ast_node **ast);
 int				gen_redirect_stdout(t_ast_node **ast);
+void			error_gen_red_in(int last_fd, t_ast_node **ast);
 int				gen_redirect_in(t_ast_node **ast);
 int				gen_heredoc(t_ast_node **ast);
 void			child_exec(char *abs_path, t_ast_node **ast);
