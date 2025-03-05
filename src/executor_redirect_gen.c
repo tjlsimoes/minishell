@@ -85,7 +85,10 @@ int		gen_redirect_in(t_ast_node **ast)
 		node = node->right;
 	}
 	if (last_valid_fd != -1)
+	{
 		dup2(last_valid_fd, STDIN_FILENO);
+		close(last_valid_fd);
+	}
 	return (1);
 }
 
