@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/03 16:23:28 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:44:23 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ void	handle_quote(const char *input, int *i,
 		info->current_token[(info->token_length)++] = input[*i];
 }
 
+void	handle_operator(const char *input, int *i, t_token_info *info)
+{
+	if (info->token_length > 0)
+	{
+		info->current_token[info->token_length] = '\0';
+		info->tokens[(info->index)++] = ft_strdup(info->current_token);
+		info->token_length = 0;
+	}
+	info->current_token[0] = input[*i];
+	info->token_length = 1;
+	if ((input[*i] == '>' || input[*i] == '<') && input[*i + 1] == input[*i])
+	{
+		info->current_token[1] = input[++(*i)];
+		info->token_length = 2;
+	}
+	info->current_token[info->token_length] = '\0';
+	info->tokens[(info->index)++] = ft_strdup(info->current_token);
+	info->token_length = 0;
+}
+
 int	process_input(const char *input, t_token_info *info)
 {
 	int		i;
@@ -45,20 +65,23 @@ int	process_input(const char *input, t_token_info *info)
 	in_quote = false;
 	while (input[++i] != '\0')
 	{
-		handle_quote(input, &i, info, &in_quote);
-		if (ft_isspace(input[i]) && !in_quote && info->token_length > 0)
+		if (!in_quote && (input[i] == '|' || input[i] == '<'
+				|| input[i] == '>'))
+			handle_operator(input, &i, info);
+		else
 		{
-			info->current_token[info->token_length] = '\0';
-			info->tokens[(info->index)++] = ft_strdup(info->current_token);
-			info->token_length = 0;
+			handle_quote(input, &i, info, &in_quote);
+			if (ft_isspace(input[i]) && !in_quote && info->token_length > 0)
+			{
+				info->current_token[info->token_length] = '\0';
+				info->tokens[(info->index)++] = ft_strdup(info->current_token);
+				info->token_length = 0;
+			}
 		}
 	}
 	if (in_quote)
-	{
-		free_tokens(info->tokens);
-		info->tokens = NULL;
-		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
-	}
+		return (free_tokens(info->tokens),
+			report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
 	return (1);
 }
 
