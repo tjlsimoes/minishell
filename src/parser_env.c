@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/23 13:15:40 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:07:16 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ void	expand_env_variable(char **token)
 	free(*token);
 	*token = NULL;
 	var_value = get_env_value(get_env_pair(&(get_sh()->env_var), key));
+	if (var_value == NULL)
+		var_value = ft_strdup("");
 	if (not_name)
 	{
 		*token = alt_strjoin(var_value, not_name);
 		free(not_name);
+		free(var_value);
 	}
 	else
 		*token = var_value;
@@ -58,7 +61,7 @@ t_ast_node	*parse_env_variable(char **tokens, int *index)
 
 	expand_env_var(&(tokens[*index]));
 	expanded = tokens[*index];
-	if (*index == 0)
+	if (*index == 0 && expanded[0] != '\0')
 		node_type = NODE_COMMAND;
 	else
 		node_type = NODE_ARGUMENT;

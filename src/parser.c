@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/23 13:15:50 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/06 16:07:14 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ bool	initialize_command(t_ast_node *cmd_node, t_ast_node *arg_node)
 void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 {
 	bool		cmd_initialized;
+	t_ast_node	*new_node;
 
 	cmd_initialized = false;
 	while (tokens[*index] && ft_strncmp(tokens[*index], "|", 2) != 0)
@@ -47,11 +48,16 @@ void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 			parse_redirect_node(tokens, index, cmd_node);
 		else if (tokens[*index][0] == '$')
 		{
-			if (!cmd_initialized && cmd_node->value[0] == '\0')
-				cmd_initialized = initialize_command(cmd_node,
-					parse_env_variable(tokens, index));
+			new_node = parse_env_variable(tokens, index);
+			if (new_node->value[0] != '\0')
+			{
+				if (!cmd_initialized && cmd_node->value[0] == '\0')
+					cmd_initialized = initialize_command(cmd_node, new_node);
+				else
+					attach_node(cmd_node, new_node);
+			}
 			else
-				attach_node(cmd_node, parse_env_variable(tokens, index));
+				free_ast(new_node);
 		}
 		else
 		{
@@ -63,6 +69,7 @@ void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 		}
 	}
 }
+
 
 t_ast_node	*parse_command(char **tokens, int *index)
 {
