@@ -180,6 +180,7 @@ void			pretty_print_ast(const t_ast_node *node, int indent);
 void			display_history(void);
 void			process_tokens(char *input);
 void			report_error(t_error error_type, char *details);
+void			def_exit(int	exit_nbr);
 void			free_tokens(char **tokens);
 char			*expand_within_quotes(char *str);
 char			*extract_var_name(char *str);

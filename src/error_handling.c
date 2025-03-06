@@ -76,3 +76,9 @@ void	chdir_error(char **path)
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
 }
+
+void	def_exit(int	exit_nbr)
+{
+	get_sh()->exit_status = exit_nbr;
+	set_exit_status(-1, false);
+}
