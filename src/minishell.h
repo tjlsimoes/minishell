@@ -234,6 +234,7 @@ char			*gen_path_pwd(char *binary);
 char			*gen_path_rel(char *binary);
 
 char			*path_resolution(char *binary);
+bool			cmd_check(char *abs_path);
 void			attempt_path_resolution(t_ast_node **ast);
 
 char			*get_redirect_out(t_ast_node **ast);

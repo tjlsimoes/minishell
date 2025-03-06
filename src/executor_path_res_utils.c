@@ -78,12 +78,13 @@ char	*path_res_iter(char ***split, char *binary)
 				return (clear_array((*split)), abs_path);
 			else
 				return (report_error(ERROR_PERMISSION_DENIED, abs_path),
-					free(abs_path), clear_array((*split)), NULL);
+					free(abs_path), def_exit(126), clear_array((*split)), NULL);
 		}
 		free(abs_path);
 		i++;
 	}
 	clear_array((*split));
 	report_error(ERROR_COMMAND_NOT_FOUND, binary);
+	def_exit(127);
 	return (NULL);
 }

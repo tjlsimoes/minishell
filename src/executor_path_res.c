@@ -62,7 +62,7 @@ char	*path_resolution(char *binary)
 	char			**split;
 	int				path_split_need;
 	char			*abs_path;
-	struct	stat	st;
+	// struct	stat	st;
 
 	if (!binary || !*binary)
 		return (report_error(ERROR_COMMAND_NOT_FOUND, binary), NULL);
@@ -77,12 +77,12 @@ char	*path_resolution(char *binary)
 		abs_path = gen_path_rel(binary);
 	else
 		abs_path = path_res_iter(&split, binary);
-	if ((stat(abs_path, &st) == 0)&&((st.st_mode & S_IFMT) == S_IFDIR))
-	{
-		free(abs_path);
-		get_sh()->exit_status = 126;
-		return (report_error(ERROR_IS_DIR, abs_path), NULL);
-	}
+	// if ((stat(abs_path, &st) == 0)&&((st.st_mode & S_IFMT) == S_IFDIR))
+	// {
+	// 	free(abs_path);
+	// 	get_sh()->exit_status = 126;
+	// 	return (report_error(ERROR_IS_DIR, abs_path), NULL);
+	// }
 	return (abs_path);
 }
 
@@ -133,6 +133,26 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 // 	set_exit_status(wstatus, true);
 // }
 
+// Check if command is valid.
+// Initial condition was necessary even with gen_path_*
+//   functions refactoring in place.
+bool	cmd_check(char *abs_path)
+{
+	struct	stat	st;
+
+	if ((stat(abs_path, &st) != 0))
+	{
+		def_exit(127);
+		return (report_error(ERROR_COMMAND_NOT_FOUND, abs_path), free(abs_path),  true);
+	}
+	else if (((st.st_mode & S_IFMT) == S_IFDIR))
+	{
+		def_exit(126);
+		return (report_error(ERROR_IS_DIR, abs_path), free(abs_path), true);
+	}
+	return (false);
+}
+
 void	attempt_path_resolution(t_ast_node **ast)
 {
 	t_ast_node	*node;
@@ -143,12 +163,9 @@ void	attempt_path_resolution(t_ast_node **ast)
 	node = *ast;
 	abs_path = path_resolution(node->value);
 	if (!abs_path)
-	{
-		if (get_sh()->exit_status != 126)  // If not already set to 126 (Is a directory)
-			get_sh()->exit_status = 127;
-		set_exit_status(get_sh()->exit_status, false);
 		return ;
-	}
+	else if (cmd_check(abs_path))
+		return ;
 	pid = fork();
 	if (pid == -1)
 	{

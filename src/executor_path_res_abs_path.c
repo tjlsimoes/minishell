@@ -36,17 +36,41 @@ bool	path_check_rel(char *binary)
 char	*gen_path_pwd(char *binary)
 {
 	char	cwd[PATH_MAX];
+	char	*abs_path;
 
 	getcwd(cwd, PATH_MAX);
-	return (ft_strjoin(cwd, binary + 1));
+	abs_path = ft_strjoin(cwd, binary + 1);
+	if (access(abs_path, F_OK) == 0)
+	{
+		if (access(abs_path, X_OK) == 0)
+			return (abs_path);
+		else
+			return (report_error(ERROR_PERMISSION_DENIED, abs_path),
+				free(abs_path), def_exit(126), NULL);
+	}
+	report_error(ERROR_COMMAND_NOT_FOUND, binary);
+	def_exit(127);
+	return (NULL);
 }
 
 char	*gen_path_rel(char *binary)
 {
 	char	cwd[PATH_MAX];
 	char	*temp;
+	char	*abs_path;
 
 	getcwd(cwd, PATH_MAX);
 	temp = ft_strjoin(cwd, "/");
-	return (alt_strjoin(temp, binary));
+	abs_path = alt_strjoin(temp, binary);
+	if (access(abs_path, F_OK) == 0)
+	{
+		if (access(abs_path, X_OK) == 0)
+			return (abs_path);
+		else
+			return (report_error(ERROR_PERMISSION_DENIED, abs_path),
+				free(abs_path), def_exit(126), NULL);
+	}
+	report_error(ERROR_COMMAND_NOT_FOUND, binary);
+	def_exit(127);
+	return (NULL);
 }
