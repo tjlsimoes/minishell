@@ -62,44 +62,109 @@ int gen_redirect_stdout(t_ast_node **ast)
 	return (1);
 }
 
-void	error_gen_red_in(int last_fd, t_ast_node **ast)
+int	gen_redirect_in(t_ast_node **current)
 {
-	if (last_fd != -1)
-		close(last_fd);
-	get_sh()->exit_status = 1;
-	set_exit_status(-1, false);
-	report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*ast)->value);
+	int	fd_in;
+
+	fd_in = open((*current)->value, O_RDONLY);
+	if (fd_in == -1)
+		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
+	if (dup2(fd_in, STDIN_FILENO) == -1)
+		return (close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
+	if (close(fd_in) == -1)
+		return (report_error(ERROR_CLOSE, (*current)->value), 0);
+	return (1);
 }
 
-//all redirections should fail immediately on the first error. That will pass TEST 60 now.
-int		gen_redirect_in(t_ast_node **ast)
+int	gen_heredoc(t_ast_node **ast)
+{
+	int			fd[2];
+	char		*line;
+
+	if (!ast || !(*ast))
+		return (0);
+	if (pipe(fd) == -1)
+		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
+	heredoc_read(ast, &line, fd);
+	if (close(fd[1]) == -1)
+		return (report_error(ERROR_CLOSE, "pipe write end"), 0);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+		return (close(fd[0]), report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
+	if (close(fd[0]) == -1)
+		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
+	return (1);
+}
+
+int	gen_redirections(t_ast_node **ast)
 {
 	t_ast_node	*node;
-	int			fd_in;
-	int			last_valid_fd;
 
 	node = (*ast)->right;
-	last_valid_fd = -1;
 	while (node)
 	{
-		if (node->type == NODE_REDIRECT_IN)
+		if (node->type == NODE_REDIRECT_OUT)
 		{
-			fd_in = open(node->value, O_RDONLY);
-			if (fd_in == -1)
-				return (error_gen_red_in(last_valid_fd, &node), 0);
-			if (last_valid_fd != -1)
-				close(last_valid_fd);
-			last_valid_fd = fd_in;
+			if (!gen_redirect_out(&node))
+				return (0);
+		}
+		else if (node->type == NODE_REDIRECT_APPEND)
+		{
+			if (!gen_redirect_append(&node))
+				return (0);
+		}
+		else if (node->type == NODE_REDIRECT_IN)
+		{
+			if (!gen_redirect_in(&node))
+				return (0);
+		}
+		else if (node->type == NODE_HEREDOC)
+		{
+			if (!gen_heredoc(&node))
+				return (0);
 		}
 		node = node->right;
 	}
-	if (last_valid_fd != -1)
-	{
-		dup2(last_valid_fd, STDIN_FILENO);
-		close(last_valid_fd);
-	}
 	return (1);
 }
+
+// void	error_gen_red_in(int last_fd, t_ast_node **ast)
+// {
+// 	if (last_fd != -1)
+// 		close(last_fd);
+// 	get_sh()->exit_status = 1;
+// 	set_exit_status(-1, false);
+// 	report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*ast)->value);
+// }
+
+// //all redirections should fail immediately on the first error. That will pass TEST 60 now.
+// int		gen_redirect_in(t_ast_node **ast)
+// {
+// 	t_ast_node	*node;
+// 	int			fd_in;
+// 	int			last_valid_fd;
+
+// 	node = (*ast)->right;
+// 	last_valid_fd = -1;
+// 	while (node)
+// 	{
+// 		if (node->type == NODE_REDIRECT_IN)
+// 		{
+// 			fd_in = open(node->value, O_RDONLY);
+// 			if (fd_in == -1)
+// 				return (error_gen_red_in(last_valid_fd, &node), 0);
+// 			if (last_valid_fd != -1)
+// 				close(last_valid_fd);
+// 			last_valid_fd = fd_in;
+// 		}
+// 		node = node->right;
+// 	}
+// 	if (last_valid_fd != -1)
+// 	{
+// 		dup2(last_valid_fd, STDIN_FILENO);
+// 		close(last_valid_fd);
+// 	}
+// 	return (1);
+// }
 
 void	heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2])
 {
@@ -123,25 +188,3 @@ void	heredoc_read(t_ast_node **heredoc_node, char **line, int fd[2])
 	}
 	free((*line));
 }
-
-int	gen_heredoc(t_ast_node **ast)
-{
-	t_ast_node	*heredoc;
-	int			fd[2];
-	char		*line;
-
-	heredoc = get_heredoc(ast);
-	if (!heredoc)
-		return (1);
-	if (pipe(fd) == -1)
-		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
-	heredoc_read(&heredoc, &line, fd);
-	if (close(fd[1]) == -1)
-		return (report_error(ERROR_CLOSE, "pipe write end"), 0);
-	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (close(fd[0]), report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0); // Possible error message needed: errno.
-	if (close(fd[0]) == -1)
-		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
-	return (1);
-}
-// Assuming value of heredoc is the delimiter.
