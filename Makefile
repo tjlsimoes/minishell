@@ -6,13 +6,13 @@
 #    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/03/03 18:13:45 by asafrono         ###   ########.fr        #
+#    Updated: 2025/03/09 13:32:25 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -I$(LIBFT_DIR) -I$(SRC_DIR)
+CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(SRC_DIR)
 DEBUG_FLAGS = -g
 RM = rm -rf
 
@@ -27,8 +27,8 @@ parser.c parser_redirect.c parser_pipe.c parser_env.c parser_argument.c \
 env_tests.c env_vars_change.c env_vars_expand.c env_vars_get_a.c env_vars_get_b.c \
 env_vars_print.c env_vars_utils_a.c env_vars_utils_b.c env_vars_utils_c.c\
 builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_pwd_echo.c builtins_tests.c \
-executor_builtins_a.c executor_gen.c executor_main.c executor_path_res_abs_path.c \
-executor_path_res.c executor_path_res_split.c executor_path_res_utils.c executor_redirect_gen.c \
+executor_builtins_a.c executor_gen.c executor_main_a.c executor_main_b.c executor_main_c.c executor_path_res_abs_path.c \
+executor_path_res.c executor_path_res_split.c executor_path_res_utils.c executor_redirect_gen_a.c executor_redirect_gen_b.c\
 executor_redirect_gen_utils.c executor_redirect_get.c executor_redirect_get_utils.c executor_tests.c executor_utils.c \
 exit_status.c builtins_exit.c
 

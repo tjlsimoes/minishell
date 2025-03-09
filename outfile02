@@ -1,9 +1,0 @@
-Makefile
-libft
-minishell
-minishell_tester
-obj
-outfile01
-outfile02
-src
-valgrind_readline.supp

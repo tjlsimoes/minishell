@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/06 16:07:47 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:46:59 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,24 @@ void	process_tokens(char *input)
 	if (sh->tokens)
 	{
 		sh->ast = parse(sh->tokens);
-		// pretty_print_ast(sh->ast, 0);
 		simple_command_exec(&(sh->ast));
 		free_tokens(sh->tokens);
 		free_ast(sh->ast);
 	}
 }
+
+// void	process_tokens(char *input)
+// {
+// 	t_minishell	*sh;
+
+// 	sh = get_sh();
+// 	sh->tokens = tokenize_input(input);
+// 	if (sh->tokens)
+// 	{
+// 		sh->ast = parse(sh->tokens);
+// 		pretty_print_ast(sh->ast, 0);
+// 		simple_command_exec(&(sh->ast));
+// 		free_tokens(sh->tokens);
+// 		free_ast(sh->ast);
+// 	}
+// }

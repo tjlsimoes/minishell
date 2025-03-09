@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/05 16:29:46 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 12:21:54 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ char	*path_resolution(char *binary)
 	char			**split;
 	int				path_split_need;
 	char			*abs_path;
-	// struct	stat	st;
 
 	if (!binary || !*binary)
 		return (report_error(ERROR_COMMAND_NOT_FOUND, binary), NULL);
@@ -77,12 +76,6 @@ char	*path_resolution(char *binary)
 		abs_path = gen_path_rel(binary);
 	else
 		abs_path = path_res_iter(&split, binary);
-	// if ((stat(abs_path, &st) == 0)&&((st.st_mode & S_IFMT) == S_IFDIR))
-	// {
-	// 	free(abs_path);
-	// 	get_sh()->exit_status = 126;
-	// 	return (report_error(ERROR_IS_DIR, abs_path), NULL);
-	// }
 	return (abs_path);
 }
 
@@ -95,7 +88,6 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
-	// Shouldn't all memory aside from argv and envp not be freed?
 	child_free(NULL);
 	if (execve(abs_path, argv, envp) == -1)
 	{
@@ -138,12 +130,13 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 //   functions refactoring in place.
 bool	cmd_check(char *abs_path)
 {
-	struct	stat	st;
+	struct stat	st;
 
 	if ((stat(abs_path, &st) != 0))
 	{
 		def_exit(127);
-		return (report_error(ERROR_COMMAND_NOT_FOUND, abs_path), free(abs_path),  true);
+		return (report_error(ERROR_COMMAND_NOT_FOUND, abs_path),
+			free(abs_path), true);
 	}
 	else if (((st.st_mode & S_IFMT) == S_IFDIR))
 	{
@@ -162,9 +155,7 @@ void	attempt_path_resolution(t_ast_node **ast)
 
 	node = *ast;
 	abs_path = path_resolution(node->value);
-	if (!abs_path)
-		return ;
-	else if (cmd_check(abs_path))
+	if (!abs_path || cmd_check(abs_path))
 		return ;
 	pid = fork();
 	if (pid == -1)

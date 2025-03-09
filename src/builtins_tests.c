@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_tests.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 12:40:33 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/05 16:42:01 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/03/09 12:13:18 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 // 	ft_lstdel(&(get_sh()->env_var));
 // 	return (0);
 // }
-
 
 /////////////////////////////////////////////////////////////////
 //Test on ft_unset()
@@ -50,7 +49,6 @@
 // 	free(key);
 // 	return (0);
 // }
-
 
 /////////////////////////////////////////////////////////////////
 //Test on ft_export()
@@ -108,7 +106,6 @@
 // valgrind ./minishell '!=hello'
 // valgrind ./minishell '0=hello'
 // valgrind ./minishell 'HOME=nothome!'
-
 
 /////////////////////////////////////////////////////////////////
 //Test on print_env

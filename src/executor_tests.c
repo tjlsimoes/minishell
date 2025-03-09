@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_tests.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 17:44:02 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/11 15:13:07 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:47:58 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@
 // valgrind ./minishell 'NAME'
 // valgrind ./minishell 'NAME="HELLO "'
 // valgrind ./minishell ''
-
-
 // Tests on path_resolution(char *binary)
 // int	main(int argc, char **argv, char **envp)
 // {
@@ -133,8 +131,6 @@
 // 		free_ast(ast);
 // 	}
 // }
-
-
 ///////////////////////////////////////////////////////////////////////////
 // Tests on generate_envp()
 
@@ -249,7 +245,7 @@
 
 // 	if (!argc || !argv[1])
 // 		return (1);
-	
+
 // 	str = ft_strdup(temp);
 // 	// str = ft_strdup(argv[1]);
 // 	printf("Original string: |%s|\n", str);
@@ -309,8 +305,6 @@
 // valgrind --leak-check=full ./minishell 'a' 'b'
 // valgrind --leak-check=full ./minishell 'ab' 'b'
 // valgrind --leak-check=full ./minishell 'bab' 'b'
-
-
 ///////////////////////////////////////////////////////////////////////////
 // Test path_split(void)
 

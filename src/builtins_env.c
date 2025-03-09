@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 09:55:02 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/19 18:13:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:45:45 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,6 @@ int	invalid_key(char *key)
 	return (0);
 }
 
-// void	export_error(char **env_pair)
-// {
-// 	ft_putstr_fd("-bash: export: `", 2);
-// 	ft_putstr_fd((*env_pair), 2);
-// 	ft_putstr_fd("` ", 2);
-// 	ft_putstr_fd("not a valid identifier\n", 2);
-// }
-
 int	ft_export(char **str)
 {
 	int		eq_idx;
@@ -47,11 +39,7 @@ int	ft_export(char **str)
 	eq_idx = idx(*str, '=');
 	key = alt_get_env_key(*str);
 	if (invalid_key(key))
-	{
-		// export_error(str);
-		report_error(ERROR_INVALID_IDENTIFIER, *str);
-		return (free(key), 1);
-	}
+		return (report_error(ERROR_INVALID_IDENTIFIER, *str), free(key), 1);
 	free(key);
 	if (eq_idx == -1)
 		return (0);
@@ -89,8 +77,8 @@ int	ft_env(t_list **lst)
 	t_list	*node;
 
 	if (!lst)
-		return (report_error(ERROR_ENV_WRITE_FAILED, "No environment list"), 125);
-		// return (125);
+		return (report_error(ERROR_ENV_WRITE_FAILED, "No environment list"),
+			125);
 	if (!(*lst))
 		return (0);
 	node = *lst;
@@ -103,7 +91,6 @@ int	ft_env(t_list **lst)
 		}
 		if (write(1, node->content,
 				ft_strlen(node->content)) == -1)
-			// return (125);
 			return (report_error(ERROR_ENV_WRITE_FAILED, "Write failed"), 125);
 		if (write(1, "\n", 1) == -1)
 			return (125);

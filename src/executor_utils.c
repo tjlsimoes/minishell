@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:44 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/22 17:01:51 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 12:14:11 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,4 @@ void	treat_echo_str(t_ast_node **ast)
 	if ((*ast)->quote_char == '"'
 		|| (*ast)->quote_char == 'N')
 		expand_env_var(&((*ast)->value));
-	
 }

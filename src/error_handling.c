@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/04 21:08:56 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:58:26 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	chdir_error(char **path)
 	ft_putstr_fd("\n", 2);
 }
 
-void	def_exit(int	exit_nbr)
+void	def_exit(int exit_nbr)
 {
 	get_sh()->exit_status = exit_nbr;
 	set_exit_status(-1, false);

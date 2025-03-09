@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_tests.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
+/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 14:50:23 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/12 13:20:54 by tjorge-l         ###   ########.fr       */
+/*   Updated: 2025/03/09 12:15:18 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 // 	return (0);
 // }
 
-
 /////////////////////////////////////////////////////////////////
 // Test strs_join(char **array)
 // int	main(int argc, char **argv, char **envp)
@@ -43,7 +42,6 @@
 // 	char	*output_joined;
 // 	int	i;
 // 	t_list	*env_var;
-
 
 // 	if (!argc && !argv && !envp)
 // 		return (1);
@@ -56,7 +54,8 @@
 // 	add_env_var(&env_var, "NEW=hello");
 // 	add_env_var(&env_var, "ZDRAVO=ciao");
 
-// 	output = env_vars_expansion("$HELLO!@#WVD@ $ZDRAVO $NEW $PATH $? $$$", &env_var);
+// 	output = env_vars_expansion("$HELLO!@#WVD@ $ZDRAVO $NEW $PATH $? $$$",
+//				&env_var);
 // 	i = 0;
 // 	while (output[i])
 // 	{
@@ -65,7 +64,6 @@
 // 	}
 // 	output_joined = strs_join(output);
 // 	printf("Output joined: %s\n", output_joined);
-
 
 // 	i = 0;
 // 	while (output[i])
@@ -87,7 +85,6 @@
 // 	int		i;
 // 	t_list	*env_var;
 
-
 // 	if (!argc && !argv && !envp)
 // 		return (1);
 // 	env_var = NULL;
@@ -99,7 +96,8 @@
 // 	add_env_var(&env_var, "NEW=hello");
 // 	add_env_var(&env_var, "ZDRAVO=ciao");
 
-// 	output = env_vars_expansion("$HELLO!@#WVD@ $ZDRAVO $NEW $PATH $? $$$", &env_var);
+// 	output = env_vars_expansion("$HELLO!@#WVD@ $ZDRAVO $NEW $PATH $? $$$",
+//				&env_var);
 // 	if (!output)
 // 	{
 // 		ft_lstdel(&env_var);
@@ -123,7 +121,6 @@
 // 	char	**output;
 // 	int	i;
 // 	t_list	*env_var;
-
 
 // 	if (!argc && !argv && !envp)
 // 		return (1);

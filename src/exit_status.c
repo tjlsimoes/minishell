@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/02/11 12:41:58 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:05:43 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	set_exit_status(int wstatus, bool child_wait)
 			if (minishell->exit_status != 131)
 				minishell->exit_status += 128;
 		}
+		else if (WIFSTOPPED(wstatus))
+			minishell->exit_status = 128 + WSTOPSIG(wstatus);
 	}
 	env_exit_status = ft_itoa(minishell->exit_status);
 	temp = ft_strjoin("?=", env_exit_status);

@@ -6,14 +6,14 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:00:01 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/21 14:42:03 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 11:50:50 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Creates a new AST (Abstract Syntax Tree) node with the specified 
-// type and value, initializing its left and right children to NULL. 
+// Creates a new AST (Abstract Syntax Tree) node with the specified
+// type and value, initializing its left and right children to NULL.
 t_ast_node	*create_node(t_node_type type, char *value, int fd)
 {
 	t_ast_node	*node;
@@ -44,53 +44,53 @@ void	free_ast(t_ast_node *node)
 	free(node);
 }
 
-void	print_indent(int indent)
-{
-	if (indent <= 0)
-		return ;
-	printf("  ");
-	print_indent(indent - 1);
-}
+// void	print_indent(int indent)
+// {
+// 	if (indent <= 0)
+// 		return ;
+// 	printf("  ");
+// 	print_indent(indent - 1);
+// }
 
-void	print_node(const t_ast_node *node, int indent)
-{
-	const char	*node_type_strings[] = {
-		"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
-		"NODE_REDIRECT_IN", "NODE_REDIRECT_OUT",
-		"NODE_REDIRECT_APPEND", "NODE_ENV_VAR", "NODE_HEREDOC"
-	};
-	const char	*value;
+// void	print_node(const t_ast_node *node, int indent)
+// {
+// 	const char	*node_type_strings[] = {
+// 		"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
+// 		"NODE_REDIRECT_IN", "NODE_REDIRECT_OUT",
+// 		"NODE_REDIRECT_APPEND", "NODE_ENV_VAR", "NODE_HEREDOC"
+// 	};
+// 	const char	*value;
 
-	print_indent(indent);
-	if (node->value)
-		value = node->value;
-	else
-		value = "NULL";
-	printf("Type: %s, Value: %s, FD: %d, Quote: %c\n",
-		node_type_strings[node->type],
-		value,
-		node->fd,
-		node->quote_char ? node->quote_char : 'N');
-}
+// 	print_indent(indent);
+// 	if (node->value)
+// 		value = node->value;
+// 	else
+// 		value = "NULL";
+// 	printf("Type: %s, Value: %s, FD: %d, Quote: %c\n",
+// 		node_type_strings[node->type],
+// 		value,
+// 		node->fd,
+// 		node->quote_char ? node->quote_char : 'N');
+// }
 
-void	pretty_print_ast(const t_ast_node *node, int indent)
-{
-	if (!node)
-		return ;
-	print_node(node, indent);
-	if (node->left)
-	{
-		print_indent(indent);
-		printf("Left:\n");
-		pretty_print_ast(node->left, indent + 1);
-	}
-	if (node->right)
-	{
-		print_indent(indent);
-		if (node->type == NODE_PIPE)
-			printf("Right (Pipe):\n");
-		else
-			printf("Right:\n");
-		pretty_print_ast(node->right, indent + 1);
-	}
-}
+// void	pretty_print_ast(const t_ast_node *node, int indent)
+// {
+// 	if (!node)
+// 		return ;
+// 	print_node(node, indent);
+// 	if (node->left)
+// 	{
+// 		print_indent(indent);
+// 		printf("Left:\n");
+// 		pretty_print_ast(node->left, indent + 1);
+// 	}
+// 	if (node->right)
+// 	{
+// 		print_indent(indent);
+// 		if (node->type == NODE_PIPE)
+// 			printf("Right (Pipe):\n");
+// 		else
+// 			printf("Right:\n");
+// 		pretty_print_ast(node->right, indent + 1);
+// 	}
+// }

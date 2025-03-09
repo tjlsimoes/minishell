@@ -6,11 +6,40 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 16:43:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/06 16:07:16 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:35:50 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*extract_key_and_not_name(char **token, char **not_name)
+{
+	char	*key;
+
+	*not_name = get_non_var(*token + 1);
+	if (*not_name)
+	{
+		key = ft_calloc(1, *not_name - *token);
+		ft_strlcpy(key, *token + 1, *not_name - *token);
+		*not_name = ft_strdup(*not_name);
+	}
+	else
+		key = ft_strdup(*token + 1);
+	return (key);
+}
+
+static void	handle_variable_replacement(char **token,
+				char *var_value, char *not_name)
+{
+	if (not_name)
+	{
+		*token = alt_strjoin(var_value, not_name);
+		free(not_name);
+		free(var_value);
+	}
+	else
+		*token = var_value;
+}
 
 void	expand_env_variable(char **token)
 {
@@ -26,28 +55,12 @@ void	expand_env_variable(char **token)
 		*token = ft_itoa(minishell->exit_status);
 		return ;
 	}
-	not_name = get_non_var(*token + 1);
-	if (not_name)
-	{
-		key = ft_calloc(1, not_name - *token);
-		ft_strlcpy(key, *token + 1, not_name - *token);
-		not_name = ft_strdup(not_name);
-	}
-	else
-		key = ft_strdup(*token + 1);
+	key = extract_key_and_not_name(token, &not_name);
 	free(*token);
-	*token = NULL;
 	var_value = get_env_value(get_env_pair(&(get_sh()->env_var), key));
 	if (var_value == NULL)
 		var_value = ft_strdup("");
-	if (not_name)
-	{
-		*token = alt_strjoin(var_value, not_name);
-		free(not_name);
-		free(var_value);
-	}
-	else
-		*token = var_value;
+	handle_variable_replacement(token, var_value, not_name);
 	free(key);
 }
 

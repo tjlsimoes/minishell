@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/28 16:06:23 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/09 13:26:19 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,11 @@ static int	parse_redirect_fd(char *token)
 	i = 0;
 	while (ft_isdigit(token[i]))
 		i++;
-	if (i == 0)
+	if (i == 0 && ft_strchr("><", token[i]))
 	{
-		if (ft_strchr("><", token[i]))
-		{
-			if (token[i] == '>')
-				return (STDOUT_FILENO);
-			return (STDIN_FILENO);
-		}
+		if (token[i] == '>')
+			return (STDOUT_FILENO);
+		return (STDIN_FILENO);
 	}
 	fd_str = ft_substr(token, 0, i);
 	fd = ft_atoi(fd_str);
@@ -36,95 +33,39 @@ static int	parse_redirect_fd(char *token)
 	return (fd);
 }
 
-// static t_node_type	get_redirect_type_and_symbol(char *token, char **symbol_ptr)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (ft_isdigit(token[i]))
-// 		i++;
-// 	*symbol_ptr = &token[i];
-// 	if (ft_strncmp(*symbol_ptr, ">>", 2) == 0)
-// 		return (NODE_REDIRECT_APPEND);
-// 	if (ft_strncmp(*symbol_ptr, "<<", 2) == 0)
-// 		return (NODE_HEREDOC);
-// 	if (ft_strncmp(*symbol_ptr, "<", 1) == 0)
-// 		return (NODE_REDIRECT_IN);
-// 	if (ft_strncmp(*symbol_ptr, ">", 1) == 0)
-// 		return (NODE_REDIRECT_OUT);
-// 	*symbol_ptr = NULL;
-// 	return (NODE_COMMAND);
-// }
-
-static t_node_type get_redirect_type_and_symbol(char *token, char **symbol_ptr, int *op_len)
+static t_node_type	get_redirect_type(char *token,
+		char **symbol_ptr, int *op_len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (ft_isdigit(token[i]))
 		i++;
+	*op_len = 1;
 	*symbol_ptr = &token[i];
-	if (ft_strncmp(*symbol_ptr, ">>", 2) == 0) {
-		*op_len = 2;
-		return NODE_REDIRECT_APPEND;
-	} else if (ft_strncmp(*symbol_ptr, "<<", 2) == 0) {
-		*op_len = 2;
-		return NODE_HEREDOC;
-	} else if (ft_strncmp(*symbol_ptr, ">", 1) == 0) {
-		*op_len = 1;
-		return NODE_REDIRECT_OUT;
-	} else if (ft_strncmp(*symbol_ptr, "<", 1) == 0) {
-		*op_len = 1;
-		return (NODE_REDIRECT_IN);
-	} else
+	if (ft_strncmp(*symbol_ptr, ">>", 2) == 0)
 	{
-		*op_len = 0;
-		return (NODE_COMMAND);
+		*op_len = 2;
+		return (NODE_REDIRECT_APPEND);
 	}
+	else if (ft_strncmp(*symbol_ptr, "<<", 2) == 0)
+	{
+		*op_len = 2;
+		return (NODE_HEREDOC);
+	}
+	else if (ft_strncmp(*symbol_ptr, ">", 1) == 0)
+		return (NODE_REDIRECT_OUT);
+	else if (ft_strncmp(*symbol_ptr, "<", 1) == 0)
+		return (NODE_REDIRECT_IN);
+	*op_len = 0;
+	return (NODE_COMMAND);
 }
 
-static void	attach_redirect(t_ast_node *cmd_node, t_ast_node *redirect_node)
+static char	*get_filename(char **tokens,
+		int *index, char *redirect_s, int op_len)
 {
-	t_ast_node	**current;
-
-	current = &cmd_node->right;
-	while (*current)
-		current = &(*current)->right;
-	*current = redirect_node;
-}
-
-// static char	*get_filename(char **tokens, int *index, char *redirect_s)
-// {
-// 	char	*filename;
-// 	char	*cleaned_filename;
-
-// 	if (redirect_s && *(redirect_s + 1) != '\0' && *(redirect_s + 1) != '>')
-// 	{
-// 		(*index)++;
-// 		filename = ft_strdup(redirect_s + 1);
-// 	}
-// 	else if (tokens[(*index) + 1])
-// 	{
-// 		(*index) += 2;
-// 		filename = ft_strdup(tokens[(*index) - 1]);
-// 	}
-// 	else
-// 	{
-// 		(*index)++;
-// 		return (report_error(ERROR_SYNTAX, "newline"), NULL);
-// 	}
-// 	if (filename)
-// 	{
-// 		cleaned_filename = clean_arg(filename);
-// 		return (free(filename), cleaned_filename);
-// 	}
-// 	return (NULL);
-// }
-
-static char	*get_filename(char **tokens, int *index, char *redirect_s, int op_len)
-{
-	char *filename;
-	char *cleaned_filename;
+	char	*filename;
+	char	*cleaned_filename;
 
 	if (redirect_s && *(redirect_s + op_len) != '\0')
 	{
@@ -140,50 +81,41 @@ static char	*get_filename(char **tokens, int *index, char *redirect_s, int op_le
 	{
 		(*index)++;
 		report_error(ERROR_SYNTAX, "newline");
-		return NULL;
+		return (NULL);
 	}
 	cleaned_filename = clean_arg(filename);
 	free(filename);
-	return cleaned_filename;
+	return (cleaned_filename);
 }
 
-
-// t_ast_node	*parse_reedirect_node(char **tokens, int *index,
-// 	t_ast_node *cmd_node)
-// {
-// 	t_node_type	redirect_type;
-// 	t_ast_node	*redirect_node;
-// 	int			fd;
-// 	char		*filename;
-// 	char		*redirect_s;
-
-// 	redirect_type = get_redirect_type_and_symbol(tokens[*index], &redirect_s);
-// 	fd = parse_redirect_fd(tokens[*index]);
-// 	filename = get_filename(tokens, index, redirect_s);
-// 	if (!filename)
-// 		return (NULL);
-// 	redirect_node = create_node(redirect_type, filename, fd);
-// 	free(filename);
-// 	attach_redirect(cmd_node, redirect_node);
-// 	return (redirect_node);
-// }
-
-t_ast_node	*parse_redirect_node(char **tokens, int *index, t_ast_node *cmd_node)
+static t_ast_node	*create_redirect_node(char **tokens, int *index)
 {
-	t_node_type redirect_type;
-	t_ast_node *redirect_node;
-	int fd;
-	char *filename;
-	char *redirect_s;
-	int op_len = 0;
+	t_node_type	redirect_type;
+	char		*redirect_s;
+	int			op_len;
+	int			fd;
+	char		*filename;
 
-	redirect_type = get_redirect_type_and_symbol(tokens[*index], &redirect_s, &op_len);
+	redirect_type = get_redirect_type(tokens[*index], &redirect_s, &op_len);
 	fd = parse_redirect_fd(tokens[*index]);
 	filename = get_filename(tokens, index, redirect_s, op_len);
 	if (!filename)
-		return NULL;
-	redirect_node = create_node(redirect_type, filename, fd);
-	free(filename);
-	attach_redirect(cmd_node, redirect_node);
+		return (NULL);
+	return (create_node(redirect_type, filename, fd));
+}
+
+t_ast_node	*parse_redirect_node(char **tokens,
+				int *index, t_ast_node *cmd_node)
+{
+	t_ast_node	*redirect_node;
+	t_ast_node	**current;
+
+	redirect_node = create_redirect_node(tokens, index);
+	if (!redirect_node)
+		return (NULL);
+	current = &cmd_node->right;
+	while (*current)
+		current = &(*current)->right;
+	*current = redirect_node;
 	return (redirect_node);
 }
