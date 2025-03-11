@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_redirect.c                                  :+:      :+:    :+:   */
+/*   parser_redirect_a.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/09 13:26:19 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:43:20 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	parse_redirect_fd(char *token)
+int	parse_redirect_fd(char *token)
 {
 	int		i;
 	int		fd;
@@ -33,7 +33,7 @@ static int	parse_redirect_fd(char *token)
 	return (fd);
 }
 
-static t_node_type	get_redirect_type(char *token,
+t_node_type	get_redirect_type(char *token,
 		char **symbol_ptr, int *op_len)
 {
 	int	i;
@@ -61,7 +61,7 @@ static t_node_type	get_redirect_type(char *token,
 	return (NODE_COMMAND);
 }
 
-static char	*get_filename(char **tokens,
+char	*get_filename(char **tokens,
 		int *index, char *redirect_s, int op_len)
 {
 	char	*filename;
@@ -88,34 +88,25 @@ static char	*get_filename(char **tokens,
 	return (cleaned_filename);
 }
 
-static t_ast_node	*create_redirect_node(char **tokens, int *index)
+// Helper function to extract redirection metadata
+int	get_redirect_metadata(char *token, t_node_type *redirect_type,
+		char **redirect_s, int *op_len)
 {
-	t_node_type	redirect_type;
-	char		*redirect_s;
-	int			op_len;
-	int			fd;
-	char		*filename;
-
-	redirect_type = get_redirect_type(tokens[*index], &redirect_s, &op_len);
-	fd = parse_redirect_fd(tokens[*index]);
-	filename = get_filename(tokens, index, redirect_s, op_len);
-	if (!filename)
-		return (NULL);
-	return (create_node(redirect_type, filename, fd));
+	*redirect_type = get_redirect_type(token, redirect_s, op_len);
+	return (parse_redirect_fd(token));
 }
 
-t_ast_node	*parse_redirect_node(char **tokens,
-				int *index, t_ast_node *cmd_node)
+// Helper function to create an AST node with the filename
+t_ast_node	*create_redirect_ast_node(char **tokens, int *index,
+		t_node_type redirect_type, int fd)
 {
-	t_ast_node	*redirect_node;
-	t_ast_node	**current;
+	char		*filename;
+	t_ast_node	*node;
 
-	redirect_node = create_redirect_node(tokens, index);
-	if (!redirect_node)
+	filename = get_filename(tokens, index, NULL, 0);
+	if (!filename)
 		return (NULL);
-	current = &cmd_node->right;
-	while (*current)
-		current = &(*current)->right;
-	*current = redirect_node;
-	return (redirect_node);
+	node = create_node(redirect_type, filename, fd);
+	free(filename);
+	return (node);
 }

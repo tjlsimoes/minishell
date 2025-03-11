@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:23:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/23 13:15:38 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:28:57 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static t_ast_node	*handle_redirect(char *value, int fd, int redirect_index)
 	tokens[1] = NULL;
 	index = 0;
 	parse_redirect_node(tokens, &index, node);
+	if (!parse_redirect_node(tokens, &index, node))
+		return (free(token_str), free_ast(node), NULL);
 	free(token_str);
 	return (node);
 }
@@ -61,8 +63,10 @@ static char	*remove_matching_quotes(char *value)
 	int		i;
 	int		j;
 	char	quote_char;
+	char	*cleaned_value;
 
 	len = ft_strlen(value);
+	cleaned_value = ft_calloc(len + 1, sizeof(char));
 	i = 0;
 	j = 0;
 	quote_char = '\0';
@@ -73,11 +77,11 @@ static char	*remove_matching_quotes(char *value)
 		else if (value[i] == quote_char)
 			quote_char = '\0';
 		else
-			value[j++] = value[i];
+			cleaned_value[j++] = value[i];
 		i++;
 	}
-	value[j] = '\0';
-	return (value);
+	cleaned_value[j] = '\0';
+	return (cleaned_value);
 }
 
 static t_ast_node	*handle_quotes(char *value, int fd)
@@ -85,6 +89,7 @@ static t_ast_node	*handle_quotes(char *value, int fd)
 	t_ast_node	*node;
 	int			len;
 	char		quote_char;
+	char		*cleaned_value;
 
 	len = ft_strlen(value);
 	quote_char = value[0];
@@ -97,8 +102,9 @@ static t_ast_node	*handle_quotes(char *value, int fd)
 	}
 	else
 	{
-		value = remove_matching_quotes(value);
-		node = create_node(NODE_ARGUMENT, value, fd);
+		cleaned_value = remove_matching_quotes(value);
+		node = create_node(NODE_ARGUMENT, cleaned_value, fd);
+		free(cleaned_value);
 	}
 	return (node);
 }

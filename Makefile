@@ -6,7 +6,7 @@
 #    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/03/09 13:32:25 by asafrono         ###   ########.fr        #
+#    Updated: 2025/03/11 20:40:31 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRCS = main.c ast.c tokenizer.c utils.c signals.c error_handling.c \
-parser.c parser_redirect.c parser_pipe.c parser_env.c parser_argument.c \
+parser.c parser_redirect_a.c parser_redirect_b.c parser_pipe.c parser_env.c parser_argument.c \
 env_tests.c env_vars_change.c env_vars_expand.c env_vars_get_a.c env_vars_get_b.c \
 env_vars_print.c env_vars_utils_a.c env_vars_utils_b.c env_vars_utils_c.c\
 builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_pwd_echo.c builtins_tests.c \

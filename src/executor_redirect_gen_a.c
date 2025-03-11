@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:59:11 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/11 19:34:17 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:40:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	gen_redirect_stdout(t_ast_node **ast)
 		if ((node->type == NODE_REDIRECT_OUT && !gen_redirect_out(&node))
 			|| (node->type == NODE_REDIRECT_APPEND
 				&& !gen_redirect_append(&node)))
-			return (def_exit(127), 0);
+			return (0);
 		node = node->right;
 	}
 	return (1);

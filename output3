@@ -1,0 +1,13 @@
+<
+>
+Makefile
+libft
+minishell
+minishell_tester
+obj
+output1
+output2
+output3
+src
+valgrind_readline.supp
+|

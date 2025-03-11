@@ -6,14 +6,14 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:18 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/22 17:46:53 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:13:45 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //  Determines if a given token is a redirection operator (<, >, or >>),
-// returning a boolean value indicating whether it is a redirect. 
+// returning a boolean value indicating whether it is a redirect.
 int	is_redirect(char *token)
 {
 	int	i;
@@ -50,6 +50,8 @@ char	*clean_arg(char *arg)
 	char	*write;
 
 	clean = ft_strdup(arg);
+	if (!clean)
+		return (NULL);
 	write = clean;
 	while (*arg)
 	{

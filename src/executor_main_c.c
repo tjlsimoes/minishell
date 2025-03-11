@@ -46,10 +46,12 @@ void	simple_command_exec(t_ast_node **ast)
 		return ;
 	node = *ast;
 	if (node->type == NODE_COMMAND)
-		return (exec_switch(&node));
+		exec_switch(&node);
 	else if (node->type == NODE_PIPE && node->right->value
 		&& node->right->value[0] == '\0')
-		return (exec_switch(&(node->left)));
+		exec_switch(&(node->left));
 	else if (node->type == NODE_PIPE)
-		return (exec_pipe(&node, -1));
+		exec_pipe(&node, -1);
+	free_ast(*ast);
+	*ast = NULL;
 }

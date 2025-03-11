@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/09 11:44:01 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:44:24 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,5 +274,14 @@ int				ft_exit_exec(t_ast_node *args, int orig_stdin,
 char			*clean_arg(char *arg);
 void			exit_shell(int exit_code, int orig_stdin,
 					int orig_stdout, int fd_to_close);
+int					parse_redirect_fd(char *token);
+t_node_type			get_redirect_type(char *token,
+						char **symbol_ptr, int *op_len);
+char				*get_filename(char **tokens,
+						int *index, char *redirect_s, int op_len);
+int					get_redirect_metadata(char *token, t_node_type *redirect_type,
+						char **redirect_s, int *op_len);
+t_ast_node			*create_redirect_ast_node(char **tokens, int *index,
+						t_node_type redirect_type, int fd);
 
 #endif
