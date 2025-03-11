@@ -56,7 +56,7 @@ int	init_path_vars(char ***split, char *binary)
 	else if (path_check_rel(binary))
 		return (4);
 	*split = path_split();
-	if (!split)
+	if (!(*split))
 		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, binary), 0);
 	return (1);
 }
