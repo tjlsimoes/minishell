@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static char *skip_non_digits(char *str, int *sign)
+static char	*skip_non_digits(char *str, int *sign)
 {
 	while (ft_isspace(*str))
 		str++;
@@ -28,10 +28,10 @@ static char *skip_non_digits(char *str, int *sign)
 	return (str);
 }
 
-int is_valid_number(char *str)
+int	is_valid_number(char *str)
 {
-	long long num;
-	int sign;
+	long long	num;
+	int			sign;
 
 	num = 0;
 	str = skip_non_digits(str, &sign);
@@ -42,15 +42,15 @@ int is_valid_number(char *str)
 		if (*str == '"' || *str == '\'')
 		{
 			str++;
-			continue;
+			continue ;
 		}
 		if (!ft_isdigit(*str))
 			return (0);
 		num = num * 10 + (*str - '0');
-		if ((sign == 1 && num > INT_MAX) || (sign == -1 && num > -(long long)INT_MIN))
+		if ((sign == 1 && num > INT_MAX)
+			|| (sign == -1 && num > -(long long)INT_MIN))
 			return (0);
 		str++;
 	}
 	return (1);
 }
-
