@@ -42,8 +42,10 @@ void	builtins_close_fds(int orig_stdin, int orig_stdout, int fd_to_close)
 {
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
-	close(orig_stdin);
-	close(orig_stdout);
+	if (orig_stdin >= 0)
+		close(orig_stdin);
+	if (orig_stdout >= 0)
+		close(orig_stdout);
 	if (fd_to_close >= 0)
 		close(fd_to_close);
 }
