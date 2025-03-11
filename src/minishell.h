@@ -233,6 +233,10 @@ char			*path_res_iter(char ***split, char *binary);
 char			*gen_path_pwd(char *binary);
 char			*gen_path_rel(char *binary);
 
+bool			minishell_check(t_ast_node **ast, char *abs_path);
+void			update_shlvl_free(char *env_value, char *updated_shlvl);
+void			update_shlvl(char **envp);
+
 char			*path_resolution(char *binary);
 bool			cmd_check(char *abs_path);
 void			attempt_path_resolution(t_ast_node **ast);

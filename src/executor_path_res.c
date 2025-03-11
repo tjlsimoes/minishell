@@ -40,23 +40,6 @@ char	**path_split(void)
 	return (path_split);
 }
 
-// char	*path_resolution(char *binary)
-// {
-// 	char	**split;
-// 	int		path_split_need;
-
-// 	path_split_need = init_path_vars(&split, binary);
-// 	if (!path_split_need)
-// 		return (NULL);
-// 	else if (path_split_need == 2)
-// 		return (ft_strdup(binary));
-// 	else if (path_split_need == 3)
-// 		return (gen_path_pwd(binary));
-// 	else if (path_split_need == 4)
-// 		return (gen_path_rel(binary));
-// 	return (path_res_iter(&split, binary));
-// }
-
 char	*path_resolution(char *binary)
 {
 	char			**split;
@@ -88,6 +71,8 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
+	if (minishell_check(ast, abs_path))
+		update_shlvl(envp);
 	child_free(NULL);
 	if (execve(abs_path, argv, envp) == -1)
 	{
