@@ -233,7 +233,7 @@ char			*path_res_iter(char ***split, char *binary);
 char			*gen_path_pwd(char *binary);
 char			*gen_path_rel(char *binary);
 
-bool			minishell_check(t_ast_node **ast, char *abs_path);
+bool			minishell_check(t_ast_node **ast);
 void			update_shlvl_free(char *env_value, char *updated_shlvl);
 void			update_shlvl(char **envp);
 

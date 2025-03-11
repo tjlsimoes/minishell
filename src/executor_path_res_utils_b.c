@@ -12,24 +12,19 @@
 
 #include "minishell.h"
 
-bool	minishell_check(t_ast_node **ast, char *abs_path)
+bool	minishell_check(t_ast_node **ast)
 {
-	char	**split;
-	int		i;
-
-	if (ft_strncmp((*ast)->value, "minishell", ft_strlen("minishell") == 0))
+	if (ft_strncmp((*ast)->value, "minishell", ft_strlen("minishell")) == 0)
 		return (true);
 	else if (ft_strncmp((*ast)->value, "./minishell",
 			ft_strlen((*ast)->value)) == 0)
 		return (true);
-	i = 0;
-	split = ft_split(abs_path, '/');
-	if (!split)
-		return (false);
-	while (split[i])
-		i++;
-	if (ft_strncmp(split[--i], "minishell", ft_strlen((*ast)->value)) == 0)
-		return (clear_array(split), true);
+	else if (ft_strlen((*ast)->value) > 10)
+	{
+		if (ft_strncmp(&((*ast)->value[ft_strlen((*ast)->value) - 10]),
+				"/minishell", 10) == 0)
+			return (true);
+	}
 	return (false);
 }
 

@@ -71,7 +71,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
-	if (minishell_check(ast, abs_path))
+	if (minishell_check(ast))
 		update_shlvl(envp);
 	child_free(NULL);
 	if (execve(abs_path, argv, envp) == -1)
