@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/09 11:46:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:56:43 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ int	process_input(const char *input, t_token_info *info)
 		}
 	}
 	if (in_quote)
-		return (free_tokens(info->tokens),
-			report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
+		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
 	return (1);
 }
 

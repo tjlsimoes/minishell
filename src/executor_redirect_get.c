@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:57:41 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/03 17:50:20 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:39:46 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,21 @@ char	*get_redirect_out(t_ast_node **ast)
 // 	return (NULL);
 // }
 
-char	*get_append(t_ast_node **ast)
-{
-	t_ast_node	*node;
+// char	*get_append(t_ast_node **ast)
+// {
+// 	t_ast_node	*node;
 
-	if (!ast || !(*ast))
-		return (NULL);
-	node = (*ast)->right;
-	while (node)
-	{
-		if (node->type == NODE_REDIRECT_APPEND)
-			return (node->value);
-		node = node->right;
-	}
-	return (NULL);
-}
+// 	if (!ast || !(*ast))
+// 		return (NULL);
+// 	node = (*ast)->right;
+// 	while (node)
+// 	{
+// 		if (node->type == NODE_REDIRECT_APPEND)
+// 			return (node->value);
+// 		node = node->right;
+// 	}
+// 	return (NULL);
+// }
 
 // Get quote removal length.
 // Allocate with quote removal length.
