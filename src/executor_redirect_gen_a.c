@@ -60,11 +60,11 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 {
 	int	fd_in;
 
-	if (stdins != 0)
-		return (1);
 	fd_in = open((*current)->value, O_RDONLY);
 	if (fd_in == -1)
 		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
+	if (stdins != 0)
+		return (close(fd_in), 1);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 		return (close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_in) == -1)
