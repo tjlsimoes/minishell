@@ -12,15 +12,13 @@
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal_status = 0;
-
 // Signal handler for SIGINT (Ctrl+C)
 // Instead of directly writing to STDOUT, we should use 
 // readline functions to handle the prompt properly.
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	g_signal_status = 1;
+	def_exit(130);
 	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

@@ -86,12 +86,12 @@ typedef struct s_token_info
 // Exit Status Exploration
 typedef struct s_minishell
 {
-	char		*input;
-	t_list		*env_var;
-	char		**tokens;
-	t_ast_node	*ast;
-	int			exit_status;
-	bool		should_exit;
+	char					*input;
+	t_list					*env_var;
+	char					**tokens;
+	t_ast_node				*ast;
+	volatile sig_atomic_t	exit_status;
+	bool					should_exit;
 }	t_minishell;
 
 t_minishell		*get_sh(void);
