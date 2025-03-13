@@ -6,7 +6,7 @@
 #    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 17:18:15 by asafrono          #+#    #+#              #
-#    Updated: 2025/03/11 20:40:31 by asafrono         ###   ########.fr        #
+#    Updated: 2025/03/13 23:02:09 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ executor_builtins_a.c executor_gen.c executor_main_a.c executor_main_b.c executo
 executor_path_res.c executor_path_res_split.c executor_path_res_utils_a.c executor_path_res_utils_b.c \
 executor_redirect_gen_a.c executor_redirect_gen_b.c \
 executor_redirect_gen_utils.c executor_redirect_get.c executor_redirect_get_utils.c executor_tests.c executor_utils.c \
-exit_status.c builtins_exit.c
+exit_status.c builtins_exit.c executor_path_res_check_abs.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

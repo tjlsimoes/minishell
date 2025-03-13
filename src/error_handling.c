@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/09 11:58:26 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/13 22:51:40 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static void	print_error_message_extended(t_error error_type)
 		ft_putstr_fd("close error", 2);
 	else if (error_type == ERROR_IS_DIR)
 		ft_putstr_fd("is a directory", 2);
+	else if (error_type == ERROR_NOT_A_DIRECTORY)
+		ft_putstr_fd("Not a directory", 2);
+	else if (error_type == ERROR_NOT_EXECUTABLE)
+		ft_putstr_fd("ERROR_NOT_EXECUTABLE", 2);
+	else if (error_type == ERROR_MEMORY_ALLOCATION)
+		ft_putstr_fd("Memory allocation failed", 2);
 	else
 		ft_putstr_fd("unknown error", 2);
 }

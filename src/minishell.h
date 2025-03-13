@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/11 20:44:24 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:02:39 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ typedef enum e_error
 	ERROR_FORK,
 	ERROR_OPEN,
 	ERROR_CLOSE,
-	ERROR_IS_DIR
+	ERROR_IS_DIR,
+	ERROR_NOT_A_DIRECTORY,
+	ERROR_MEMORY_ALLOCATION,
+	ERROR_NOT_EXECUTABLE
 }	t_error;
 
 typedef enum e_node_type
@@ -283,5 +286,6 @@ int				get_redirect_metadata(char *token, t_node_type *redirect_type,
 					char **redirect_s, int *op_len);
 t_ast_node		*create_redirect_ast_node(char **tokens, int *index,
 					t_node_type redirect_type, int fd);
+char			*check_absolute_path(char *binary);
 
 #endif

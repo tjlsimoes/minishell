@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/09 12:21:54 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:06:06 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*path_resolution(char *binary)
 	if (!path_split_need)
 		return (NULL);
 	else if (path_split_need == 2)
-		abs_path = ft_strdup(binary);
+		abs_path = check_absolute_path(binary);
 	else if (path_split_need == 3)
 		abs_path = gen_path_pwd(binary);
 	else if (path_split_need == 4)
