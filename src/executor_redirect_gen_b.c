@@ -15,16 +15,23 @@
 int	gen_redirections(t_ast_node **ast)
 {
 	t_ast_node	*node;
+	int			heredoc;
 
+	heredoc = false;
 	node = (*ast)->right;
 	while (node)
 	{
 		if ((node->type == NODE_REDIRECT_OUT && !gen_redirect_out(&node))
 			|| (node->type == NODE_REDIRECT_APPEND
 				&& !gen_redirect_append(&node))
-			|| (node->type == NODE_REDIRECT_IN && !gen_redirect_in(&node))
-			|| (node->type == NODE_HEREDOC && !gen_heredoc(&node)))
+			|| (node->type == NODE_REDIRECT_IN && !gen_redirect_in(&node)))
 			return (0);
+		else if (node->type == NODE_HEREDOC && heredoc == false)
+		{
+			if (!gen_heredoc(&node))
+				return (0);
+			heredoc = true;
+		}
 		node = node->right;
 	}
 	return (1);
