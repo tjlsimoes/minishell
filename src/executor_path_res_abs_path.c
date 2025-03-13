@@ -49,6 +49,7 @@ char	*gen_path_pwd(char *binary)
 				free(abs_path), def_exit(126), NULL);
 	}
 	report_error(ERROR_COMMAND_NOT_FOUND, binary);
+	free(abs_path);
 	def_exit(127);
 	return (NULL);
 }
@@ -71,6 +72,7 @@ char	*gen_path_rel(char *binary)
 				free(abs_path), def_exit(126), NULL);
 	}
 	report_error(ERROR_COMMAND_NOT_FOUND, binary);
+	free(abs_path);
 	def_exit(127);
 	return (NULL);
 }
