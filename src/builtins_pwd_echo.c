@@ -19,7 +19,7 @@ int	ft_pwd(void)
 	ft_bzero(cwd, PATH_MAX);
 	if (!(getcwd(cwd, PATH_MAX)))
 	{
-		perror("-bash: pwd");
+		perror("minishell: pwd");
 		return (1);
 	}
 	ft_printf("%s\n", cwd);

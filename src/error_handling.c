@@ -70,7 +70,7 @@ void	report_error(t_error error_type, char *details)
 
 void	chdir_error(char **path)
 {
-	ft_putstr_fd("-bash: cd: ", 2);
+	ft_putstr_fd("minihsell: cd: ", 2);
 	ft_putstr_fd((*path), 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);

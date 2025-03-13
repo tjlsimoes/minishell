@@ -39,7 +39,7 @@ int	cd_path_error(char **path, char *error_msg)
 int	cd_home(char **path)
 {
 	(*path) = get_env_value(get_env_pair(&(get_sh()->env_var), "HOME"));
-	if (cd_path_error(path, "-bash: cd: HOME not set\n"))
+	if (cd_path_error(path, "cd: HOME not set"))
 		return (1);
 	return (0);
 }
@@ -48,7 +48,7 @@ int	cd_prev(char **path)
 {
 	free((*path));
 	(*path) = get_env_value(get_env_pair(&(get_sh()->env_var), "OLDPWD"));
-	if (cd_path_error(path, "-bash: cd: OLDPWD not set\n"))
+	if (cd_path_error(path, "cd: OLDPWD not set"))
 		return (1);
 	ft_printf("%s\n", (*path));
 	return (0);
