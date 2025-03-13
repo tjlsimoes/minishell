@@ -12,15 +12,13 @@
 
 #include "minishell.h"
 
-void	exec_pipe(t_ast_node **ast, int fd_to_close)
+void	exec_pipe(t_ast_node **ast)
 {
 	int		fd[2];
 	pid_t	pid_left;
 	pid_t	pid_right;
 	int		wstatus;
 
-	if (fd_to_close != -1)
-		close(fd_to_close);
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"));
 	pid_left = fork();
@@ -51,7 +49,7 @@ void	simple_command_exec(t_ast_node **ast)
 		&& node->right->value[0] == '\0')
 		exec_switch(&(node->left));
 	else if (node->type == NODE_PIPE)
-		exec_pipe(&node, -1);
+		exec_pipe(&node);
 	free_ast(*ast);
 	*ast = NULL;
 }

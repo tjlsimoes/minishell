@@ -153,7 +153,7 @@ void	attempt_path_resolution(t_ast_node **ast)
 	if (pid == 0)
 	{
 		child_exec(abs_path, ast);
-		exit_shell(1, -1, -1, -1);
+		exit_shell(1, -1, -1);
 	}
 	waitpid(pid, &wstatus, 0);
 	free(abs_path);
