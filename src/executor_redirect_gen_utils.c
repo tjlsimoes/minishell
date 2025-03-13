@@ -31,11 +31,11 @@ char	*alt_gnl(int fd, char *delimiter)
 	}
 	if (delimiter && ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
 		&& line[ft_strlen(delimiter)] == '\n')
-		{
-			free(leftover[fd]);
-			leftover[fd] = NULL;
-			return (free(line), NULL);
-		}
+	{
+		free(leftover[fd]);
+		leftover[fd] = NULL;
+		return (free(line), NULL);
+	}
 	else
 		leftover[fd] = ft_new_leftover(leftover[fd]);
 	return (line);

@@ -245,13 +245,11 @@ char			*get_redirect_in(t_ast_node **ast);
 char			*get_append(t_ast_node **ast);
 t_ast_node		*get_heredoc(t_ast_node **ast);
 int				gen_redirections(t_ast_node **ast);
-void			gen_redirections_error(int fd[2]);
-int				gen_redirections_exit(int fd[2]);
 int				gen_redirect_out(t_ast_node **ast);
 int				gen_redirect_append(t_ast_node **ast);
 int				gen_redirect_stdout(t_ast_node **ast);
-int				gen_redirect_in(t_ast_node **ast);
-int				gen_heredoc(t_ast_node **ast, int write_end, int heredocs_rem);
+int				gen_redirect_in(t_ast_node **ast, int stdins_rem);
+int				gen_heredoc(t_ast_node **ast, int stdins_rem);
 void			child_exec(char *abs_path, t_ast_node **ast);
 void			child_free(char *abs_path);
 
@@ -259,9 +257,9 @@ bool			any(char **array, char *value);
 char			*alt_gnl(int fd, char *delimiter);
 int				rm_tab_trail(char **str);
 int				alt_rm_quotes(char **str);
-int				nbr_heredocs(t_ast_node **ast);
-void			heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
-					int heredocs_rem);
+int				nbr_stdins(t_ast_node **ast);
+void			heredoc_read(t_ast_node **heredoc_node, char **line,
+					int write_end, int stdins_rem);
 void			rm_quotes_gen_res(char **str, char **result);
 
 void			alt_child_exec(char *abs_path, t_ast_node **ast);

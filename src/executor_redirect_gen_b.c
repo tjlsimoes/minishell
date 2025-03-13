@@ -12,54 +12,28 @@
 
 #include "minishell.h"
 
-int	gen_redirections_exit(int fd[2])
-{
-	if (close(fd[1]) == -1)
-		return (report_error(ERROR_CLOSE, "pipe write end"), 0);
-	if (dup2(fd[0], STDIN_FILENO) == -1)
-		return (close(fd[0]),
-			report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
-	if (close(fd[0]) == -1)
-		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
-	return (1);
-}
-
-void	gen_redirections_error(int fd[2])
-{
-	if (close(fd[1]) == -1)
-		report_error(ERROR_CLOSE, "pipe write end");
-	if (close(fd[0]) == -1)
-		report_error(ERROR_CLOSE, "pipe read end");
-}
-
 int	gen_redirections(t_ast_node **ast)
 {
 	t_ast_node	*node;
-	int			fd[2];
-	int			heredocs;
+	int			stdins;
 
-	if (pipe(fd) == -1)
-		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
 	node = (*ast)->right;
-	heredocs = nbr_heredocs(ast);
+	stdins = nbr_stdins(ast);
 	while (node)
 	{
 		if ((node->type == NODE_REDIRECT_OUT && !gen_redirect_out(&node))
 			|| (node->type == NODE_REDIRECT_APPEND
 				&& !gen_redirect_append(&node))
-			|| (node->type == NODE_REDIRECT_IN && !gen_redirect_in(&node)))
-			return (gen_redirections_error(fd), 0);
-		else if (node->type == NODE_HEREDOC)
-			{
-				if (!gen_heredoc(&node, fd[1], --heredocs))
-					return (gen_redirections_error(fd), 0);
-			}
+			|| (node->type == NODE_REDIRECT_IN
+				&& !gen_redirect_in(&node, --stdins))
+			|| (node->type == NODE_HEREDOC && !gen_heredoc(&node, --stdins)))
+			return (0);
 		node = node->right;
 	}
-	return (gen_redirections_exit(fd));
+	return (1);
 }
 
-int	nbr_heredocs(t_ast_node **ast)
+int	nbr_stdins(t_ast_node **ast)
 {
 	t_ast_node	*node;
 	int			i;
@@ -68,7 +42,8 @@ int	nbr_heredocs(t_ast_node **ast)
 	i = 0;
 	while (node)
 	{
-		if (node->type == NODE_HEREDOC)
+		if (node->type == NODE_HEREDOC
+			|| node->type == NODE_REDIRECT_IN)
 			i++;
 		node = node->right;
 	}
@@ -114,7 +89,8 @@ int	nbr_heredocs(t_ast_node **ast)
 // 	return (1);
 // }
 
-void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end, int heredocs_rem)
+void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
+	int stdins_rem)
 {
 	t_ast_node	*heredoc;
 
@@ -129,7 +105,7 @@ void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end, int her
 			break ;
 		if (heredoc->quote_char == 'N')
 			expand_env_var(line);
-		if (heredocs_rem == 0)
+		if (stdins_rem == 0)
 			write(write_end, (*line), ft_strlen((*line)));
 		free((*line));
 		(*line) = NULL;
