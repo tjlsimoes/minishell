@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/09 12:10:05 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/13 22:15:03 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ void	process_command_tokens(t_ast_node *cmd_node, char **tokens, int *index)
 	while (tokens[*index] && ft_strncmp(tokens[*index], "|", 2) != 0)
 	{
 		if (is_redirect(tokens[*index]))
-			parse_redirect_node(tokens, index, cmd_node);
+		{
+			if (!parse_redirect_node(tokens, index, cmd_node))
+				return ;
+		}
 		else
 			process_env_or_argument(cmd_node, tokens, index, &cmd_initialized);
 	}

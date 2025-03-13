@@ -25,6 +25,28 @@ static t_ast_node	*create_redirect_node(char **tokens, int *index)
 	return (create_redirect_ast_node(tokens, index, redirect_type, fd));
 }
 
+t_ast_node	*parse_redirect_node(char **tokens,
+				int *index, t_ast_node *cmd_node)
+{
+	t_ast_node	*redirect_node;
+	t_ast_node	**current;
+
+	if (!tokens[*index + 1] || is_redirect(tokens[*index + 1]))
+	{
+		report_error(ERROR_SYNTAX, tokens[*index + 1]);
+		(*index)++;
+		return (NULL);
+	}
+	redirect_node = create_redirect_node(tokens, index);
+	if (!redirect_node)
+		return (NULL);
+	current = &cmd_node->right;
+	while (*current)
+		current = &(*current)->right;
+	*current = redirect_node;
+	return (redirect_node);
+}
+
 //IT IS FINE BUT NORMINETTE
 // static t_ast_node	*create_redirect_node(char **tokens, int *index)
 // {
@@ -44,19 +66,3 @@ static t_ast_node	*create_redirect_node(char **tokens, int *index)
 // 	free(filename);
 // 	return (node);
 // }
-
-t_ast_node	*parse_redirect_node(char **tokens,
-				int *index, t_ast_node *cmd_node)
-{
-	t_ast_node	*redirect_node;
-	t_ast_node	**current;
-
-	redirect_node = create_redirect_node(tokens, index);
-	if (!redirect_node)
-		return (NULL);
-	current = &cmd_node->right;
-	while (*current)
-		current = &(*current)->right;
-	*current = redirect_node;
-	return (redirect_node);
-}

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:15:02 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/11 20:43:20 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/13 22:14:14 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,13 @@ char	*get_filename(char **tokens,
 		filename = ft_strdup(redirect_s + op_len);
 		(*index)++;
 	}
-	else if (tokens[(*index) + 1])
+	else if (tokens[(*index) + 1] && !is_redirect(tokens[(*index) + 1]))
 	{
 		filename = ft_strdup(tokens[(*index) + 1]);
 		(*index) += 2;
 	}
 	else
-	{
-		(*index)++;
-		report_error(ERROR_SYNTAX, "newline");
 		return (NULL);
-	}
 	cleaned_filename = clean_arg(filename);
 	free(filename);
 	return (cleaned_filename);
@@ -105,7 +101,11 @@ t_ast_node	*create_redirect_ast_node(char **tokens, int *index,
 
 	filename = get_filename(tokens, index, NULL, 0);
 	if (!filename)
+	{
+		(*index)++;
+		report_error(ERROR_SYNTAX, "newline");
 		return (NULL);
+	}
 	node = create_node(redirect_type, filename, fd);
 	free(filename);
 	return (node);
