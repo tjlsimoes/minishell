@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/11 20:02:44 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:33:09 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,20 @@ void	handle_operator(const char *input, int *i, t_token_info *info)
 int	process_input(const char *input, t_token_info *info)
 {
 	int		i;
-	bool	in_quote;
+	bool	in_q;
+	bool	has_non_whitespace;
 
 	i = -1;
-	in_quote = false;
+	in_q = false;
 	while (input[++i] != '\0')
 	{
-		if (!in_quote && (input[i] == '|' || input[i] == '<'
-				|| input[i] == '>'))
+		has_non_whitespace = !ft_isspace(input[i]);
+		if (!in_q && (input[i] == '|' || input[i] == '<' || input[i] == '>'))
 			handle_operator(input, &i, info);
 		else
 		{
-			handle_quote(input, &i, info, &in_quote);
-			if (ft_isspace(input[i]) && !in_quote && info->token_length > 0)
+			handle_quote(input, &i, info, &in_q);
+			if (ft_isspace(input[i]) && !in_q && info->token_length > 0)
 			{
 				info->current_token[info->token_length] = '\0';
 				info->tokens[(info->index)++] = ft_strdup(info->current_token);
@@ -79,9 +80,9 @@ int	process_input(const char *input, t_token_info *info)
 			}
 		}
 	}
-	if (in_quote)
+	if (in_q)
 		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
-	return (1);
+	return (has_non_whitespace);
 }
 
 // Tokenizes a given input string into an array of strings (tokens)
@@ -118,13 +119,15 @@ void	process_tokens(char *input)
 
 	sh = get_sh();
 	sh->tokens = tokenize_input(input);
-	if (sh->tokens)
+	if (sh->tokens && sh->tokens[0] != NULL)
 	{
 		sh->ast = parse(sh->tokens);
 		simple_command_exec(&(sh->ast));
 		free_tokens(sh->tokens);
 		free_ast(sh->ast);
 	}
+	else if (sh->tokens)
+		free_tokens(sh->tokens);
 }
 
 // void	process_tokens(char *input)
