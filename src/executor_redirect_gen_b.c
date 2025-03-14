@@ -103,7 +103,7 @@ void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
 		if (ft_strncmp((*line), heredoc->value, ft_strlen(heredoc->value)) == 0
 			&& (*line)[ft_strlen(heredoc->value)] == '\n')
 			break ;
-		if (heredoc->quote_char == 'N')
+		if (heredoc->quote_char != '\'')
 			expand_env_var(line);
 		if (stdins_rem == 0)
 			write(write_end, (*line), ft_strlen((*line)));
