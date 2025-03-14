@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:02:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/14 17:33:09 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:45:06 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,12 @@ void	process_tokens(char *input)
 	if (sh->tokens && sh->tokens[0] != NULL)
 	{
 		sh->ast = parse(sh->tokens);
-		simple_command_exec(&(sh->ast));
+		if (sh->ast)
+		{
+			simple_command_exec(&(sh->ast));
+			free_ast(sh->ast);
+		}
 		free_tokens(sh->tokens);
-		free_ast(sh->ast);
 	}
 	else if (sh->tokens)
 		free_tokens(sh->tokens);
