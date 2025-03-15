@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:23:56 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/11 20:28:57 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 18:42:10 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,15 @@ static t_ast_node	*handle_quotes(char *value, int fd)
 		value[len - 1] = '\0';
 		node = create_node(NODE_ARGUMENT, value + 1, fd);
 		node->quote_char = quote_char;
+		if (quote_char == '"')
+			expand_env_var(&node->value);
 	}
 	else
 	{
 		cleaned_value = remove_matching_quotes(value);
 		node = create_node(NODE_ARGUMENT, cleaned_value, fd);
+		if (quote_char == '"')
+			expand_env_var(&node->value);
 		free(cleaned_value);
 	}
 	return (node);

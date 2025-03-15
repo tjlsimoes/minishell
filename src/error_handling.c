@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:38:17 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/13 22:51:40 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 18:42:00 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	report_error(t_error error_type, char *details)
 
 void	chdir_error(char **path)
 {
-	ft_putstr_fd("minihsell: cd: ", 2);
+	ft_putstr_fd("minihshell: cd: ", 2);
 	ft_putstr_fd((*path), 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);
