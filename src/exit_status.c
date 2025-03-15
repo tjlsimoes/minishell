@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 19:29:06 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:16:10 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 void	set_exit_status(int wstatus, bool child_wait)
 {
 	t_minishell	*minishell;
-	char		*env_exit_status;
-	char		*temp;
+	char		*env_exit_stts;
+	char		*t;
 
 	minishell = get_sh();
 	if (child_wait)
@@ -40,11 +40,9 @@ void	set_exit_status(int wstatus, bool child_wait)
 		else if (WIFSTOPPED(wstatus))
 			minishell->exit_status = 128 + WSTOPSIG(wstatus);
 	}
-	env_exit_status = ft_itoa(minishell->exit_status);
-	temp = ft_strjoin("?=", env_exit_status);
-	add_env_var(&(get_sh()->env_var), temp);
-	free(env_exit_status);
-	free(temp);
+	env_exit_stts = ft_itoa(minishell->exit_status);
+	t = ft_strjoin("?=", env_exit_stts);
+	return (add_env_var(&(get_sh()->env_var), t), free(env_exit_stts), free(t));
 }
 // Not really sure why 131 ought to be handled differently...
 

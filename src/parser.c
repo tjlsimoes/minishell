@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:53:57 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/13 22:20:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:41:35 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ t_ast_node	*parse_command(char **tokens, int *index)
 
 	cmd_node = create_node(NODE_COMMAND, "", -1);
 	process_command_tokens(cmd_node, tokens, index);
+	if (cmd_node->right != NULL)
+		return (cmd_node);
+	if (cmd_node->value[0] == '\0')
+		return (free_ast(cmd_node), NULL);
 	return (cmd_node);
 }
 

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:09:17 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 19:16:25 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:01:49 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	handle_sigint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	// else
-	// 	write(STDERR_FILENO, "\n", 1);
 }
 
 void	setup_signals(void)

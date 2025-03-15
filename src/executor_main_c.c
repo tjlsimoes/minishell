@@ -22,7 +22,7 @@ void	exec_pipe(t_ast_node **ast)
 
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"));
-	original_sigint = signal(SIGINT, SIG_IGN);	
+	original_sigint = signal(SIGINT, SIG_IGN);
 	pid_left = fork();
 	if (pid_left == -1)
 		return (report_error(ERROR_FORK, "Failed to fork process"));
@@ -42,17 +42,24 @@ void	exec_pipe(t_ast_node **ast)
 void	simple_command_exec(t_ast_node **ast)
 {
 	t_ast_node	*node;
+	int			orig_stdin;
+	int			orig_stdout;
 
 	if (!ast || !(*ast))
 		return ;
 	node = *ast;
-	if (node->type == NODE_COMMAND)
+	orig_stdin = dup(STDIN_FILENO);
+	orig_stdout = dup(STDOUT_FILENO);
+	if (node->type == NODE_COMMAND && node->value[0] == '\0' && node->right)
+	{
+		if (!gen_redirections(ast))
+			def_exit(1);
+	}
+	else if (node->type == NODE_COMMAND)
 		exec_switch(&node);
-	else if (node->type == NODE_PIPE && node->right->value
-		&& node->right->value[0] == '\0')
-		exec_switch(&(node->left));
 	else if (node->type == NODE_PIPE)
 		exec_pipe(&node);
+	cleanup_proc_fds(orig_stdin, orig_stdout);
 	free_ast(*ast);
 	*ast = NULL;
 }

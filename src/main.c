@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 12:42:04 by asafrono          #+#    #+#             */
-/*   Updated: 2025/02/21 15:03:25 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:47:50 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 		continue_shell = process_command(sh->input);
 		free(sh->input);
 	}
+	close_all_fds_except(-1, -1, -1);
 	ft_lstdel(&(sh->env_var));
 	return (0);
 }

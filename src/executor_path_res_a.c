@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_path_res.c                                :+:      :+:    :+:   */
+/*   executor_path_res_a.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 19:24:48 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:14:44 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,6 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	}
 	exit(0);
 }
-// Isn't there a need to free all the structs that are allocated in the
-// parent process and "mirrored" in the child process?
-// Even if execve doesn't fail?
-
-// Is there a need to restore stdout and stdin if an error occurs?
 
 // Check if command is valid.
 // Initial condition was necessary even with gen_path_*
@@ -109,37 +104,4 @@ bool	cmd_check(char *abs_path)
 		return (report_error(ERROR_IS_DIR, abs_path), free(abs_path), true);
 	}
 	return (false);
-}
-
-void	attempt_path_resolution(t_ast_node **ast)
-{
-	t_ast_node	*node;
-	char		*abs_path;
-	int			pid;
-	int			wstatus;
-	void		(*original_sigint)(int); 
-
-	node = *ast;
-	abs_path = path_resolution(node->value);
-	if (!abs_path || cmd_check(abs_path))
-		return ;
-	original_sigint = signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (pid == -1)
-	{
-		report_error(ERROR_FORK, "Failed to fork process");
-		get_sh()->exit_status = 1;
-		set_exit_status(get_sh()->exit_status, false);
-		return (free(abs_path));
-	}
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		child_exec(abs_path, ast);
-		exit_shell(1, -1, -1);
-	}
-	waitpid(pid, &wstatus, 0);
-	signal(SIGINT, original_sigint); 
-	free(abs_path);
-	set_exit_status(wstatus, true);
 }

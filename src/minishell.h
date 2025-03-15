@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/13 23:02:39 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:02:29 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,7 @@ char			*alt_gnl(int fd, char *delimiter);
 int				rm_tab_trail(char **str);
 int				alt_rm_quotes(char **str);
 int				nbr_stdins(t_ast_node **ast);
-void			heredoc_read(t_ast_node **heredoc_node, char **line,
-					int write_end, int stdins_rem);
+void			heredoc_read(t_ast_node **heredoc_node, int write_end);
 void			rm_quotes_gen_res(char **str, char **result);
 
 void			alt_child_exec(char *abs_path, t_ast_node **ast);
@@ -287,5 +286,7 @@ int				get_redirect_metadata(char *token, t_node_type *redirect_type,
 t_ast_node		*create_redirect_ast_node(char **tokens, int *index,
 					t_node_type redirect_type, int fd);
 char			*check_absolute_path(char *binary);
+void			close_all_fds_except(int keep1, int keep2, int keep3);
+void			cleanup_proc_fds(int orig_stdin, int orig_stdout);
 
 #endif
