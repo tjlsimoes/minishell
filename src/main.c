@@ -43,17 +43,7 @@ void	init_minishell(char **envp)
 
 int	process_command(char *input)
 {
-	t_minishell	*minishell;
-	char		*status_str;
-
-	minishell = get_sh();
-	if (ft_strncmp(input, "setstatus", 9) == 0)
-	{
-		status_str = input + 10;
-		minishell->exit_status = ft_atoi(status_str);
-		printf("Exit status set to: %d\n", minishell->exit_status);
-	}
-	else if (ft_strlen(input) > 0)
+	if (ft_strlen(input) > 0)
 	{
 		add_history(input);
 		process_tokens(input);
