@@ -65,7 +65,6 @@ char	*get_filename(char **tokens,
 		int *index, char *redirect_s, int op_len)
 {
 	char	*filename;
-	char	*cleaned_filename;
 
 	if (redirect_s && *(redirect_s + op_len) != '\0')
 	{
@@ -79,9 +78,7 @@ char	*get_filename(char **tokens,
 	}
 	else
 		return (NULL);
-	cleaned_filename = clean_arg(filename);
-	free(filename);
-	return (cleaned_filename);
+	return (filename);
 }
 
 // Helper function to extract redirection metadata
@@ -97,6 +94,7 @@ t_ast_node	*create_redirect_ast_node(char **tokens, int *index,
 		t_node_type redirect_type, int fd)
 {
 	char		*filename;
+	char		*cleaned_filename;
 	t_ast_node	*node;
 
 	filename = get_filename(tokens, index, NULL, 0);
@@ -106,7 +104,15 @@ t_ast_node	*create_redirect_ast_node(char **tokens, int *index,
 		report_error(ERROR_SYNTAX, "newline");
 		return (NULL);
 	}
-	node = create_node(redirect_type, filename, fd);
+	cleaned_filename = clean_arg(filename);
+	node = create_node(redirect_type, cleaned_filename, fd);
+	if (filename && filename[0] == '\'')
+		node->quote_char = '\'';
+	else if (filename && filename[0] == '"')
+		node->quote_char = '"';
+	else
+		node->quote_char = 'N';
+	free(cleaned_filename);
 	free(filename);
 	return (node);
 }
