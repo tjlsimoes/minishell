@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/13 23:06:06 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:05:47 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,27 +89,6 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 
 // Is there a need to restore stdout and stdin if an error occurs?
 
-// void	attempt_path_resolution(t_ast_node **ast)
-// {
-// 	t_ast_node	*node;
-// 	char		*abs_path;
-// 	int			pid;
-// 	int			wstatus;
-
-// 	node = *ast;
-// 	abs_path = path_resolution(node->value);
-// 	if (!abs_path)
-// 		return ;
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return (free(abs_path));	// Possible error message needed.
-// 	if (pid == 0)
-// 		return (child_exec(abs_path, ast));
-// 	waitpid(pid, &wstatus, 0);
-// 	free(abs_path);
-// 	set_exit_status(wstatus, true);
-// }
-
 // Check if command is valid.
 // Initial condition was necessary even with gen_path_*
 //   functions refactoring in place.
@@ -137,11 +116,13 @@ void	attempt_path_resolution(t_ast_node **ast)
 	char		*abs_path;
 	int			pid;
 	int			wstatus;
+	void		(*original_sigint)(int); 
 
 	node = *ast;
 	abs_path = path_resolution(node->value);
 	if (!abs_path || cmd_check(abs_path))
 		return ;
+	original_sigint = signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -152,10 +133,12 @@ void	attempt_path_resolution(t_ast_node **ast)
 	}
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		child_exec(abs_path, ast);
 		exit_shell(1, -1, -1);
 	}
 	waitpid(pid, &wstatus, 0);
+	signal(SIGINT, original_sigint); 
 	free(abs_path);
 	set_exit_status(wstatus, true);
 }

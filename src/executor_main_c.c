@@ -18,9 +18,11 @@ void	exec_pipe(t_ast_node **ast)
 	pid_t	pid_left;
 	pid_t	pid_right;
 	int		wstatus;
+	void	(*original_sigint)(int);
 
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"));
+	original_sigint = signal(SIGINT, SIG_IGN);	
 	pid_left = fork();
 	if (pid_left == -1)
 		return (report_error(ERROR_FORK, "Failed to fork process"));
@@ -33,6 +35,7 @@ void	exec_pipe(t_ast_node **ast)
 	close(fd[1]);
 	waitpid(pid_left, NULL, 0);
 	waitpid(pid_right, &wstatus, 0);
+	signal(SIGINT, original_sigint);
 	set_exit_status(wstatus, true);
 }
 
