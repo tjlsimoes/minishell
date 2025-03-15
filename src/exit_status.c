@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:38:30 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 19:15:56 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:29:06 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	set_exit_status(int wstatus, bool child_wait)
 			minishell->exit_status = WTERMSIG(wstatus);
 			if (minishell->exit_status == SIGINT)
 				write(STDERR_FILENO, "\n", 1);
+			else if (minishell->exit_status == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			if (minishell->exit_status != 131)
 				minishell->exit_status += 128;
 		}

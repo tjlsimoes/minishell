@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 13:05:54 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 19:05:47 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:24:48 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	char	**argv;
 	char	**envp;
 
+	signal(SIGQUIT, SIG_DFL);
 	if (!gen_redirections(ast))
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
