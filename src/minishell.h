@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:54:32 by asafrono          #+#    #+#             */
-/*   Updated: 2025/03/15 21:02:29 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:41:24 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,5 +288,6 @@ t_ast_node		*create_redirect_ast_node(char **tokens, int *index,
 char			*check_absolute_path(char *binary);
 void			close_all_fds_except(int keep1, int keep2, int keep3);
 void			cleanup_proc_fds(int orig_stdin, int orig_stdout);
+int				has_heredoc_redirect(t_ast_node *node);
 
 #endif
