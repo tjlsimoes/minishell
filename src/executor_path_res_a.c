@@ -67,7 +67,7 @@ void	child_exec(char *abs_path, t_ast_node **ast)
 	char	**argv;
 	char	**envp;
 
-	signal(SIGQUIT, SIG_DFL);
+	setup_child_signals();
 	if (!gen_redirections(ast))
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);

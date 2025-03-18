@@ -146,7 +146,7 @@ void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
 {
 	t_ast_node	*heredoc;
 
-	if (!heredoc_node || !(*heredoc_node || !line || !(*line)))
+	if (!heredoc_node || !(*heredoc_node) || !line )
 		return ;
 	heredoc = *heredoc_node;
 	(*line) = alt_gnl(0, NULL);

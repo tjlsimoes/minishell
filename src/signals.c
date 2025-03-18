@@ -28,6 +28,32 @@ void	handle_sigint(int sig)
 	}
 }
 
+void	handle_child_sig(int sig)
+{
+	(void)sig;
+	printf("HERE\n");
+	get_sh()->should_exit = true;
+	// child_free(NULL);
+	// def_exit(1);
+}
+
+void	setup_child_signals(void)
+{
+	struct sigaction	sigquit;
+	struct sigaction	sigint;
+
+	sigquit.sa_handler = handle_child_sig;
+	sigemptyset(&sigquit.sa_mask);
+	sigquit.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sigquit, NULL);
+
+
+	sigint.sa_handler = handle_child_sig;
+	sigemptyset(&sigint.sa_mask);
+	sigint.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sigint, NULL);
+}
+
 void	setup_signals(void)
 {
 	struct sigaction	sa;

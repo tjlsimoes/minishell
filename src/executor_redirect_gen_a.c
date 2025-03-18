@@ -123,8 +123,6 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 // }
 
 int	gen_heredoc(t_ast_node **ast, int stdins_rem)
-
-
 {
 	int			fd[2];
 	char		*line;

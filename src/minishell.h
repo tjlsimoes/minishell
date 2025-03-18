@@ -290,4 +290,8 @@ char			*check_absolute_path(char *binary);
 void			close_all_fds_except(int keep1, int keep2, int keep3);
 void			cleanup_proc_fds(int orig_stdin, int orig_stdout);
 
+
+void	setup_child_signals(void);
+void	handle_child_sig(int sig);
+
 #endif
