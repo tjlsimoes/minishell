@@ -122,6 +122,7 @@ void	process_tokens(char *input)
 	if (sh->tokens && sh->tokens[0] != NULL)
 	{
 		sh->ast = parse(sh->tokens);
+		pretty_print_ast(sh->ast, 0);
 		if (sh->ast)
 		{
 			simple_command_exec(&(sh->ast));

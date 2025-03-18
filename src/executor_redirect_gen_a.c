@@ -72,27 +72,79 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 	return (1);
 }
 
-int	gen_heredoc(t_ast_node **ast, int stdins_rem)
-{
-	int	fd[2];
-	int	orig[2];
+// int	gen_heredoc(t_ast_node **ast, int stdins_rem)
+// {
+// 	int	fd[2];
+// 	int	orig[2];
 
+// 	if (pipe(fd) == -1)
+// 		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
+// 	orig[0] = dup(STDIN_FILENO);
+// 	orig[1] = dup(STDOUT_FILENO);
+// 	heredoc_read(ast, fd[1]);
+// 	close(fd[1]);
+// 	dup2(orig[1], STDOUT_FILENO);
+// 	close(orig[0]);
+// 	close(orig[1]);
+// 	if (stdins_rem == 0)
+// 	{
+// 		dup2(fd[0], STDIN_FILENO);
+// 		close(fd[0]);
+// 	}
+// 	else
+// 		close(fd[0]);
+// 	return (1);
+// }
+
+// -------------------------------------------------------------------------
+// int	gen_heredoc(t_ast_node **ast, int stdins_rem)
+// {
+// 	int		fd[2];
+// 	char	*line;
+
+// 	if (!ast || !*ast)
+// 		return (0);
+// 	if (stdins_rem != 0)
+// 	{
+// 		heredoc_read(ast, &line, STDIN_FILENO, stdins_rem);
+// 		return (1);
+// 	}
+// 	if (pipe(fd) == -1)
+// 		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
+// 	heredoc_read(ast, &line, fd[1], stdins_rem);
+// 	if (close(fd[1]) == -1)
+// 		return (close(fd[0]), report_error(ERROR_CLOSE, "pipe write end"), 0);
+// 	if (dup2(fd[0], STDIN_FILENO) == -1)
+// 		return (close(fd[0]),
+// 			report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
+// 	if (close(fd[0]) == -1)
+// 		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
+// 	return (1);
+// }
+
+int	gen_heredoc(t_ast_node **ast, int stdins_rem)
+
+
+{
+	int			fd[2];
+	char		*line;
+
+	if (!ast || !(*ast))
+		return (0);
+	if (stdins_rem != 0)
+	{
+		heredoc_read(ast, &line, STDIN_FILENO, stdins_rem);
+		return (1);
+	}
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
-	orig[0] = dup(STDIN_FILENO);
-	orig[1] = dup(STDOUT_FILENO);
-	heredoc_read(ast, fd[1]);
-	close(fd[1]);
-	dup2(orig[0], STDIN_FILENO);
-	dup2(orig[1], STDOUT_FILENO);
-	close(orig[0]);
-	close(orig[1]);
-	if (stdins_rem == 0)
-	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-	}
-	else
-		close(fd[0]);
+	heredoc_read(ast, &line, fd[1], stdins_rem);
+	if (close(fd[1]) == -1)
+		return (close(fd[0]), report_error(ERROR_CLOSE, "pipe write end"), 0);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+		return (close(fd[0]),
+			report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
+	if (close(fd[0]) == -1)
+		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
 	return (1);
 }

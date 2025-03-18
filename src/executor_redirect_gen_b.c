@@ -114,28 +114,54 @@ int	nbr_stdins(t_ast_node **ast)
 // 	free((*line));
 // }
 
-void	heredoc_read(t_ast_node **heredoc_node, int write_fd)
-{
-	char	*line;
-	char	*delimiter;
+// void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_fd,
+// 		int stdins_rem)
+// {
+// 	char	*delimiter;
 
-	if (!heredoc_node || !*heredoc_node)
+// 	if (!heredoc_node || !*heredoc_node || !line)
+// 		return ;
+// 	delimiter = (*heredoc_node)->value;
+// 	(*line) = readline("> ");
+// 	while ((*line))
+// 	{
+// 		if (ft_strncmp(*line, delimiter, ft_strlen(delimiter)) == 0
+// 		&& (*line)[ft_strlen(delimiter)] == '\0')
+// 			break;
+// 		if ((*heredoc_node)->quote_char != '\'')
+// 			expand_env_var(line);
+// 		if (stdins_rem == 0)
+// 		{
+// 			write(write_fd, (*line), strlen(*line));
+// 			write(write_fd, "\n", 1);
+// 		}
+// 		free(*line);
+// 		*line = readline("> ");
+// 	}
+// 	free(*line);
+// }
+
+void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
+	int stdins_rem)
+{
+	t_ast_node	*heredoc;
+
+	if (!heredoc_node || !(*heredoc_node || !line || !(*line)))
 		return ;
-	delimiter = (*heredoc_node)->value;
-	while (1)
+	heredoc = *heredoc_node;
+	(*line) = alt_gnl(0, NULL);
+	while ((*line))
 	{
-		line = readline("> ");
-		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		if (ft_strncmp((*line), heredoc->value, ft_strlen(heredoc->value)) == 0
+			&& (*line)[ft_strlen(heredoc->value)] == '\n')
 			break ;
-		if ((*heredoc_node)->quote_char != '\'')
-			expand_env_var(&line);
-		if (write_fd != -1)
-		{
-			write(write_fd, line, ft_strlen(line));
-			write(write_fd, "\n", 1);
-		}
-		free(line);
+		if (heredoc->quote_char != '\'')
+			expand_env_var(line);
+		if (stdins_rem == 0)
+			write(write_end, (*line), ft_strlen((*line)));
+		free((*line));
+		(*line) = NULL;
+		(*line) = alt_gnl(0, heredoc->value);
 	}
-	if (line)
-		free(line);
+	free((*line));
 }

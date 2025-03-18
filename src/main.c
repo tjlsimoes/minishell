@@ -70,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 		continue_shell = process_command(sh->input);
 		free(sh->input);
 	}
-	close_all_fds_except(-1, -1, -1);
+	// close_all_fds_except(-1, -1, -1);
 	ft_lstdel(&(sh->env_var));
 	return (0);
 }
