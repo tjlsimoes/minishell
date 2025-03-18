@@ -21,6 +21,7 @@ void	alt_attempt_path_res(t_ast_node **ast)
 	abs_path = path_resolution(node->value);
 	if (!abs_path)
 		return ;
+	sigfree_init(abs_path, true);
 	alt_child_exec(abs_path, ast);
 	free(abs_path);
 }
@@ -38,7 +39,10 @@ void	alt_exec_switch(t_ast_node **ast)
 	builtins[6] = "exit";
 	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
+	{
+		sigfree_init(NULL, true);
 		builtins_exec(ast);
+	}
 	else
 		alt_attempt_path_res(ast);
 }

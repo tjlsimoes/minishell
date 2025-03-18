@@ -39,6 +39,7 @@ void	attempt_path_resolution(t_ast_node **ast)
 	abs_path = path_resolution(node->value);
 	if (!abs_path || cmd_check(abs_path))
 		return ;
+	sigfree_init(abs_path, true);
 	orig_sigint = signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)

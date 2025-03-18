@@ -97,6 +97,14 @@ typedef struct s_minishell
 	bool					should_exit;
 }	t_minishell;
 
+typedef struct s_signal_free
+{
+	char					*abs_path;
+	int						red[2];
+	int						orig[2];
+	bool					child;
+}	t_signal_free;
+
 t_minishell		*get_sh(void);
 void			init_minishell(char **envp);
 void			do_something(void);
@@ -294,5 +302,9 @@ void			cleanup_proc_fds(int orig_stdin, int orig_stdout);
 void	setup_child_signals(void);
 void	handle_child_sig(int sig);
 bool	has_heredocs(t_ast_node **ast);
+t_signal_free	*get_sigfree();
+void			sigfree_init(char *abs_path, bool child);
+void			sigfree_erase(void);
+// void	signal_free_fd_set(char *abs_path);
 
 #endif

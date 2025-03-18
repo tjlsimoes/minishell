@@ -126,6 +126,7 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 {
 	int			fd[2];
 
+	setup_child_signals();
 	if (!ast || !(*ast))
 		return (0);
 	if (stdins_rem != 0)
@@ -135,6 +136,8 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 	}
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
+	get_sigfree()->red[0] = fd[0];
+	get_sigfree()->red[1] = fd[1];
 	heredoc_read(ast, fd[1], stdins_rem);
 	if (close(fd[1]) == -1)
 		return (close(fd[0]), report_error(ERROR_CLOSE, "pipe write end"), 0);
@@ -143,5 +146,9 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 			report_error(ERROR_DUP2, "Failed to duplicate file descriptor"), 0);
 	if (close(fd[0]) == -1)
 		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
+	get_sigfree()->red[0] = -1;
+	get_sigfree()->red[1] = -1;
+	if (get_sh()->should_exit == true)
+		return (0);
 	return (1);
 }

@@ -31,10 +31,23 @@ void	handle_sigint(int sig)
 void	handle_child_sig(int sig)
 {
 	(void)sig;
-	printf("HERE\n");
+
+	if (get_sigfree()->child)
+	{
+		sigfree_erase();
+		child_free(NULL);
+		exit(1); // Need to define exit?
+	}
+	printf("HERE Parent\n");
+	// dup2(get_sigfree()->orig[0], STDIN_FILENO);
+	// dup2(get_sigfree()->orig[1], STDOUT_FILENO);
+	// sigfree_erase();
+
+	write(STDERR_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 	get_sh()->should_exit = true;
-	// child_free(NULL);
-	// def_exit(1);
 }
 
 void	setup_child_signals(void)
@@ -44,13 +57,13 @@ void	setup_child_signals(void)
 
 	sigquit.sa_handler = handle_child_sig;
 	sigemptyset(&sigquit.sa_mask);
-	sigquit.sa_flags = SA_RESTART;
+	sigquit.sa_flags = 0;
 	sigaction(SIGQUIT, &sigquit, NULL);
 
 
 	sigint.sa_handler = handle_child_sig;
 	sigemptyset(&sigint.sa_mask);
-	sigint.sa_flags = SA_RESTART;
+	sigint.sa_flags = 0;
 	sigaction(SIGINT, &sigint, NULL);
 }
 
@@ -63,4 +76,44 @@ void	setup_signals(void)
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+t_signal_free	*get_sigfree()
+{
+	static t_signal_free	sig_free;
+
+	return (&sig_free);
+}
+
+void	sigfree_init(char *abs_path, bool child)
+{
+	t_signal_free	*sig_free;
+
+	sig_free = get_sigfree();
+	sig_free->abs_path = abs_path;
+	sig_free->red[0] = -1;
+	sig_free->red[1] = -1;
+	sig_free->orig[0] = -1;
+	sig_free->orig[1] = -1;
+	sig_free->child = child;
+}
+
+void	sigfree_erase(void)
+{
+	t_signal_free	*sig_free;
+
+	sig_free = get_sigfree();
+	if (sig_free->abs_path)
+	{
+		free(sig_free->abs_path);
+		sig_free->abs_path = NULL;
+	}
+	if (sig_free->red[1] >= 0)
+		close(sig_free->red[1]);
+	if (sig_free->red[0] >= 0)
+		close(sig_free->red[0]);
+	if (sig_free->orig[0] >= 0)
+		close(sig_free->orig[0]);
+	if (sig_free->orig[1] >= 0)
+		close(sig_free->orig[1]);
 }
