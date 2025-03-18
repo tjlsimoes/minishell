@@ -80,19 +80,3 @@ void	treat_echo_str(t_ast_node **ast)
 	if ((*ast)->quote_char != '\'')
 		expand_env_var(&((*ast)->value));
 }
-
-int	has_heredoc_redirect(t_ast_node *node)
-{
-	t_ast_node	*current;
-
-	if (!node)
-		return (0);
-	current = node->right;
-	while (current)
-	{
-		if (current->type == NODE_HEREDOC)
-			return (1);
-		current = current->right;
-	}
-	return (0);
-}

@@ -70,14 +70,14 @@ void	expand_env_variable(char **token)
 t_ast_node	*parse_env_variable(char **tokens, int *index)
 {
 	char		*expanded;
-	t_node_type	node_type;
+	t_ast_node	*new_node;
 
 	expand_env_var(&(tokens[*index]));
 	expanded = tokens[*index];
 	if (*index == 0 && expanded[0] != '\0')
-		node_type = NODE_COMMAND;
+		new_node = env_node_command(expanded);
 	else
-		node_type = NODE_ARGUMENT;
+		new_node = create_node(NODE_ARGUMENT, expanded, -1);
 	(*index)++;
-	return (create_node(node_type, expanded, -1));
+	return (new_node);
 }

@@ -60,7 +60,7 @@ int	ft_export_exec(t_ast_node **ast)
 
 	node = *ast;
 	if (!node->left)
-		return (0);
+		return (ft_export_noargs(&(get_sh()->env_var)));
 	exit_status = ft_export(&(node->left->value));
 	node = node->left->right;
 	while (node)

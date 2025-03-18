@@ -42,7 +42,7 @@ int	ft_export(char **str)
 		return (report_error(ERROR_INVALID_IDENTIFIER, *str), free(key), 1);
 	free(key);
 	if (eq_idx == -1)
-		return (0);
+		return (add_env_var(&(get_sh()->env_var), *str), 0);
 	get_quote(str, &quote);
 	remove_quotes(str);
 	if (quote == '"' || !quote)
@@ -84,7 +84,8 @@ int	ft_env(t_list **lst)
 	node = *lst;
 	while (node)
 	{
-		if (ft_strncmp(node->content, "?=", 2) == 0)
+		if (ft_strncmp(node->content, "?=", 2) == 0
+			|| idx(node->content, '=') == -1)
 		{
 			node = node->next;
 			continue ;

@@ -38,6 +38,8 @@ void	init_minishell(char **envp)
 	minishell->tokens = NULL;
 	minishell->ast = NULL;
 	minishell->exit_status = 0;
+	minishell->gen_output = true;
+	minishell->close_stdin = true;
 	ft_lstadd_back(&env_var, ft_lstnew(ft_strdup("?=0")));
 }
 
@@ -64,13 +66,13 @@ int	main(int argc, char **argv, char **envp)
 	continue_shell = 1;
 	while (continue_shell)
 	{
+		setup_signals();
 		sh->input = readline("minishell> ");
 		if (sh->input == NULL)
 			break ;
 		continue_shell = process_command(sh->input);
 		free(sh->input);
 	}
-	close_all_fds_except(-1, -1, -1);
 	ft_lstdel(&(sh->env_var));
 	return (0);
 }

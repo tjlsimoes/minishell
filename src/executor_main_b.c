@@ -21,6 +21,7 @@ void	alt_attempt_path_res(t_ast_node **ast)
 	abs_path = path_resolution(node->value);
 	if (!abs_path)
 		return ;
+	sigfree_init(abs_path, true);
 	alt_child_exec(abs_path, ast);
 	free(abs_path);
 }
@@ -38,7 +39,10 @@ void	alt_exec_switch(t_ast_node **ast)
 	builtins[6] = "exit";
 	builtins[7] = NULL;
 	if (any(builtins, (*ast)->value))
+	{
+		sigfree_init(NULL, true);
 		builtins_exec(ast);
+	}
 	else
 		alt_attempt_path_res(ast);
 }
@@ -59,6 +63,12 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 		report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
 		exit_shell(1, fd[1], -1);
 	}
+	if ((*ast)->left->type == NODE_COMMAND && (*ast)->left->value[0] == '\0')
+	{
+		standalone_gen_redirections(&((*ast)->left));
+		exit_shell(0, fd[1], -1);
+		return ;
+	}
 	close(fd[1]);
 	alt_exec_switch(&((*ast)->left));
 	exit_shell(get_sh()->exit_status, -1, -1);
@@ -71,6 +81,11 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	{
 		report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
 		exit_shell(1, -1, fd[0]);
+	}
+	if ((*ast)->right->type == NODE_COMMAND && (*ast)->right->value[0] == '\0')
+	{
+		standalone_gen_redirections(&((*ast)->right));
+		exit_shell(0, fd[0], -1);
 	}
 	close(fd[0]);
 	if ((*ast)->right->type == NODE_PIPE)

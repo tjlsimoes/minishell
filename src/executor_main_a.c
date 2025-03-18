@@ -46,6 +46,8 @@ void	builtins_close_fds(int orig_stdin, int orig_stdout)
 		close(orig_stdin);
 	if (orig_stdout >= 0)
 		close(orig_stdout);
+	get_sigfree()->orig[0] = -1;
+	get_sigfree()->orig[1] = -1;
 }
 
 void	builtins_exec(t_ast_node **ast)
@@ -55,9 +57,12 @@ void	builtins_exec(t_ast_node **ast)
 
 	orig_stdin = dup(STDIN_FILENO);
 	orig_stdout = dup(STDOUT_FILENO);
+	get_sigfree()->orig[0] = orig_stdin;
+	get_sigfree()->orig[1] = orig_stdout;
 	if (!gen_redirections(ast))
-		return (def_exit(1),
-			builtins_close_fds(orig_stdin, orig_stdout));
+		return (builtins_close_fds(orig_stdin, orig_stdout));
+	if (get_sigfree()->child)
+		setup_child_signals();
 	builtins_switch(ast, orig_stdin, orig_stdout);
 	builtins_close_fds(orig_stdin, orig_stdout);
 }
@@ -74,8 +79,16 @@ void	exec_switch(t_ast_node **ast)
 	builtins[5] = "export";
 	builtins[6] = "exit";
 	builtins[7] = NULL;
-	if (any(builtins, (*ast)->value))
+	if ((*ast)->type == NODE_COMMAND && (*ast)->value[0] == '\0')
+	{
+		sigfree_init(NULL, false);
+		standalone_red_parent(ast);
+	}
+	else if (any(builtins, (*ast)->value))
+	{
+		sigfree_init(NULL, false);
 		builtins_exec(ast);
+	}
 	else
 		attempt_path_resolution(ast);
 }
@@ -92,6 +105,7 @@ void	alt_child_exec(char *abs_path, t_ast_node **ast)
 	argv = generate_argv(ast);
 	envp = generate_envp();
 	child_free(NULL);
+	setup_child_signals();
 	if (execve(abs_path, argv, envp) == -1)
 	{
 		free(abs_path);

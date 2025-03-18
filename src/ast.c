@@ -48,7 +48,7 @@ void	free_ast(t_ast_node *node)
 // {
 // 	if (indent <= 0)
 // 		return ;
-// 	printf("  ");
+// 	dprintf(2, "  ");
 // 	print_indent(indent - 1);
 // }
 
@@ -66,7 +66,7 @@ void	free_ast(t_ast_node *node)
 // 		value = node->value;
 // 	else
 // 		value = "NULL";
-// 	printf("Type: %s, Value: %s, FD: %d, Quote: %c\n",
+// 	dprintf(2, "Type: %s, Value: %s, FD: %d, Quote: %c\n",
 // 		node_type_strings[node->type],
 // 		value,
 // 		node->fd,
@@ -81,16 +81,16 @@ void	free_ast(t_ast_node *node)
 // 	if (node->left)
 // 	{
 // 		print_indent(indent);
-// 		printf("Left:\n");
+// 		dprintf(2, "Left:\n");
 // 		pretty_print_ast(node->left, indent + 1);
 // 	}
 // 	if (node->right)
 // 	{
 // 		print_indent(indent);
 // 		if (node->type == NODE_PIPE)
-// 			printf("Right (Pipe):\n");
+// 			dprintf(2, "Right (Pipe):\n");
 // 		else
-// 			printf("Right:\n");
+// 			dprintf(2, "Right:\n");
 // 		pretty_print_ast(node->right, indent + 1);
 // 	}
 // }

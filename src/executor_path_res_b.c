@@ -14,10 +14,10 @@
 
 static void	handle_child_process(char *abs_path, t_ast_node **ast)
 {
-	signal(SIGINT, SIG_DFL);
 	child_exec(abs_path, ast);
 	exit_shell(1, -1, -1);
 }
+// This exit_shell() will never be called.
 
 static void	handle_fork_error(char *abs_path)
 {
@@ -39,6 +39,7 @@ void	attempt_path_resolution(t_ast_node **ast)
 	abs_path = path_resolution(node->value);
 	if (!abs_path || cmd_check(abs_path))
 		return ;
+	sigfree_init(abs_path, true);
 	orig_sigint = signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)

@@ -39,58 +39,15 @@ void	exec_pipe(t_ast_node **ast)
 	set_exit_status(wstatus, true);
 }
 
-// void	simple_command_exec(t_ast_node **ast)
-// {
-// 	t_ast_node	*node;
-// 	int			orig_stdin;
-// 	int			orig_stdout;
-
-// 	if (!ast || !(*ast))
-// 		return ;
-// 	node = *ast;
-// 	orig_stdin = dup(STDIN_FILENO);
-// 	orig_stdout = dup(STDOUT_FILENO);
-// 	if (node->type == NODE_COMMAND && node->value[0] == '\0' && node->right)
-// 	{
-// 		if (!gen_redirections(ast))
-// 			def_exit(1);
-// 	}
-// 	else if (node->type == NODE_COMMAND)
-// 		exec_switch(&node);
-// 	else if (node->type == NODE_PIPE)
-// 		exec_pipe(&node);
-// 	cleanup_proc_fds(orig_stdin, orig_stdout);
-// 	free_ast(*ast);
-// 	*ast = NULL;
-// }
-
 void	simple_command_exec(t_ast_node **ast)
 {
 	t_ast_node	*node;
 
 	node = *ast;
-	if (!node)
-		return ;
-	if (node->type == NODE_COMMAND && node->value[0] == '\0')
-	{
-		if (has_heredoc_redirect(node))
-		{
-			if (!gen_redirections(ast))
-				def_exit(1);
-			return ;
-		}
-		else
-		{
-			report_error(ERROR_SYNTAX, "missing command");
-			def_exit(127);
-			return ;
-		}
-	}
 	if (node->type == NODE_COMMAND)
 		exec_switch(&node);
 	else if (node->type == NODE_PIPE)
 		exec_pipe(&node);
-
 	free_ast(*ast);
 	*ast = NULL;
 }

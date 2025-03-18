@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_a.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tjorge-l < tjorge-l@student.42lisboa.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:09:17 by tjorge-l          #+#    #+#             */
-/*   Updated: 2025/03/15 21:01:49 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/03/27 11:45:20 by tjorge-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,32 @@ void	handle_sigint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	setup_heredoc_signals(void)
+{
+	struct sigaction	sigint;
+
+	signal(SIGQUIT, SIG_IGN);
+	sigint.sa_handler = handle_heredoc_sig;
+	sigemptyset(&sigint.sa_mask);
+	sigint.sa_flags = 0;
+	sigaction(SIGINT, &sigint, NULL);
+}
+
+void	setup_child_signals(void)
+{
+	struct sigaction	sigquit;
+	struct sigaction	sigint;
+
+	sigquit.sa_handler = handle_child_sig;
+	sigemptyset(&sigquit.sa_mask);
+	sigquit.sa_flags = 0;
+	sigaction(SIGQUIT, &sigquit, NULL);
+	sigint.sa_handler = handle_child_sig;
+	sigemptyset(&sigint.sa_mask);
+	sigint.sa_flags = 0;
+	sigaction(SIGINT, &sigint, NULL);
 }
 
 void	setup_signals(void)

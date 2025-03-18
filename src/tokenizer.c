@@ -60,13 +60,13 @@ int	process_input(const char *input, t_token_info *info)
 {
 	int		i;
 	bool	in_q;
-	bool	has_non_whitespace;
 
 	i = -1;
 	in_q = false;
-	while (input[++i] != '\0')
+	if (ft_strlen(input) > MAX_INPUT_LENGTH)
+		return (ft_putstr_fd("Input exceeds set max input length.\n", 2), 0);
+	while (i < MAX_INPUT_LENGTH && input[++i] != '\0')
 	{
-		has_non_whitespace = !ft_isspace(input[i]);
 		if (!in_q && (input[i] == '|' || input[i] == '<' || input[i] == '>'))
 			handle_operator(input, &i, info);
 		else
@@ -82,7 +82,7 @@ int	process_input(const char *input, t_token_info *info)
 	}
 	if (in_q)
 		return (report_error(ERROR_UNCLOSED_QUOTE, NULL), 0);
-	return (has_non_whitespace);
+	return (1);
 }
 
 // Tokenizes a given input string into an array of strings (tokens)
@@ -99,6 +99,8 @@ char	**tokenize_input(const char *input)
 	info.token_length = 0;
 	info.current_token = current_token;
 	info.quote_char = '\0';
+	if (all_isspace(input))
+		return (free_tokens(info.tokens), NULL);
 	if (!process_input(input, &info))
 		return (free_tokens(info.tokens), NULL);
 	if (info.token_length > 0)
@@ -124,6 +126,7 @@ void	process_tokens(char *input)
 		sh->ast = parse(sh->tokens);
 		if (sh->ast)
 		{
+			pre_exec_heredocs(&(sh->ast));
 			simple_command_exec(&(sh->ast));
 			free_ast(sh->ast);
 		}
@@ -132,19 +135,3 @@ void	process_tokens(char *input)
 	else if (sh->tokens)
 		free_tokens(sh->tokens);
 }
-
-// void	process_tokens(char *input)
-// {
-// 	t_minishell	*sh;
-
-// 	sh = get_sh();
-// 	sh->tokens = tokenize_input(input);
-// 	if (sh->tokens)
-// 	{
-// 		sh->ast = parse(sh->tokens);
-// 		pretty_print_ast(sh->ast, 0);
-// 		simple_command_exec(&(sh->ast));
-// 		free_tokens(sh->tokens);
-// 		free_ast(sh->ast);
-// 	}
-// }

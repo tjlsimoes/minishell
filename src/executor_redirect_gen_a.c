@@ -18,11 +18,14 @@ int	gen_redirect_out(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, (*current)->value), 0);
+		return (def_exit(1),
+			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
+		return (def_exit(1),
+			close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value), 0);
+		return (def_exit(1),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
@@ -32,11 +35,14 @@ int	gen_redirect_append(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_APPEND | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, (*current)->value), 0);
+		return (def_exit(1),
+			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
+		return (def_exit(1), close(fd_out),
+			report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value), 0);
+		return (def_exit(1),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
@@ -62,37 +68,15 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 
 	fd_in = open((*current)->value, O_RDONLY);
 	if (fd_in == -1)
-		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
+		return (def_exit(1),
+			report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
 	if (stdins != 0)
 		return (close(fd_in), 1);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
+		return (def_exit(1),
+			close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_in) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value), 0);
-	return (1);
-}
-
-int	gen_heredoc(t_ast_node **ast, int stdins_rem)
-{
-	int	fd[2];
-	int	orig[2];
-
-	if (pipe(fd) == -1)
-		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
-	orig[0] = dup(STDIN_FILENO);
-	orig[1] = dup(STDOUT_FILENO);
-	heredoc_read(ast, fd[1]);
-	close(fd[1]);
-	dup2(orig[0], STDIN_FILENO);
-	dup2(orig[1], STDOUT_FILENO);
-	close(orig[0]);
-	close(orig[1]);
-	if (stdins_rem == 0)
-	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-	}
-	else
-		close(fd[0]);
+		return (def_exit(1),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
