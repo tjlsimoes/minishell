@@ -261,7 +261,7 @@ char			*alt_gnl(int fd, char *delimiter);
 int				rm_tab_trail(char **str);
 int				alt_rm_quotes(char **str);
 int				nbr_stdins(t_ast_node **ast);
-void			heredoc_read(t_ast_node **heredoc_node, char **line, int write_fd,
+void			heredoc_read(t_ast_node **heredoc_node, int write_fd,
 					int stdins_rem);
 void			rm_quotes_gen_res(char **str, char **result);
 

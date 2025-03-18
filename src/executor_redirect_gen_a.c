@@ -125,18 +125,17 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 {
 	int			fd[2];
-	char		*line;
 
 	if (!ast || !(*ast))
 		return (0);
 	if (stdins_rem != 0)
 	{
-		heredoc_read(ast, &line, STDIN_FILENO, stdins_rem);
+		heredoc_read(ast, STDIN_FILENO, stdins_rem);
 		return (1);
 	}
 	if (pipe(fd) == -1)
 		return (report_error(ERROR_PIPE, "Failed to create pipe"), 0);
-	heredoc_read(ast, &line, fd[1], stdins_rem);
+	heredoc_read(ast, fd[1], stdins_rem);
 	if (close(fd[1]) == -1)
 		return (close(fd[0]), report_error(ERROR_CLOSE, "pipe write end"), 0);
 	if (dup2(fd[0], STDIN_FILENO) == -1)

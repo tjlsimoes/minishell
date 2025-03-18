@@ -141,27 +141,56 @@ int	nbr_stdins(t_ast_node **ast)
 // 	free(*line);
 // }
 
-void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
+// void	heredoc_read(t_ast_node **heredoc_node, char **line, int write_end,
+// 	int stdins_rem)
+// {
+// 	t_ast_node	*heredoc;
+
+// 	if (!heredoc_node || !(*heredoc_node) || !line )
+// 		return ;
+// 	heredoc = *heredoc_node;
+// 	(*line) = alt_gnl(0, NULL);
+// 	while ((*line))
+// 	{
+// 		if (ft_strncmp((*line), heredoc->value, ft_strlen(heredoc->value)) == 0
+// 			&& (*line)[ft_strlen(heredoc->value)] == '\n')
+// 			break ;
+// 		if (heredoc->quote_char != '\'')
+// 			expand_env_var(line);
+// 		if (stdins_rem == 0)
+// 			write(write_end, (*line), ft_strlen((*line)));
+// 		free((*line));
+// 		(*line) = NULL;
+// 		(*line) = alt_gnl(0, heredoc->value);
+// 	}
+// 	free((*line));
+// }
+
+void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 	int stdins_rem)
 {
 	t_ast_node	*heredoc;
+	char		*line;
 
-	if (!heredoc_node || !(*heredoc_node) || !line )
+	if (!heredoc_node || !(*heredoc_node))
 		return ;
 	heredoc = *heredoc_node;
-	(*line) = alt_gnl(0, NULL);
-	while ((*line))
+	line = readline("> ");
+	while (line)
 	{
-		if (ft_strncmp((*line), heredoc->value, ft_strlen(heredoc->value)) == 0
-			&& (*line)[ft_strlen(heredoc->value)] == '\n')
+		if (ft_strncmp(line, heredoc->value, ft_strlen(heredoc->value)) == 0
+			&& line[ft_strlen(heredoc->value)] == '\0')
 			break ;
 		if (heredoc->quote_char != '\'')
-			expand_env_var(line);
-		if (stdins_rem == 0)
-			write(write_end, (*line), ft_strlen((*line)));
-		free((*line));
-		(*line) = NULL;
-		(*line) = alt_gnl(0, heredoc->value);
+			expand_env_var(&line);
+		if (stdins_rem == 0) // Add condition here that cancels if it's a pipe.
+		{
+			write(write_end, line, ft_strlen(line));
+			write(write_end, "\n", 1);
+		}
+		free(line);
+		line = NULL;
+		line = readline("> ");
 	}
-	free((*line));
+	free(line);
 }
