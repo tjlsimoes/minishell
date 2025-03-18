@@ -130,7 +130,7 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 		return (0);
 	if (stdins_rem != 0)
 	{
-		heredoc_read(ast, STDIN_FILENO, stdins_rem);
+		heredoc_read(ast, -1, stdins_rem);
 		return (1);
 	}
 	if (pipe(fd) == -1)

@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+bool	has_heredocs(t_ast_node **ast)
+{
+	t_ast_node *node;
+
+	if (!ast || (!*ast))
+		return (false);
+	node = *ast;
+	while (node)
+	{
+		if (node->type == NODE_HEREDOC)
+			return (true);
+		node = node->right;
+	}
+	return (false);
+}
+
 void	exec_pipe(t_ast_node **ast)
 {
 	int		fd[2];
@@ -28,12 +44,15 @@ void	exec_pipe(t_ast_node **ast)
 		return (report_error(ERROR_FORK, "Failed to fork process"));
 	if (pid_left == 0)
 		exec_pipe_left(ast, fd);
+	if (has_heredocs(&(*ast)->left))
+		waitpid(pid_left, NULL, 0);
 	pid_right = fork();
 	if (pid_right == 0)
 		exec_pipe_right(ast, fd);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(pid_left, NULL, 0);
+	if (!has_heredocs(&(*ast)->left))
+		waitpid(pid_left, NULL, 0);
 	waitpid(pid_right, &wstatus, 0);
 	signal(SIGINT, original_sigint);
 	set_exit_status(wstatus, true);

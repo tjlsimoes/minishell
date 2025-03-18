@@ -293,5 +293,6 @@ void			cleanup_proc_fds(int orig_stdin, int orig_stdout);
 
 void	setup_child_signals(void);
 void	handle_child_sig(int sig);
+bool	has_heredocs(t_ast_node **ast);
 
 #endif

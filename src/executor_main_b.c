@@ -54,10 +54,13 @@ void	exec_pipe_child_exit(char *error_msg)
 void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]);
-	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	if (!has_heredocs(&(*ast)->left))
 	{
-		report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
-		exit_shell(1, fd[1], -1);
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+		{
+			report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
+			exit_shell(1, fd[1], -1);
+		}
 	}
 	close(fd[1]);
 	alt_exec_switch(&((*ast)->left));
