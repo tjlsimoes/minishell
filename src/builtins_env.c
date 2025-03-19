@@ -29,35 +29,6 @@ int	invalid_key(char *key)
 	return (0);
 }
 
-int	ft_export_noargs(t_list **lst)
-{
-	t_list	*node;
-
-	if (!lst)
-		return (report_error(ERROR_ENV_WRITE_FAILED, "No environment list"),
-			125);
-	if (!(*lst))
-		return (0);
-	node = *lst;
-	while (node)
-	{
-		if (ft_strncmp(node->content, "?=", 2) == 0)
-		{
-			node = node->next;
-			continue ;
-		}
-		if (write(1, "declare -x ", 12) == -1)
-			return (125);
-		if (write(1, node->content,
-				ft_strlen(node->content)) == -1)
-			return (report_error(ERROR_ENV_WRITE_FAILED, "Write failed"), 125);
-		if (write(1, "\n", 1) == -1)
-			return (125);
-		node = node->next;
-	}
-	return (0);
-}
-
 int	ft_export(char **str)
 {
 	int		eq_idx;

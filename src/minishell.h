@@ -308,5 +308,7 @@ void			sigfree_erase(void);
 // void	signal_free_fd_set(char *abs_path);
 
 int	ft_export_noargs(t_list **lst);
+int	env_write_error(int fd, char *str);
+int	print_declare(t_list **node);
 
 #endif

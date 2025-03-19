@@ -26,7 +26,7 @@ SRCS = main.c ast.c tokenizer.c utils.c signals.c error_handling.c \
 parser.c parser_redirect_a.c parser_redirect_b.c parser_pipe.c parser_env.c parser_argument.c \
 env_tests.c env_vars_change.c env_vars_expand.c env_vars_get_a.c env_vars_get_b.c \
 env_vars_print.c env_vars_utils_a.c env_vars_utils_b.c env_vars_utils_c.c\
-builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_pwd_echo.c builtins_tests.c \
+builtins_cd_a.c builtins_cd_b.c builtins_env.c builtins_env_utils.c builtins_pwd_echo.c builtins_tests.c \
 executor_builtins_a.c executor_gen.c executor_main_a.c executor_main_b.c executor_main_c.c executor_path_res_abs_path.c \
 executor_path_res_a.c executor_path_res_b.c executor_path_res_split.c executor_path_res_utils_a.c executor_path_res_utils_b.c \
 executor_redirect_gen_a.c executor_redirect_gen_b.c \
