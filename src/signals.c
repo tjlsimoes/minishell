@@ -43,10 +43,10 @@ void	handle_child_sig(int sig)
 	// dup2(get_sigfree()->orig[1], STDOUT_FILENO);
 	// sigfree_erase();
 
-	write(STDERR_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	// write(STDERR_FILENO, "\n", 1);
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
 	get_sh()->should_exit = true;
 }
 

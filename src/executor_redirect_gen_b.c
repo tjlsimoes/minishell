@@ -59,8 +59,10 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 	if (!heredoc_node || !(*heredoc_node))
 		return ;
 	heredoc = *heredoc_node;
-	line = readline("> ");
-	ft_putstr_fd("HERE\n", 2);
+	line = NULL;
+	if (get_sh()->should_exit != true)
+		line = readline("> ");
+	// ft_putstr_fd("HERE\n", 2);
 	while (line && get_sh()->should_exit != true)
 	{
 		if ((ft_strncmp(line, heredoc->value, ft_strlen(heredoc->value)) == 0
@@ -77,8 +79,8 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 		line = NULL;
 		line = readline("> ");
 	}
-	ft_putstr_fd("LINE:", 2);
-	ft_putstr_fd(line, 2);
-	ft_putstr_fd("\n", 2);
+	// ft_putstr_fd("LINE:", 2);
+	// ft_putstr_fd(line, 2);
+	// ft_putstr_fd("\n", 2);
 	free(line);
 }
