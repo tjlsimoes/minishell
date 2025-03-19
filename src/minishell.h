@@ -311,4 +311,8 @@ int	ft_export_noargs(t_list **lst);
 int	env_write_error(int fd, char *str);
 int	print_declare(t_list **node);
 
+bool		has_whitespace(char *str);
+t_ast_node	*env_node_command(char *expanded);
+char	**split_parser_env(char const *s);
+void	add_arg_nodes(t_ast_node **cmd_node, t_ast_node **new_node);
 #endif

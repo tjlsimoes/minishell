@@ -43,7 +43,7 @@ void	process_env_or_argument(t_ast_node *cmd_node, char **tokens,
 		{
 			free(cmd_node->value);
 			cmd_node->value = ft_strdup(new_node->value);
-			free_ast(new_node);
+			add_arg_nodes(&cmd_node, &new_node);
 			*cmd_initialized = true;
 		}
 		else
