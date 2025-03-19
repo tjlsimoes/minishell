@@ -307,4 +307,6 @@ void			sigfree_init(char *abs_path, bool child);
 void			sigfree_erase(void);
 // void	signal_free_fd_set(char *abs_path);
 
+int	ft_export_noargs(t_list **lst);
+
 #endif
