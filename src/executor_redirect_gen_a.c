@@ -139,6 +139,12 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 	get_sigfree()->red[0] = fd[0];
 	get_sigfree()->red[1] = fd[1];
 	heredoc_read(ast, fd[1], stdins_rem);
+	if (get_sigfree()->interrupted)
+	{
+		close(fd[1]);
+		close(fd[0]);
+		return (0);
+	}
 	if (close(fd[1]) == -1)
 		return (close(fd[0]), report_error(ERROR_CLOSE, "pipe write end"), 0);
 	if (dup2(fd[0], STDIN_FILENO) == -1)

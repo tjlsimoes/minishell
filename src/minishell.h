@@ -103,6 +103,7 @@ typedef struct s_signal_free
 	int						red[2];
 	int						orig[2];
 	bool					child;
+	volatile sig_atomic_t	interrupted;
 }	t_signal_free;
 
 t_minishell		*get_sh(void);
