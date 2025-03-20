@@ -94,7 +94,6 @@ typedef struct s_minishell
 	char					**tokens;
 	t_ast_node				*ast;
 	volatile sig_atomic_t	exit_status;
-	bool					should_exit;
 }	t_minishell;
 
 typedef struct s_signal_free

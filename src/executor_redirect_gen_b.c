@@ -63,9 +63,12 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 	line = readline("> ");
 	if (get_sigfree()->interrupted != 0)
 		return ;
-	if (!line)
-		return ;
-	ft_putstr_fd("HERE\n", 2);
+	// ft_putstr_fd("HERE B\n", 2);
+	// if (!line)
+	// 	return ;
+	// ft_putstr_fd("HERE\n", 2);
+	// ft_putstr_fd(ft_itoa(get_sigfree()->interrupted), 2);
+	// ft_putstr_fd("\n", 2);
 	while (line && get_sigfree()->interrupted == 0)
 	{
 		if ((ft_strncmp(line, heredoc->value, ft_strlen(heredoc->value)) == 0
@@ -75,19 +78,21 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 			expand_env_var(&line);
 		if (stdins_rem == 0)
 		{
+			ft_putstr_fd("HERE\n", 2);
 			write(write_end, line, ft_strlen(line));
 			write(write_end, "\n", 1);
 		}
-		ft_putstr_fd("LINE A:", 2);
-		ft_putstr_fd(line, 2);
+		// ft_putstr_fd("LINE A:", 2);
+		// ft_putstr_fd(line, 2);
+		// ft_putstr_fd("\n", 2);
 		free(line);
 		line = NULL;
 		// get_sigfree()->interrupted = 0;
 		if (get_sigfree()->interrupted == 0)
 			line = readline("> ");
 	}
-	ft_putstr_fd("LINE:", 2);
-	ft_putstr_fd(line, 2);
-	ft_putstr_fd("\n", 2);
+	// ft_putstr_fd("LINE:", 2);
+	// ft_putstr_fd(line, 2);
+	// ft_putstr_fd("\n", 2);
 	free(line);
 }

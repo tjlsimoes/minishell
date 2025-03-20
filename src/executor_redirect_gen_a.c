@@ -154,7 +154,5 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 		return (report_error(ERROR_CLOSE, "pipe read end"), 0);
 	get_sigfree()->red[0] = -1;
 	get_sigfree()->red[1] = -1;
-	if (get_sh()->should_exit == true)
-		return (0);
 	return (1);
 }

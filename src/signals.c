@@ -39,33 +39,8 @@ void	handle_child_sig(int sig)
 		child_free(NULL);
 		exit(1); // Need to define exit?
 	}
-	printf("HERE Parent\n");
-	// dup2(get_sigfree()->orig[0], STDIN_FILENO);
-	// dup2(get_sigfree()->orig[1], STDOUT_FILENO);
-	// sigfree_erase();
-
-	rl_done = 1;
+	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
-	// rl_cleanup_after_signal();
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay(); // Restore shell prompt
-
-	// if (get_sigfree()->red[0] >= 0)
-	// 	close(get_sigfree()->red[0]);
-	// if (get_sigfree()->red[1] >= 0)
-	// 	close(get_sigfree()->red[1]);
-
-	// dup2(get_sigfree()->orig[0], STDIN_FILENO);
-	// dup2(get_sigfree()->orig[1], STDOUT_FILENO);
-	// if (get_sigfree()->orig[0] >= 0)
-	// 	close(get_sigfree()->orig[0]);
-	// if (get_sigfree()->orig[1] >= 0)
-	// 	close(get_sigfree()->orig[1]);
-	// get_sigfree()->orig[0] = -1;
-	// get_sigfree()->orig[1] = -1;
-	
-	get_sh()->should_exit = true;
 }
 
 void	setup_child_signals(void)
