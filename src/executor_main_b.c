@@ -66,6 +66,8 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 			exit_shell(1, fd[1], -1);
 		}
 	}
+	else
+		get_sh()->gen_output = false;
 	close(fd[1]);
 	alt_exec_switch(&((*ast)->left));
 	exit_shell(get_sh()->exit_status, -1, -1);

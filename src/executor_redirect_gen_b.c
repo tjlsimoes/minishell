@@ -76,7 +76,7 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 			break ;
 		if (heredoc->quote_char != '\'')
 			expand_env_var(&line);
-		if (stdins_rem == 0)
+		if (stdins_rem == 0 && get_sh()->gen_output != false)
 		{
 			ft_putstr_fd("HERE\n", 2);
 			write(write_end, line, ft_strlen(line));
