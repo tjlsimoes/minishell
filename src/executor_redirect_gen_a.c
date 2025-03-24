@@ -194,7 +194,7 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 
 	if (get_sigfree()->interrupted)
 		return (0);
-	if (dup2(temp_file, STDIN_FILENO) == -1)
+	if (get_sh()->close_stdin == true && dup2(temp_file, STDIN_FILENO) == -1)
 		return (0); //
 	close(temp_file);
 	get_sigfree()->red[0] = -1;

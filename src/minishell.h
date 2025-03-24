@@ -95,6 +95,7 @@ typedef struct s_minishell
 	t_ast_node				*ast;
 	volatile sig_atomic_t	exit_status;
 	bool					gen_output;
+	bool					close_stdin;
 }	t_minishell;
 
 typedef struct s_signal_free

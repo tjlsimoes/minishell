@@ -72,6 +72,7 @@ void	simple_command_exec(t_ast_node **ast)
 	if (node->type == NODE_COMMAND && node->value[0] == '\0' && node->right)
 	{
 		// Need to safeguard against non-heredocs redirections
+		get_sh()->close_stdin = false;
 		if (!gen_redirections(ast))
 			def_exit(1);
 	}

@@ -39,6 +39,7 @@ void	init_minishell(char **envp)
 	minishell->ast = NULL;
 	minishell->exit_status = 0;
 	minishell->gen_output = true;
+	minishell->close_stdin = true;
 	ft_lstadd_back(&env_var, ft_lstnew(ft_strdup("?=0")));
 }
 
