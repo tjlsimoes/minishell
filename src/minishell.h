@@ -183,6 +183,7 @@ void			expand_env_variable(char **token);
 t_ast_node		*parse_argument_node(char *value, int fd);
 //tokenizer
 int				process_input(const char *input, t_token_info *info);
+bool			all_isspace(const char *input);
 char			**tokenize_input(const char *input);
 //utils
 int				is_redirect(char *token);
