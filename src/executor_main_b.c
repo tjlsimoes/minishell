@@ -75,8 +75,19 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 
 void	exec_pipe_right(t_ast_node **ast, int fd[2])
 {
+	int	temp_file;
+
+	temp_file = open("/home/pgr/repos/42/minishell/temp_file", O_RDONLY);
 	close(fd[1]);
-	if (dup2(fd[0], STDIN_FILENO) == -1)
+	if (has_heredocs(&(*ast)->right))
+	{
+		if (temp_file != -1)
+		{
+            dup2(temp_file, STDIN_FILENO);
+            close(temp_file);
+		}
+	}
+	else if (dup2(fd[0], STDIN_FILENO) == -1)
 	{
 		report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
 		exit_shell(1, -1, fd[0]);
@@ -88,3 +99,34 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 		alt_exec_switch(&((*ast)->right));
 	exit_shell(get_sh()->exit_status, -1, -1);
 }
+
+// void exec_pipe_right(t_ast_node **ast, int fd[2])
+// {
+//     close(fd[1]); // Close the write end of the pipe
+
+//     // Ensure the right side gets a valid stdin
+//     if (has_heredocs(&(*ast)->right))
+//     {
+//         int heredoc_fd = open("/tmp/minishell_heredoc", O_RDONLY);
+//         if (heredoc_fd != -1)
+//         {
+//             dup2(heredoc_fd, STDIN_FILENO);
+//             close(heredoc_fd);
+//         }
+//     }
+//     else if (dup2(fd[0], STDIN_FILENO) == -1)
+//     {
+//         report_error(ERROR_DUP2, "Failed to duplicate file descriptor");
+//         exit_shell(1, -1, fd[0]);
+//     }
+
+//     close(fd[0]);
+
+//     if ((*ast)->right->type == NODE_PIPE)
+//         exec_pipe(&((*ast)->right));
+//     else
+//         alt_exec_switch(&((*ast)->right));
+
+//     exit_shell(get_sh()->exit_status, -1, -1);
+// }
+
