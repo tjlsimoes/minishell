@@ -318,4 +318,6 @@ bool		has_whitespace(char *str);
 t_ast_node	*env_node_command(char *expanded);
 char	**split_parser_env(char const *s);
 void	add_arg_nodes(t_ast_node **cmd_node, t_ast_node **new_node);
+
+int	gen_heredocs(t_ast_node **ast);
 #endif

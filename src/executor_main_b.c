@@ -58,7 +58,15 @@ void	exec_pipe_child_exit(char *error_msg)
 void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]);
-	if (!has_heredocs(&(*ast)->left))
+	if ((*ast)->left->type == NODE_COMMAND && (*ast)->left->value[0] == '\0')
+	{
+		ft_putstr_fd("Here\n", 2);
+		get_sh()->close_stdin = false;
+		gen_heredocs(&((*ast)->left));
+		exit_shell(0, fd[1], -1);
+		return ;
+	}
+	else if (!has_heredocs(&(*ast)->left))
 	{
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 		{
@@ -79,7 +87,14 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 
 	temp_file = open("/home/pgr/repos/42/minishell/temp_file", O_RDONLY);
 	close(fd[1]);
-	if (has_heredocs(&(*ast)->right))
+	if ((*ast)->right->type == NODE_COMMAND && (*ast)->right->value[0] == '\0')
+	{
+		get_sh()->close_stdin = false;
+		gen_heredocs(&((*ast)->right));
+		exit_shell(0, fd[0], -1);
+		return ;
+	}
+	else if (has_heredocs(&(*ast)->right))
 	{
 		if (temp_file != -1)
 		{

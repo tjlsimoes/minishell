@@ -69,14 +69,14 @@ void	simple_command_exec(t_ast_node **ast)
 	node = *ast;
 	// orig_stdin = dup(STDIN_FILENO);
 	// orig_stdout = dup(STDOUT_FILENO);
-	if (node->type == NODE_COMMAND && node->value[0] == '\0' && node->right)
-	{
-		// Need to safeguard against non-heredocs redirections
-		get_sh()->close_stdin = false;
-		if (!gen_redirections(ast))
-			def_exit(1);
-	}
-	else if (node->type == NODE_COMMAND)
+	// if (node->type == NODE_COMMAND && node->value[0] == '\0' && node->right)
+	// {
+	// 	// Need to safeguard against non-heredocs redirections
+	// 	get_sh()->close_stdin = false;
+	// 	if (!gen_redirections(ast))
+	// 		def_exit(1);
+	// }
+	if (node->type == NODE_COMMAND)
 		exec_switch(&node);
 	else if (node->type == NODE_PIPE)
 		exec_pipe(&node);

@@ -82,3 +82,19 @@ void	heredoc_read(t_ast_node **heredoc_node, int write_end,
 	}
 	free(line);
 }
+
+int	gen_heredocs(t_ast_node **ast)
+{
+	t_ast_node	*node;
+	int			stdins;
+
+	node = (*ast)->right;
+	stdins = nbr_stdins(ast);
+	while (node)
+	{
+		if ((node->type == NODE_HEREDOC && !gen_heredoc(&node, --stdins)))
+			return (0);
+		node = node->right;
+	}
+	return (1);
+}

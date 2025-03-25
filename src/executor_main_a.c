@@ -78,7 +78,12 @@ void	exec_switch(t_ast_node **ast)
 	builtins[5] = "export";
 	builtins[6] = "exit";
 	builtins[7] = NULL;
-	if (any(builtins, (*ast)->value))
+	if ((*ast)->type == NODE_COMMAND && (*ast)->value[0] == '\0')
+	{
+		get_sh()->close_stdin = false;
+		gen_heredocs(ast);
+	}
+	else if (any(builtins, (*ast)->value))
 	{
 		sigfree_init(NULL, false);
 		builtins_exec(ast);
