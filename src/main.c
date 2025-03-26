@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	continue_shell = 1;
 	while (continue_shell)
 	{
+		setup_signals();
 		sh->input = readline("minishell> ");
 		if (sh->input == NULL)
 			break ;
