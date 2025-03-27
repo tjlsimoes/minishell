@@ -319,5 +319,10 @@ t_ast_node	*env_node_command(char *expanded);
 char	**split_parser_env(char const *s);
 void	add_arg_nodes(t_ast_node **cmd_node, t_ast_node **new_node);
 
-int	gen_heredocs(t_ast_node **ast);
+int			gen_heredocs(t_ast_node **ast);
+void		standalone_red_parent(t_ast_node **ast);
+int			standalone_gen_redirections(t_ast_node **ast);
+int			mock_redirect_out(t_ast_node **current);
+int			mock_redirect_append(t_ast_node **current);
+int			mock_redirect_in(t_ast_node **current, int stdins);
 #endif

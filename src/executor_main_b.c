@@ -58,15 +58,7 @@ void	exec_pipe_child_exit(char *error_msg)
 void	exec_pipe_left(t_ast_node **ast, int fd[2])
 {
 	close(fd[0]);
-	if ((*ast)->left->type == NODE_COMMAND && (*ast)->left->value[0] == '\0')
-	{
-		ft_putstr_fd("Here\n", 2);
-		get_sh()->close_stdin = false;
-		gen_heredocs(&((*ast)->left));
-		exit_shell(0, fd[1], -1);
-		return ;
-	}
-	else if (!has_heredocs(&(*ast)->left))
+	if (!has_heredocs(&(*ast)->left))
 	{
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 		{
@@ -76,6 +68,13 @@ void	exec_pipe_left(t_ast_node **ast, int fd[2])
 	}
 	else
 		get_sh()->gen_output = false;
+	if ((*ast)->left->type == NODE_COMMAND && (*ast)->left->value[0] == '\0')
+	{
+		get_sh()->close_stdin = false;
+		standalone_gen_redirections(&((*ast)->left));
+		exit_shell(0, fd[1], -1);
+		return ;
+	}
 	close(fd[1]);
 	alt_exec_switch(&((*ast)->left));
 	exit_shell(get_sh()->exit_status, -1, -1);
@@ -90,15 +89,14 @@ void	exec_pipe_right(t_ast_node **ast, int fd[2])
 	if ((*ast)->right->type == NODE_COMMAND && (*ast)->right->value[0] == '\0')
 	{
 		get_sh()->close_stdin = false;
-		gen_heredocs(&((*ast)->right));
+		standalone_gen_redirections(&((*ast)->right));
 		exit_shell(0, fd[0], -1);
-		return ;
 	}
 	else if (has_heredocs(&(*ast)->right))
 	{
 		if (temp_file != -1)
 		{
-            dup2(temp_file, STDIN_FILENO);
+			dup2(temp_file, STDIN_FILENO);
             close(temp_file);
 		}
 	}

@@ -80,8 +80,8 @@ void	exec_switch(t_ast_node **ast)
 	builtins[7] = NULL;
 	if ((*ast)->type == NODE_COMMAND && (*ast)->value[0] == '\0')
 	{
-		get_sh()->close_stdin = false;
-		gen_heredocs(ast);
+		sigfree_init(NULL, false);
+		standalone_red_parent(ast);
 	}
 	else if (any(builtins, (*ast)->value))
 	{
