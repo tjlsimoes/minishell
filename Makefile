@@ -64,6 +64,10 @@ fclean: clean
 
 re: fclean all
 
+child: VFLAGS = -s --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=valgrind_readline.supp
+child: $(NAME)
+	valgrind $(VFLAGS) ./$(NAME)
+
 run: $(NAME)
 	valgrind $(VFLAGS) ./$(NAME)
 
