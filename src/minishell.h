@@ -30,7 +30,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# define MAX_INPUT_LENGTH 1024
+// # define MAX_INPUT_LENGTH 1024
 
 typedef enum e_error
 {

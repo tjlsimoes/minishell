@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(SRC_DIR)
+CFLAGS = -Wall -Wextra -Werror -D MAX_INPUT_LENGTH=$(MAX_INPUT_LENGTH) -I$(LIBFT_DIR) -I$(SRC_DIR)
 DEBUG_FLAGS = -g
 RM = rm -rf
 
@@ -35,7 +35,7 @@ executor_redirect_gen_utils.c executor_redirect_get.c executor_redirect_get_util
 exit_status.c builtins_exit.c executor_path_res_check_abs.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
-
+MAX_INPUT_LENGTH = 1024
 # Valgrind flags
 VFLAGS = -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=valgrind_readline.supp
 

@@ -63,7 +63,9 @@ int	process_input(const char *input, t_token_info *info)
 
 	i = -1;
 	in_q = false;
-	while (input[++i] != '\0')
+	if (ft_strlen(input) > MAX_INPUT_LENGTH)
+		return (ft_putstr_fd("Input exceeds set max input length.\n", 2), 0);
+	while (i < MAX_INPUT_LENGTH && input[++i] != '\0')
 	{
 		if (!in_q && (input[i] == '|' || input[i] == '<' || input[i] == '>'))
 			handle_operator(input, &i, info);
