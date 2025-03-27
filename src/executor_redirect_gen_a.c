@@ -169,7 +169,8 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 	// int			tempfile_r;
 	int			temp_file;
 
-	setup_child_signals();
+	// setup_child_signals();
+	setup_heredoc_signals();
 	if (!ast || !(*ast))
 		return (0);
 	if (stdins_rem != 0)

@@ -62,6 +62,8 @@ void	builtins_exec(t_ast_node **ast)
 	if (!gen_redirections(ast))
 		return (def_exit(1),
 			builtins_close_fds(orig_stdin, orig_stdout));
+	if (get_sigfree()->child)
+		setup_child_signals();
 	builtins_switch(ast, orig_stdin, orig_stdout);
 	builtins_close_fds(orig_stdin, orig_stdout);
 }
@@ -99,12 +101,12 @@ void	alt_child_exec(char *abs_path, t_ast_node **ast)
 	char	**argv;
 	char	**envp;
 
-	setup_child_signals();
 	if (!gen_redirections(ast))
 		return (child_free(abs_path), exit(1));
 	argv = generate_argv(ast);
 	envp = generate_envp();
 	child_free(NULL);
+	setup_child_signals();
 	if (execve(abs_path, argv, envp) == -1)
 	{
 		free(abs_path);

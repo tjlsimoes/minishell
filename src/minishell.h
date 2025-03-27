@@ -325,4 +325,7 @@ int			standalone_gen_redirections(t_ast_node **ast);
 int			mock_redirect_out(t_ast_node **current);
 int			mock_redirect_append(t_ast_node **current);
 int			mock_redirect_in(t_ast_node **current, int stdins);
+
+void		handle_heredoc_sig(int sig);
+void		setup_heredoc_signals(void);
 #endif

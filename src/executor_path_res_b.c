@@ -16,7 +16,7 @@ static void	handle_child_process(char *abs_path, t_ast_node **ast)
 {
 	// signal(SIGINT, SIG_DFL);
 	child_exec(abs_path, ast);
-	exit_shell(1, -1, -1);
+	exit_shell(1, -1, -1); // This will never be called.
 }
 
 static void	handle_fork_error(char *abs_path)
