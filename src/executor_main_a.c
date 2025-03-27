@@ -60,8 +60,7 @@ void	builtins_exec(t_ast_node **ast)
 	get_sigfree()->orig[0] = orig_stdin;
 	get_sigfree()->orig[1] = orig_stdout;
 	if (!gen_redirections(ast))
-		return (def_exit(1),
-			builtins_close_fds(orig_stdin, orig_stdout));
+		return (builtins_close_fds(orig_stdin, orig_stdout));
 	if (get_sigfree()->child)
 		setup_child_signals();
 	builtins_switch(ast, orig_stdin, orig_stdout);

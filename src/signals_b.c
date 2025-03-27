@@ -22,7 +22,7 @@ void	handle_child_sig(int sig)
 		sigfree_erase();
 		// Possible need to free abs_path, argv, envp?
 		// child_free(NULL); On child process this will already have been called.
-		exit(1); // Need to define exit?
+		exit(sig); // Need to define exit?
 	}
 	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
@@ -33,11 +33,12 @@ void	handle_heredoc_sig(int sig)
 	(void)sig;
 
 	get_sigfree()->interrupted = 1;
+	def_exit(130);
 	if (get_sigfree()->child)
 	{
 		sigfree_erase();
 		child_free(NULL);
-		exit(0); // Need to define exit?
+		exit(130); // Need to define exit?
 	}
 	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
