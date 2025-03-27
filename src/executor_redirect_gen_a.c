@@ -18,13 +18,14 @@ int	gen_redirect_out(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, (*current)->value), def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
@@ -34,14 +35,14 @@ int	gen_redirect_append(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_APPEND | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (report_error(ERROR_OPEN, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (close(fd_out), report_error(ERROR_DUP2, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno), close(fd_out),
+			report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
@@ -67,16 +68,16 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 
 	fd_in = open((*current)->value, O_RDONLY);
 	if (fd_in == -1)
-		return (report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
 	if (stdins != 0)
 		return (close(fd_in), 1);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (close(fd_in), report_error(ERROR_DUP2, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_in) == -1)
-		return (report_error(ERROR_CLOSE, (*current)->value),
-			def_exit(1), 0);
+		return (def_exit(errno),
+			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
 
@@ -191,9 +192,9 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 	if (temp_file == -1)
 		ft_putstr_fd("Invalid temp_file_w\n", 2);
 	// Need to safeguard possibility of -1 return
-	
+
 	heredoc_read(ast, temp_file, stdins_rem);
-	
+
 	close(temp_file);
 
 	temp_file = open("/home/pgr/repos/42/minishell/temp_file", O_RDONLY);
@@ -226,13 +227,13 @@ int	gen_heredoc(t_ast_node **ast, int stdins_rem)
 //     fd = mkstemp(tmp_filename);
 //     if (fd == -1)
 //         return (report_error(ERROR_OPEN, "Failed to create temp file for heredoc"), 0);
-    
+
 //     unlink(tmp_filename); // Ensure file is deleted after close
 
 //     setup_child_signals();
 //     if (!ast || !(*ast))
 //         return (0);
-    
+
 //     heredoc_read(ast, fd, stdins_rem);
 //     close(fd);
 
