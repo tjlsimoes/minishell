@@ -19,13 +19,13 @@ void	handle_child_sig(int sig)
 	if (get_sigfree()->child)
 	{
 		sigfree_erase();
-		// Possible need to free abs_path, argv, envp?
-		// child_free(NULL); On child process this will already have been called.
 		exit(sig);
 	}
 	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
 }
+// Possible need to free abs_path, argv, envp before exit()?
+// child_free(NULL); On child process this will already have been called.
 
 void	handle_heredoc_sig(int sig)
 {
