@@ -54,10 +54,10 @@ char	*pre_exec_heredoc_child(t_ast_node **ast)
 		return (report_error(ERROR_FORK, "Failed to fork for heredoc"), NULL);
 	if (pid == 0)
 	{
-		sigfree_init(NULL, true);
+		sigfree_init(temp_file_path, true);
 		new_heredoc_read(ast, temp_file_path);
 		sigfree_erase();
-		child_free(temp_file_path);
+		child_free(NULL);
 		exit(0);
 	}
 	waitpid(pid, NULL, 0);
