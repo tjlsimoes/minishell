@@ -55,10 +55,10 @@ int	mock_redirect_out(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
@@ -69,10 +69,10 @@ int	mock_redirect_append(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_APPEND | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
@@ -83,10 +83,10 @@ int	mock_redirect_in(t_ast_node **current)
 
 	fd_in = open((*current)->value, O_RDONLY);
 	if (fd_in == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
 	if (close(fd_in) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }

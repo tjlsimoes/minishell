@@ -18,13 +18,13 @@ int	gen_redirect_out(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			close(fd_out), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
@@ -35,13 +35,13 @@ int	gen_redirect_append(t_ast_node **current)
 
 	fd_out = open((*current)->value, O_CREAT | O_APPEND | O_WRONLY, 0666);
 	if (fd_out == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_OPEN, (*current)->value), 0);
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-		return (def_exit(errno), close(fd_out),
+		return (def_exit(1), close(fd_out),
 			report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_out) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
@@ -68,15 +68,15 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 
 	fd_in = open((*current)->value, O_RDONLY);
 	if (fd_in == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
 	if (stdins != 0)
 		return (close(fd_in), 1);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			close(fd_in), report_error(ERROR_DUP2, (*current)->value), 0);
 	if (close(fd_in) == -1)
-		return (def_exit(errno),
+		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
 	return (1);
 }
