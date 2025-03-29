@@ -328,4 +328,12 @@ int			mock_redirect_in(t_ast_node **current, int stdins);
 
 void		handle_heredoc_sig(int sig);
 void		setup_heredoc_signals(void);
+
+
+char	*get_tempfile_name(void);
+int		new_heredoc_read_aux(char *file_path);
+void	new_heredoc_read(t_ast_node **heredoc_node, char *file_path);
+char	*pre_exec_heredoc_child(t_ast_node **ast);
+void	pre_exec_heredoc(t_ast_node **ast);
+void	pre_exec_heredocs(t_ast_node **ast);
 #endif
