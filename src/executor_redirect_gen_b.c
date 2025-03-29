@@ -26,12 +26,18 @@ int	gen_redirections(t_ast_node **ast)
 				&& !gen_redirect_append(&node))
 			|| (node->type == NODE_REDIRECT_IN
 				&& !gen_redirect_in(&node, --stdins))
-			|| (node->type == NODE_HEREDOC && !gen_heredoc(&node, --stdins)))
+			|| (node->type == NODE_HEREDOC && !gen_redirect_in(&node, --stdins)))
 			return (0);
 		node = node->right;
 	}
 	return (1);
 }
+// Since heredocs are being handled previous to any execution
+//   and the user input is being saved into a temporary file,
+//   they can now be treated as a simple stdin redirection.
+// The temporary file name will be the node's value.
+// One can perhaps make it so the temporary file is removed after
+//   the "heredoc stdin redirection" has taken place.
 
 int	nbr_stdins(t_ast_node **ast)
 {
@@ -48,53 +54,4 @@ int	nbr_stdins(t_ast_node **ast)
 		node = node->right;
 	}
 	return (i);
-}
-
-void	heredoc_read(t_ast_node **heredoc_node, int write_end,
-	int stdins_rem)
-{
-	t_ast_node	*heredoc;
-	char		*line;
-
-	if (!heredoc_node || !(*heredoc_node))
-		return ;
-	heredoc = *heredoc_node;
-	line = NULL;
-	line = readline("> ");
-	if (get_sigfree()->interrupted != 0)
-		return ;
-	while (line && get_sigfree()->interrupted == 0)
-	{
-		if ((ft_strncmp(line, heredoc->value, ft_strlen(heredoc->value)) == 0
-			&& line[ft_strlen(heredoc->value)] == '\0') || get_sigfree()->interrupted != 0)
-			break ;
-		if (heredoc->quote_char != '\'')
-			expand_env_var(&line);
-		if (stdins_rem == 0 && get_sh()->gen_output != false)
-		{
-			write(write_end, line, ft_strlen(line));
-			write(write_end, "\n", 1);
-		}
-		free(line);
-		line = NULL;
-		if (get_sigfree()->interrupted == 0)
-			line = readline("> ");
-	}
-	free(line);
-}
-
-int	gen_heredocs(t_ast_node **ast)
-{
-	t_ast_node	*node;
-	int			stdins;
-
-	node = (*ast)->right;
-	stdins = nbr_stdins(ast);
-	while (node)
-	{
-		if ((node->type == NODE_HEREDOC && !gen_heredoc(&node, --stdins)))
-			return (0);
-		node = node->right;
-	}
-	return (1);
 }

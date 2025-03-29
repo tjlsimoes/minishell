@@ -124,9 +124,9 @@ void	process_tokens(char *input)
 	if (sh->tokens && sh->tokens[0] != NULL)
 	{
 		sh->ast = parse(sh->tokens);
-		pretty_print_ast(sh->ast, 0);
 		if (sh->ast)
 		{
+			pre_exec_heredocs(&(sh->ast));
 			simple_command_exec(&(sh->ast));
 			free_ast(sh->ast);
 		}
@@ -135,19 +135,3 @@ void	process_tokens(char *input)
 	else if (sh->tokens)
 		free_tokens(sh->tokens);
 }
-
-// void	process_tokens(char *input)
-// {
-// 	t_minishell	*sh;
-
-// 	sh = get_sh();
-// 	sh->tokens = tokenize_input(input);
-// 	if (sh->tokens)
-// 	{
-// 		sh->ast = parse(sh->tokens);
-// 		pretty_print_ast(sh->ast, 0);
-// 		simple_command_exec(&(sh->ast));
-// 		free_tokens(sh->tokens);
-// 		free_ast(sh->ast);
-// 	}
-// }
