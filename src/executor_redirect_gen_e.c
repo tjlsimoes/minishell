@@ -46,10 +46,10 @@ char	*get_tempfile_name(void)
 
 int	new_heredoc_read_aux(char *file_path)
 {
-	int			temp_file_fd;
+	int	temp_file_fd;
 
 	setup_heredoc_signals();
-	temp_file_fd = open(file_path,  O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	temp_file_fd = open(file_path, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (temp_file_fd == -1)
 		return (report_error(ERROR_OPEN, "heredoc write file descriptor"), -1);
 	get_sigfree()->red[0] = temp_file_fd;

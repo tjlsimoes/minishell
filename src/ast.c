@@ -44,53 +44,53 @@ void	free_ast(t_ast_node *node)
 	free(node);
 }
 
-void	print_indent(int indent)
-{
-	if (indent <= 0)
-		return ;
-	dprintf(2, "  ");
-	print_indent(indent - 1);
-}
+// void	print_indent(int indent)
+// {
+// 	if (indent <= 0)
+// 		return ;
+// 	dprintf(2, "  ");
+// 	print_indent(indent - 1);
+// }
 
-void	print_node(const t_ast_node *node, int indent)
-{
-	const char	*node_type_strings[] = {
-		"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
-		"NODE_REDIRECT_IN", "NODE_REDIRECT_OUT",
-		"NODE_REDIRECT_APPEND", "NODE_ENV_VAR", "NODE_HEREDOC"
-	};
-	const char	*value;
+// void	print_node(const t_ast_node *node, int indent)
+// {
+// 	const char	*node_type_strings[] = {
+// 		"NODE_COMMAND", "NODE_ARGUMENT", "NODE_PIPE",
+// 		"NODE_REDIRECT_IN", "NODE_REDIRECT_OUT",
+// 		"NODE_REDIRECT_APPEND", "NODE_ENV_VAR", "NODE_HEREDOC"
+// 	};
+// 	const char	*value;
 
-	print_indent(indent);
-	if (node->value)
-		value = node->value;
-	else
-		value = "NULL";
-	dprintf(2, "Type: %s, Value: %s, FD: %d, Quote: %c\n",
-		node_type_strings[node->type],
-		value,
-		node->fd,
-		node->quote_char ? node->quote_char : 'N');
-}
+// 	print_indent(indent);
+// 	if (node->value)
+// 		value = node->value;
+// 	else
+// 		value = "NULL";
+// 	dprintf(2, "Type: %s, Value: %s, FD: %d, Quote: %c\n",
+// 		node_type_strings[node->type],
+// 		value,
+// 		node->fd,
+// 		node->quote_char ? node->quote_char : 'N');
+// }
 
-void	pretty_print_ast(const t_ast_node *node, int indent)
-{
-	if (!node)
-		return ;
-	print_node(node, indent);
-	if (node->left)
-	{
-		print_indent(indent);
-		dprintf(2, "Left:\n");
-		pretty_print_ast(node->left, indent + 1);
-	}
-	if (node->right)
-	{
-		print_indent(indent);
-		if (node->type == NODE_PIPE)
-			dprintf(2, "Right (Pipe):\n");
-		else
-			dprintf(2, "Right:\n");
-		pretty_print_ast(node->right, indent + 1);
-	}
-}
+// void	pretty_print_ast(const t_ast_node *node, int indent)
+// {
+// 	if (!node)
+// 		return ;
+// 	print_node(node, indent);
+// 	if (node->left)
+// 	{
+// 		print_indent(indent);
+// 		dprintf(2, "Left:\n");
+// 		pretty_print_ast(node->left, indent + 1);
+// 	}
+// 	if (node->right)
+// 	{
+// 		print_indent(indent);
+// 		if (node->type == NODE_PIPE)
+// 			dprintf(2, "Right (Pipe):\n");
+// 		else
+// 			dprintf(2, "Right:\n");
+// 		pretty_print_ast(node->right, indent + 1);
+// 	}
+// }

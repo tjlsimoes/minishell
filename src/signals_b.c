@@ -15,14 +15,13 @@
 void	handle_child_sig(int sig)
 {
 	(void)sig;
-
 	get_sigfree()->interrupted = 1;
 	if (get_sigfree()->child)
 	{
 		sigfree_erase();
 		// Possible need to free abs_path, argv, envp?
 		// child_free(NULL); On child process this will already have been called.
-		exit(sig); // Need to define exit?
+		exit(sig);
 	}
 	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
@@ -31,20 +30,19 @@ void	handle_child_sig(int sig)
 void	handle_heredoc_sig(int sig)
 {
 	(void)sig;
-
 	get_sigfree()->interrupted = 1;
 	def_exit(130);
 	if (get_sigfree()->child)
 	{
 		sigfree_erase();
 		child_free(NULL);
-		exit(130); // Need to define exit?
+		exit(sig);
 	}
 	close(STDIN_FILENO);
 	write(STDERR_FILENO, "\n", 1);
 }
 
-t_signal_free	*get_sigfree()
+t_signal_free	*get_sigfree(void)
 {
 	static t_signal_free	sig_free;
 

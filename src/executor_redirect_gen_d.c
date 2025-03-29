@@ -25,7 +25,8 @@ void	new_heredoc_read(t_ast_node **heredoc_node, char *file_path)
 	while (line && get_sigfree()->interrupted == 0)
 	{
 		if ((ft_strncmp(line, heredoc->value, ft_strlen(heredoc->value)) == 0
-			&& line[ft_strlen(heredoc->value)] == '\0') || get_sigfree()->interrupted != 0)
+				&& line[ft_strlen(heredoc->value)] == '\0')
+			|| get_sigfree()->interrupted != 0)
 			break ;
 		if (heredoc->quote_char != '\'')
 			expand_env_var(&line);
@@ -48,7 +49,6 @@ char	*pre_exec_heredoc_child(t_ast_node **ast)
 	if (!ast || !*ast)
 		return (NULL);
 	temp_file_path = get_tempfile_name();
-
 	pid = fork();
 	if (pid == -1)
 		return (report_error(ERROR_FORK, "Failed to fork for heredoc"), NULL);

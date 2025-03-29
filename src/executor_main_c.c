@@ -14,7 +14,7 @@
 
 bool	has_heredocs(t_ast_node **ast)
 {
-	t_ast_node *node;
+	t_ast_node	*node;
 
 	if (!ast || (!*ast))
 		return (false);

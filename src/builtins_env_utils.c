@@ -65,8 +65,7 @@ int	print_declare(t_list **node)
 
 int	env_write_error(int fd, char *str)
 {
-	if (write(fd, str,
-		ft_strlen(str)) == -1)
+	if (write(fd, str, ft_strlen(str)) == -1)
 		return (report_error(ERROR_ENV_WRITE_FAILED, "Write failed"), 1);
 	return (0);
 }

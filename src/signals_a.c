@@ -48,8 +48,6 @@ void	setup_child_signals(void)
 	sigemptyset(&sigquit.sa_mask);
 	sigquit.sa_flags = 0;
 	sigaction(SIGQUIT, &sigquit, NULL);
-
-
 	sigint.sa_handler = handle_child_sig;
 	sigemptyset(&sigint.sa_mask);
 	sigint.sa_flags = 0;
