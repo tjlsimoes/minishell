@@ -62,7 +62,7 @@ int	gen_redirect_stdout(t_ast_node **ast)
 	return (1);
 }
 
-int	gen_redirect_in(t_ast_node **current, int stdins)
+int	gen_redirect_in(t_ast_node **current, int stdins, bool heredoc)
 {
 	int	fd_in;
 
@@ -70,7 +70,9 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 	if (fd_in == -1)
 		return (def_exit(1),
 			report_error(ERROR_NO_SUCH_FILE_OR_DIR, (*current)->value), 0);
-	if (stdins != 0)
+	if (stdins != 0 && heredoc)
+		return (close(fd_in), unlink((*current)->value), 1);
+	else if (stdins != 0)
 		return (close(fd_in), 1);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 		return (def_exit(1),
@@ -78,5 +80,7 @@ int	gen_redirect_in(t_ast_node **current, int stdins)
 	if (close(fd_in) == -1)
 		return (def_exit(1),
 			report_error(ERROR_CLOSE, (*current)->value), 0);
+	if (heredoc)
+		unlink((*current)->value);
 	return (1);
 }

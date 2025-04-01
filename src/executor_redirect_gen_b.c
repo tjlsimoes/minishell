@@ -25,9 +25,9 @@ int	gen_redirections(t_ast_node **ast)
 			|| (node->type == NODE_REDIRECT_APPEND
 				&& !gen_redirect_append(&node))
 			|| (node->type == NODE_REDIRECT_IN
-				&& !gen_redirect_in(&node, --stdins))
+				&& !gen_redirect_in(&node, --stdins, false))
 			|| (node->type == NODE_HEREDOC
-				&& !gen_redirect_in(&node, --stdins)))
+				&& !gen_redirect_in(&node, --stdins, true)))
 			return (0);
 		node = node->right;
 	}

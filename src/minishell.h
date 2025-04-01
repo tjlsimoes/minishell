@@ -264,7 +264,8 @@ void			update_shlvl(char **envp);
 int				gen_redirect_out(t_ast_node **current);
 int				gen_redirect_append(t_ast_node **current);
 int				gen_redirect_stdout(t_ast_node **ast);
-int				gen_redirect_in(t_ast_node **current, int stdins);
+int				gen_redirect_in(t_ast_node **current, int stdins,
+					bool heredoc);
 
 // Functions from src/executor_redirect_gen_b.c
 int				gen_redirections(t_ast_node **ast);

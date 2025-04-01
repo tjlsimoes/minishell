@@ -15,11 +15,22 @@
 // Returns allocated string with file path for a temporary
 //   file with the lowest index in the pattern:
 //   /tmp/temp_file-x
+
+static int	get_tempfile_name_aux(long *i, char *nbr, char *temp_file)
+{
+	free(nbr);
+	free(temp_file);
+	if (*i == LONG_MAX)
+		return (report_error(ERROR_OPEN, "temporary file name"), 0);
+	*i = *i + 1;
+	return (1);
+}
+
 char	*get_tempfile_name(void)
 {
 	char	*temp_file;
 	char	*base;
-	int		i;
+	long	i;
 	char	*nbr;
 
 	if (access("/tmp/temp_file-0", F_OK) != 0)
@@ -38,9 +49,8 @@ char	*get_tempfile_name(void)
 			return (free(nbr), free(base), NULL);
 		if (access(temp_file, F_OK) != 0)
 			return (free(nbr), free(base), temp_file);
-		free(nbr);
-		free(temp_file);
-		i++;
+		if (!get_tempfile_name_aux(&i, nbr, temp_file))
+			return (free(base), NULL);
 	}
 }
 
