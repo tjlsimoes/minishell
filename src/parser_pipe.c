@@ -28,7 +28,7 @@ t_ast_node	*parse_pipeline(char **tokens, int *index)
 	t_ast_node	*right;
 
 	if (tokens[*index] && ft_strncmp(tokens[*index], "|", 2) == 0)
-		return (report_error(ERROR_SYNTAX, "|"), NULL);
+		return (def_exit(2), report_error(ERROR_SYNTAX, "|"), NULL);
 	left = parse_command(tokens, index);
 	if (!left)
 		return (NULL);
@@ -36,7 +36,8 @@ t_ast_node	*parse_pipeline(char **tokens, int *index)
 	{
 		(*index)++;
 		if (!tokens[*index] || ft_strncmp(tokens[*index], "|", 2) == 0)
-			return (report_error(ERROR_SYNTAX, "|"), free_ast(left), NULL);
+			return (def_exit(2),
+				report_error(ERROR_SYNTAX, "|"), free_ast(left), NULL);
 		right = parse_pipeline(tokens, index);
 		if (!right)
 			return (free_ast(left), NULL);

@@ -35,7 +35,7 @@ t_ast_node	*parse_redirect_node(char **tokens,
 	{
 		report_error(ERROR_SYNTAX, tokens[*index + 1]);
 		(*index)++;
-		return (NULL);
+		return (def_exit(2), NULL);
 	}
 	redirect_node = create_redirect_node(tokens, index);
 	if (!redirect_node)

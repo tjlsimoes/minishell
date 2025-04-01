@@ -102,7 +102,7 @@ t_ast_node	*create_redirect_ast_node(char **tokens, int *index,
 	{
 		(*index)++;
 		report_error(ERROR_SYNTAX, "newline");
-		return (NULL);
+		return (def_exit(2), NULL);
 	}
 	cleaned_filename = clean_arg(filename);
 	node = create_node(redirect_type, cleaned_filename, fd);
